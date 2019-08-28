@@ -153,7 +153,7 @@ $(document).ready(function () {
     // 2 Alerta
     Mensaje = function (mensaje, tipo) {
 
-        $('#MensajeAlerta').remove();
+        $('.MensajeAlerta').remove();
         var tiempo = 1000;
         switch (tipo) {
             case 0: tiempo = 1000; break;
@@ -163,7 +163,7 @@ $(document).ready(function () {
 
         var tipos = ['alert-success', 'alert-danger', 'alert-warning'];
         var html = //'<div class="row">' +
-                   '<div id="MensajeAlerta" class="alert ' + tipos[tipo] + ' alert-dismissible show" role="alert" style="top: 1%;left: 15%;width: 70%;z-index: 1;position: absolute; /*!important;*/">' +
+                   '<div id="MensajeAlerta" class="MensajeAlerta alert ' + tipos[tipo] + ' alert-dismissible show" role="alert" style="top: 1%;left: 15%;width: 70%;z-index: 9999;position: absolute; /*!important;*/">' +
                    '<strong>Mensaje!</strong>  ' +
                    mensaje +
                    '<button type="button" class="close" onclick="CerrarMensaje() aria-label="Close">' +
@@ -192,7 +192,7 @@ $(document).ready(function () {
             default: tiempo = 53500;
         }
         var tipos = ['alert-success', 'alert-danger', 'alert-warning'];
-        var html = '<div id="MensajeAlerta" class="alert ' + tipos[tipo] + ' alert-dismissible fade show" role="alert" style="top: 1%;left: 15%;width: 70%;z-index: 1;position: absolute; /*!important;*/">' +
+        var html = '<div id="MensajeAlerta" class="MensajeAlerta alert ' + tipos[tipo] + ' alert-dismissible show" role="alert" style="top: 1%;left: 15%;width: 70%;z-index: 9999;position: absolute; /*!important;*/">' +
                    '<strong>Mensaje!</strong>  ' +
                    message +
                    '<button type="button" class="close" onclick="CerrarMensaje("Modal") aria-label="Close">' +
@@ -215,9 +215,9 @@ $(document).ready(function () {
     });
 
     CerrarMensaje = function (val) {
-        if ($('#MensajeAlerta').length > 0) {
-            $("#MensajeAlerta").slideUp();
-            setTimeout(function () { $('#MensajeAlerta').remove(); }, 100);
+        if ($('.MensajeAlerta').length > 0) {
+            $(".MensajeAlerta").slideUp();
+            setTimeout(function () { $('.MensajeAlerta').remove(); }, 300);
             if (val == 'Modal') {
                 $('.modal').modal('hide');
             }

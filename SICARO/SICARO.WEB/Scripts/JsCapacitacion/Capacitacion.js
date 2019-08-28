@@ -48,10 +48,6 @@ var Capacitacion = new Vue({
                     val.dFechaPropuestaCapacitacion = fecha;
                 });
 
-                //this.Lista_Capacitacion = datos;
-
-                //var da = Object.entries(datos);
-
                 $('#tbCapacitacion').DataTable({
                     "data": datos,
                     "columns": [
@@ -65,13 +61,6 @@ var Capacitacion = new Vue({
                         },
 
                     ],
-                    //columnDefs: [
-                    //    {
-                    //        "targets": -1,
-                    //        "data": null,
-                    //        "defaultContent": "<button>Click!</button>"
-                    //    }
-                    //]
                 });
 
             }.bind(this)).catch(function (error) {
@@ -146,9 +135,10 @@ var Capacitacion = new Vue({
             } else {
                 this.Lista_Operarios = this.Lista_Personal;
             }
+            $("#ModalOperario").modal('show');
             $('#ModalOperario input').attr('disabled', false);
             $('#ModalOperario button').attr('disabled', false);
-            $("#ModalOperario").modal('show');
+            
 
         },
         VerOperarios: function () {
@@ -512,8 +502,8 @@ var Capacitacion = new Vue({
         },
         GrabarCapacitacion: function () {
 
-            var _horarinicio = $('#horarinicio').val();
-            var _horartermino = $('#horartermino').val();
+            var _horarinicio = $('#horarinicio').data('date');
+            var _horartermino = $('#horartermino').data('date');
             if (_horartermino <= _horarinicio) {
                 Mensaje("La hora final es mayor a la hora de inicio", 0);
                 //alert("La hora final es mayor a la hora de inicio");
