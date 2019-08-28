@@ -1,0 +1,86 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @*@Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")*@
+
+    
+    <link href="~/Content/Login.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="../Scripts/jquery.inputmask.bundle.min.js"></script>
+
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <style type="text/css">
+        fieldset.scheduler-border {
+            border: solid 1px #DDD !important;
+            padding: 0 10px 10px 10px;
+            border-bottom: none;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="app" class="">
+        <div class="container">
+            <div class="row vertical-offset-100">
+                <div class="col-md-4 col-md-offset-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Inicio de Sesión</h3>
+                        </div>
+                        <div class="panel-body">
+                            <form accept-charset="UTF-8" role="form">
+                                <fieldset>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <input id="Usuario" class="form-control" placeholder="Usuario" name="email" type="text">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <input id="Password" class="form-control" placeholder="Contraseña" name="password" type="password" value="">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-12">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input name="remember" type="checkbox" value="Remember Me"> Remember Me
+                                            </label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-sm-12">
+                                        <input type="button" class="btn btn-lg btn-success btn-block" v-on:Click="ValidarUsusario()" value="Login">
+                                    </div>
+                                
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/JsUsuario/Ususario.js"></script>
+    <script src="~/Scripts/ValidacionGeneral.js"></script>
+</body>
+
+</html>
