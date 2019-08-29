@@ -73,6 +73,13 @@ namespace SICARO.WEB.Models
         }
         private string _vNroInspeccionSanitaria;
 
+        public string vDireccion
+        {
+            get { return _vDireccion; }
+            set { _vDireccion = value; }
+        }
+        private string _vDireccion;
+
         ///
 
         /// Gets or Sets iEstadoEmpresa

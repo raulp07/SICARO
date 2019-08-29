@@ -70,10 +70,55 @@ namespace WCF_SICARO.Persistencia
 
                 }
             }
-
-
-
         }
+
+        public int InsertPROVEEDOR(PROVEEDOR_EL C)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("spInsertPROVEEDOR", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@vNombreProveedor", SqlDbType.VarChar).Value = C.vNombreProveedor;
+                    com.Parameters.Add("@vRUC", SqlDbType.VarChar).Value = C.vRUC;
+                    com.Parameters.Add("@vTelefono", SqlDbType.VarChar).Value = C.vTelefono;
+                    com.Parameters.Add("@vNroLicenciaMunicipal", SqlDbType.VarChar).Value = C.vNroLicenciaMunicipal;
+                    com.Parameters.Add("@vNroInspeccionSanitaria", SqlDbType.VarChar).Value = C.vNroInspeccionSanitaria;
+                    com.Parameters.Add("@iEstadoEmpresa", SqlDbType.Int).Value = C.iEstadoEmpresa;
+                    com.Parameters.Add("@iTipoEmpresa", SqlDbType.Int).Value = C.iTipoEmpresa;
+                    com.Parameters.Add("@iUbigeo", SqlDbType.Int).Value = C.iUbigeo;
+                    com.Parameters.Add("@vDireccion", SqlDbType.VarChar).Value = C.vDireccion;
+                    com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = C.iUsuarioCrea;
+                    return com.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public int UpdatePROVEEDOR(PROVEEDOR_EL C)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("spUpdatePROVEEDOR", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iIdProveedor", SqlDbType.Int).Value = C.iIdProveedor;
+                    com.Parameters.Add("@vNombreProveedor", SqlDbType.VarChar).Value = C.vNombreProveedor;
+                    com.Parameters.Add("@vRUC", SqlDbType.VarChar).Value = C.vRUC;
+                    com.Parameters.Add("@vTelefono", SqlDbType.VarChar).Value = C.vTelefono;
+                    com.Parameters.Add("@vNroLicenciaMunicipal", SqlDbType.VarChar).Value = C.vNroLicenciaMunicipal;
+                    com.Parameters.Add("@vNroInspeccionSanitaria", SqlDbType.VarChar).Value = C.vNroInspeccionSanitaria;
+                    com.Parameters.Add("@iEstadoEmpresa", SqlDbType.Int).Value = C.iEstadoEmpresa;
+                    com.Parameters.Add("@iTipoEmpresa", SqlDbType.Int).Value = C.iTipoEmpresa;
+                    com.Parameters.Add("@iUbigeo", SqlDbType.Int).Value = C.iUbigeo;    
+                    com.Parameters.Add("@vDireccion", SqlDbType.VarChar).Value = C.vDireccion;
+                    com.Parameters.Add("@iUsuarioMod", SqlDbType.Int).Value = C.iUsuarioMod;
+                    return com.ExecuteNonQuery();
+                }
+            }
+        }
+
 
     }
 }

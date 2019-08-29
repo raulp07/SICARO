@@ -42,6 +42,27 @@ namespace SICARO.WEB.Controllers
         }
 
         [HttpPost]
+        public JsonResult RegistrarCapacitacionCabecera(CAPACITACION_EL GestionCapacitacion)
+        {
+            string perosnalizaicon = "1";
+            string postdata = js.Serialize(GestionCapacitacion);
+            int respuesta = js.Deserialize<int>(Utilitario.Accion.ConectREST("ICAPACITACIONCABECERA", "POST", postdata));
+
+            return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
+        }
+
+        [HttpPost]
+        public JsonResult ActualizarCapacitacionCabecera(CAPACITACION_EL GestionCapacitacion)
+        {
+            string perosnalizaicon = "1";
+            string postdata = js.Serialize(GestionCapacitacion);
+            int respuesta = js.Deserialize<int>(Utilitario.Accion.ConectREST("UCAPACITACIONCABECERA", "POST", postdata));
+
+            return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
+        }
+
+
+        [HttpPost]
         public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion,List<PREGUNTA_EL> _Preguntas, List<OPCION_PREGUNTA_EL> _Respuestas)
         {
             string perosnalizaicon = "1";
@@ -61,10 +82,6 @@ namespace SICARO.WEB.Controllers
                     }
                 }
             }
-
-            
-            
-
 
             return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
         }

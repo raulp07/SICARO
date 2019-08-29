@@ -116,6 +116,14 @@ namespace WCF_SICARO.Dominio
         }
         private int _iUbigeo;
 
+        [DataMember]
+        public string vDireccion
+        {
+            get { return _vDireccion; }
+            set { _vDireccion = value; }
+        }
+        private string _vDireccion;
+
         ///
 
         /// Gets or Sets iUsuarioCrea

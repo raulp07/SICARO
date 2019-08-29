@@ -103,8 +103,45 @@ namespace WCF_SICARO.Persistencia
                     }
                     return list;
                 }
-                    
+
             }
         }
+
+
+        public int InsertCAPACITACION(CAPACITACION_EL C)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("spInsertCAPACITACION", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@vTemaCapacitacion", SqlDbType.VarChar).Value = C.vTemaCapacitacion;
+                    com.Parameters.Add("@dFechaPropuestaCapacitacion", SqlDbType.DateTime).Value =  C.dFechaPropuestaCapacitacion;
+                    com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = C.iUsuarioCrea;
+                    return com.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public int UpdateCAPACITACION(CAPACITACION_EL C)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("spUpdateCAPACITACION", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = C.iIdCapacitacion;
+                    com.Parameters.Add("@vTemaCapacitacion", SqlDbType.VarChar).Value = C.vTemaCapacitacion;
+                    com.Parameters.Add("@dFechaPropuestaCapacitacion", SqlDbType.DateTime).Value = C.dFechaPropuestaCapacitacion;
+                    com.Parameters.Add("@iUsuarioMod", SqlDbType.Int).Value = C.iUsuarioCrea;
+                    return com.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+
     }
 }

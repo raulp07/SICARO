@@ -25,6 +25,15 @@ namespace WCF_SICARO
         {
             return CAPACITACION_DA.Accion.GetAllCAPACITACION(C);
         }
+        public int InsertCAPACITACION(CAPACITACION_EL GC)
+        {
+            return CAPACITACION_DA.Accion.InsertCAPACITACION(GC);
+        }
+        public int UpdateCAPACITACION(CAPACITACION_EL GC)
+        {
+            return CAPACITACION_DA.Accion.UpdateCAPACITACION(GC);
+        }
+
         //================================================================
 
         // GESTION CAPACITACION ==================================================
