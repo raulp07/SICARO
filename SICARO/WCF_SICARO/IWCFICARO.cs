@@ -174,6 +174,10 @@ namespace WCF_SICARO
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "ListaMenu", ResponseFormat = WebMessageFormat.Json)]
         List<OpcionXPerfil_EL> ListMenu(OpcionXPerfil_EL opcionPerfil);
+
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "Ubigeo", ResponseFormat = WebMessageFormat.Json)]
+        List<UBIGEO_EL> GetAllUBIGEO(UBIGEO_EL Ubigeo);
     }
 
 

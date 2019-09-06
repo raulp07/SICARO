@@ -31,9 +31,8 @@ namespace WCF_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_UBIGEO", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@vCodDpto", SqlDbType.Int).Value = U.vCodDpto;
-                    com.Parameters.Add("@vCodProv", SqlDbType.Int).Value = U.vCodProv;
-                    com.Parameters.Add("@vCodDist", SqlDbType.Int).Value = U.vCodDist;
+                    com.Parameters.Add("@co_ubigeo", SqlDbType.Char, 8).Value = U.co_ubigeo;
+                    com.Parameters.Add("@flag", SqlDbType.Char, 1).Value = U.flag;
 
                     List<UBIGEO_EL> list = new List<UBIGEO_EL>();
                     using (IDataReader dataReader = com.ExecuteReader())
@@ -41,10 +40,8 @@ namespace WCF_SICARO.Persistencia
                         while (dataReader.Read())
                         {
                             UBIGEO_EL obj = new UBIGEO_EL();
-                            if (dataReader["vCodDpto"] != DBNull.Value) { obj.vCodDpto = (string)dataReader["vCodDpto"]; }
-                            if (dataReader["vCodProv"] != DBNull.Value) { obj.vCodProv = (string)dataReader["vCodProv"]; }
-                            if (dataReader["vCodDist"] != DBNull.Value) { obj.vCodDist = (string)dataReader["vCodDist"]; }
-                            if (dataReader["vNombre"] != DBNull.Value) { obj.vNombre = (string)dataReader["vNombre"]; }
+                            if (dataReader["co_ubigeo"] != DBNull.Value) { obj.co_ubigeo = (string)dataReader["co_ubigeo"]; }
+                            if (dataReader["de_ubigeo"] != DBNull.Value) { obj.de_ubigeo = (string)dataReader["de_ubigeo"]; }
                             list.Add(obj);
                         }
                     }

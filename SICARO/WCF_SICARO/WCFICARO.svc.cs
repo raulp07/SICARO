@@ -223,5 +223,12 @@ namespace WCF_SICARO
             return OpcionXPerfil_DA.OpcionXPerfil.ListMenu(opcionPerfil);
         }
         //================================================================
+
+        // UBIGEO  =========================================
+        public List<UBIGEO_EL> GetAllUBIGEO(UBIGEO_EL Ubigeo)
+        {
+            return UBIGEO_DA.Accion.GetAllUBIGEO(Ubigeo);
+        }
+        //================================================================
     }
 }

@@ -3,15 +3,25 @@
     ViewBag.Title = "Index";
 }
 
+<script src="~/Scripts/JSSICARO/Proveedor.js"></script>
+
 <div id="Proveedor">
 
 
     <div class="row">
         <div class="col-sm-12">
-            <label class="label label-primary"> Proveedor</label>
+            <div class="form-group">
+                <h1 class="text-center">Proveedor</h1>
+            </div>            
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-8">
+            <div class="form-group">
+                <button type="button" class="btn btn-success col-sm-12" v-on:click="MostrarProveedor">Nuevo</button>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-12">
             <table id="tbTabla" class="display">
@@ -22,13 +32,69 @@
                         <th>Telefono</th>
                         <th>Nro Licencia Municipal</th>
                         <th>Nro Inspeccion Sanitaria</th>
-                        <th></th>
-                        <th></th>
                     </tr>
                 </thead>
             </table>
         </div>
     </div>
+
+    @*Moda*@
+    <div class="modal fade" id="ModalCapacitacion">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Capacitación</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="txtCodigo" class="control-label">Código</label>
+                                    <input type="text" id="txtCodigo" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="txtTema" class="control-label">Tema</label>
+                                    <input type="text" id="txtTema" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="txtFechaCapacitacion" class="control-label">Fecha Propuesta</label>
+                                    <div class='input-group date' id='txtFechaCapacitacion' data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label id="txtEstado" class="control-label">Estado</label>
+                                    <input type="text" id="txtEstado" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" v-on:click="CRUDCapacitacion">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 </div>

@@ -8,52 +8,22 @@ namespace WCF_SICARO.Dominio
 {
     public class UBIGEO_EL
     {
-        ///
-
-        /// Gets or Sets vCodDpto
-        ///
+        
         [DataMember]
-        public string vCodDpto
-        {
-            get { return _vCodDpto; }
-            set { _vCodDpto = value; }
-        }
-        private string _vCodDpto;
-
-        ///
-
-        /// Gets or Sets vCodProv
-        ///
+        public string co_ubigeo { get; set; }
         [DataMember]
-        public string vCodProv
-        {
-            get { return _vCodProv; }
-            set { _vCodProv = value; }
-        }
-        private string _vCodProv;
-
-        ///
-
-        /// Gets or Sets vCodDist
-        ///
+        public string de_ubigeo { get; set; }
         [DataMember]
-        public string vCodDist
-        {
-            get { return _vCodDist; }
-            set { _vCodDist = value; }
-        }
-        private string _vCodDist;
-
-        ///
-
-        /// Gets or Sets vNombre
-        ///
+        public string ti_ubigeo { get; set; }
         [DataMember]
-        public string vNombre
-        {
-            get { return _vNombre; }
-            set { _vNombre = value; }
-        }
-        private string _vNombre;
+        public string fg_ubigeo { get; set; }
+        [DataMember]
+        public string st_ubigeo { get; set; }
+        [DataMember]
+        public string codigo { get; set; }
+        [DataMember]
+        public string descripcion { get; set; }
+        [DataMember]
+        public string flag { get; set; }
     }
 }

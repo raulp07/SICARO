@@ -34,7 +34,6 @@ namespace WCF_SICARO.Persistencia
                 {
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.Add("@iIdProveedor", SqlDbType.Int).Value = P.iIdProveedor;
-                    com.Parameters.Add("@iIdMateriaPrima", SqlDbType.Int).Value = P.iUbigeo;
 
                     List<PROVEEDOR_EL> list = new List<PROVEEDOR_EL>();
 
