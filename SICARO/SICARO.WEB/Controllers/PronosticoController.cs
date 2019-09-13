@@ -1,4 +1,5 @@
-﻿using SICARO.WEB.Models;
+﻿using Newtonsoft.Json;
+using SICARO.WEB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace SICARO.WEB.Controllers
                 string postdata = js.Serialize(MP);
                 List<MATERIA_PRIMA_EL> ListaMATERIA_PRIMA = new List<MATERIA_PRIMA_EL>();
                 ListaMATERIA_PRIMA = js.Deserialize<List<MATERIA_PRIMA_EL>>(Utilitario.Accion.ConectREST("MATERIA_PRIMA", "POST", postdata));
+                //var Listado = JsonConvert.DeserializeObject<List<MATERIA_PRIMA_EL>>(Utilitario.Accion.ConectREST("MATERIA_PRIMA", "POST", postdata));
                 return Json(new { ListaMATERIA_PRIMA = ListaMATERIA_PRIMA }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

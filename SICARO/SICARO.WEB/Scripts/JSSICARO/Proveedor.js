@@ -1,14 +1,25 @@
 ﻿$(document).ready(function () {
 
 
-    var app = new Vue({
-        el: '#app',
+    var Proveedor = new Vue({
+        el: '#Proveedor',
         data: {
             dDepartamentos: [],
             dProvincia: [],
             dDistrito: [],
         },
         methods: {
+            ListaTipoDocumento: function () {
+                var data = {
+                    co_tabla: 1
+                };
+                axios.post('/TGeneral/CargaTGeneral', data).then(response => {
+                    this.dTipoDocumento = response.data;
+                }).catch(error => {
+                    console.log(error);
+                    this.errored = true;
+                });
+            },
             ListarDepartamento: function () {
                 var data = {
                     flag: 1,
@@ -80,7 +91,10 @@
                     console.log(error);
                     this.errored = true;
                 });
-            }
+            },
+            Nuevo: function(){
+                $('#ModalMantenimiento').modal('show');
+            },
         },
         created: function () {
             this.ListarProveedor();

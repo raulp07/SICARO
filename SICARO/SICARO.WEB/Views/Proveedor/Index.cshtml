@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-sm-4 col-sm-offset-8">
             <div class="form-group">
-                <button type="button" class="btn btn-success col-sm-12" v-on:click="MostrarProveedor">Nuevo</button>
+                <button type="button" class="btn btn-success col-sm-12" v-on:click="Nuevo()">Nuevo</button>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
     </div>
 
     @*Moda*@
-    <div class="modal fade" id="ModalCapacitacion">
+    <div class="modal fade" id="ModalMantenimiento">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -51,13 +51,32 @@
                 <div class="modal-body">
                     <div class="container">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="txtCodigo" class="control-label">Código</label>
-                                    <input type="text" id="txtCodigo" class="form-control" disabled />
+                                    <label for="txtNombre" class="control-label">Nombre</label>
+                                    <input type="text" id="txtNombre" class="form-control" disabled />
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="txtApellidoPaterno" class="control-label">Apellido Paterno</label>
+                                    <input type="text" id="txtApellidoPaterno" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="txtApellidoMaterno" class="control-label">Apellido Materno</label>
+                                    <input type="text" id="txtApellidoMaterno" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+
+                        @{Html.RenderPartial("~/Views/Utilitarios/Documentos.cshtml");}
+
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">

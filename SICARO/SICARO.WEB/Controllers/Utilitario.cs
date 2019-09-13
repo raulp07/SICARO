@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -69,6 +71,15 @@ namespace SICARO.WEB.Controllers
                         return reader.ReadToEnd();
                     default: return "";
                 }
+                HttpClient clienteHttp = new HttpClient();
+                clienteHttp.BaseAddress = new Uri(urlSite + "WCFICARO.svc/");
+                var request = clienteHttp.GetAsync(url).Result;
+                if (request.IsSuccessStatusCode)
+                {
+                    var resultString = request.Content.ReadAsStringAsync().Result;
+                    return resultString;    
+                }
+                
             }
             catch (Exception e)
             {
