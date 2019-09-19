@@ -45,6 +45,7 @@ namespace SICARO.WEB.Controllers
 
 
         public static string urlSite = ConfigurationManager.AppSettings["urlWS"];
+        public static string urlSiteWEBAPI = ConfigurationManager.AppSettings["urlWEBAPI"];
         public string ConectREST(string url, string method, string postdata = "")
         {
             try
@@ -77,9 +78,44 @@ namespace SICARO.WEB.Controllers
                 if (request.IsSuccessStatusCode)
                 {
                     var resultString = request.Content.ReadAsStringAsync().Result;
-                    return resultString;    
+                    return resultString;
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentNullException(e.Message);
+            }
+
+        }
+
+        public string ConectWEBAPI(string url, string method, string postdata = "",int id = 0)
+        {
+            try
+            {
+                HttpClient clientHttp = new HttpClient();
+                clientHttp.BaseAddress = new Uri(urlSiteWEBAPI);
+
+                var  request = clientHttp.GetAsync("").Result;
+                
+                switch (method)
+                {
+                    case "GET":
+                        request = clientHttp.GetAsync("api/" + url).Result; break;
+                    case "POST":
+
+                    default: return "";
+                }
+                if (request.IsSuccessStatusCode)
+                {
+                    return request.Content.ReadAsStringAsync().Result;
+                }
+                else
+                {
+                    return "";
                 }
                 
+
             }
             catch (Exception e)
             {

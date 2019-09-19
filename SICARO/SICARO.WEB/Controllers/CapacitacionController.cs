@@ -1,7 +1,9 @@
-﻿using SICARO.WEB.Models;
+﻿using Newtonsoft.Json;
+using SICARO.WEB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -14,7 +16,7 @@ namespace SICARO.WEB.Controllers
         // GET: Capacitacion
         public ActionResult Index()
         {
-            
+
             return View();
         }
 
@@ -23,22 +25,25 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                List<CAPACITACION_EL> ListaCAPACITACION = new List<CAPACITACION_EL>();
-                ListaCAPACITACION = js.Deserialize<List<CAPACITACION_EL>>(Utilitario.Accion.ConectREST("CAPACITACION", "POST","{ }"));
-                return Json(new { ListaCAPACITACION = ListaCAPACITACION }, JsonRequestBehavior.AllowGet);
+                
+                var Lis = JsonConvert.DeserializeObject<List<CAPACITACION_EL>>(Utilitario.Accion.ConectWEBAPI("CAPACITACION", "GET"));
+
+                //List<CAPACITACION_EL> ListaCAPACITACION = new List<CAPACITACION_EL>();
+                //ListaCAPACITACION = js.Deserialize<List<CAPACITACION_EL>>(Utilitario.Accion.ConectREST("CAPACITACION", "POST", "{ }"));
+                return Json(new { ListaCAPACITACION = Lis }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
                 return Json(new { ListaCAPACITACION = "" }, JsonRequestBehavior.AllowGet);
             }
         }
-        
+
         [HttpPost]
         public JsonResult ListaPersonal()
         {
             List<PERSONAL_EL> ListaPersonal = new List<PERSONAL_EL>();
-            ListaPersonal =js.Deserialize<List<PERSONAL_EL>>(Utilitario.Accion.ConectREST("PERSONAL", "POST", "{ }"));
-            return Json(new { ListaPersonal= ListaPersonal ,JsonRequestBehavior.AllowGet});
+            ListaPersonal = js.Deserialize<List<PERSONAL_EL>>(Utilitario.Accion.ConectREST("PERSONAL", "POST", "{ }"));
+            return Json(new { ListaPersonal = ListaPersonal, JsonRequestBehavior.AllowGet });
         }
 
         [HttpPost]
@@ -63,7 +68,7 @@ namespace SICARO.WEB.Controllers
 
 
         [HttpPost]
-        public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion,List<PREGUNTA_EL> _Preguntas, List<OPCION_PREGUNTA_EL> _Respuestas)
+        public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion, List<PREGUNTA_EL> _Preguntas, List<OPCION_PREGUNTA_EL> _Respuestas)
         {
             string perosnalizaicon = "1";
             string postdata = js.Serialize(GestionCapacitacion);
