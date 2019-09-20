@@ -10,20 +10,22 @@ using WEBAPI_SICARO.Persistencia;
 
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/DETALLE_CAPACITACION_PERSONAL")]
     public class DETALLE_CAPACITACION_PERSONALController : ApiController
     {
-
-        public IEnumerable<DETALLE_CAPACITACION_PERSONAL_EL> GET(DETALLE_CAPACITACION_PERSONAL_EL value)
+        [HttpGet]
+        public IEnumerable<DETALLE_CAPACITACION_PERSONAL_EL> GET(int value)
         {
             return DETALLE_CAPACITACION_PERSONAL_DA.Accion.GetAllDETALLECAPACITACIONPERSONAL(value);
         }
 
+        [HttpPost]
         public int POST(DETALLE_CAPACITACION_PERSONAL_EL value)
         {
             return DETALLE_CAPACITACION_PERSONAL_DA.Accion.InsertDETALLE_CAPACITACION_PERSONAL(value);
         }
 
-        // PUT api/values/5
+        [HttpPut]
         public int Put(int id,DETALLE_CAPACITACION_PERSONAL_EL value)
         {
             return DETALLE_CAPACITACION_PERSONAL_DA.Accion.UpdateDETALLE_CAPACITACION_PERSONAL(value);

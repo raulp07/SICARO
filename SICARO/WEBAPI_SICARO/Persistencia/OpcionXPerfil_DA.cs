@@ -24,7 +24,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<OpcionXPerfil_EL> ListMenu(OpcionXPerfil_EL opcionPerfil)
+        public List<OpcionXPerfil_EL> ListMenu(int Id)
         {
 
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
@@ -33,7 +33,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spOpcionXPerfil", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@IdRol", SqlDbType.Int).Value = opcionPerfil.Rol.Id;
+                    com.Parameters.Add("@IdRol", SqlDbType.Int).Value = Id;
 
                     List<OpcionXPerfil_EL> lstMenu = new List<OpcionXPerfil_EL>();
                     using (IDataReader dataReader = com.ExecuteReader())

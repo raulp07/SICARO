@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -89,32 +90,35 @@ namespace SICARO.WEB.Controllers
 
         }
 
-        public string ConectWEBAPI(string url, string method, string postdata = "",int id = 0)
+        public string Conect_WEBAPI(string url, string method, string postdata = "", int id = 0)
         {
             try
             {
                 HttpClient clientHttp = new HttpClient();
                 clientHttp.BaseAddress = new Uri(urlSiteWEBAPI);
 
-                var  request = clientHttp.GetAsync("").Result;
-                
+                HttpResponseMessage request;
+
                 switch (method)
                 {
                     case "GET":
-                        request = clientHttp.GetAsync("api/" + url).Result; break;
-                    case "POST":
-
+                        request =  clientHttp.GetAsync("api/" + url).Result; break;
+                    case "POST":                        
+                        var buffer = Encoding.UTF8.GetBytes(postdata);
+                        var byteContent = new ByteArrayContent(buffer);
+                        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        request = clientHttp.PostAsync("api/" + url, byteContent).Result; break;
                     default: return "";
                 }
                 if (request.IsSuccessStatusCode)
                 {
-                    return request.Content.ReadAsStringAsync().Result;
+                    return   request.Content.ReadAsStringAsync().Result;
                 }
                 else
                 {
                     return "";
                 }
-                
+
 
             }
             catch (Exception e)

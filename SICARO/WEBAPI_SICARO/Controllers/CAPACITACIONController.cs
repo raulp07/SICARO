@@ -9,24 +9,28 @@ using WEBAPI_SICARO.Persistencia;
 
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/CAPACITACION")]
     public class CAPACITACIONController : ApiController
     {
+        [HttpGet]
         public IEnumerable<CAPACITACION_EL> GET()
         {
             return CAPACITACION_DA.Accion.GetAllCAPACITACION1();
         }
 
-        public CAPACITACION_EL GET(int DA)
+        [HttpGet]
+        public CAPACITACION_EL GET(int value)
         {
-            return CAPACITACION_DA.Accion.GetAllCAPACITACION(DA);
+            return CAPACITACION_DA.Accion.GetAllCAPACITACION(value);
         }
-        
+
+        [HttpPost]
         public int POST(CAPACITACION_EL value)
         {
             return CAPACITACION_DA.Accion.InsertCAPACITACION(value);
         }
 
-        // PUT api/values/5
+        [HttpPut]
         public int Put(int id,CAPACITACION_EL value)
         {
             return CAPACITACION_DA.Accion.UpdateCAPACITACION(value);

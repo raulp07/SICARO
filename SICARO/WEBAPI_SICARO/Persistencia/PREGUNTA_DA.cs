@@ -25,7 +25,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<PREGUNTA_EL> GetAllPREGUNTA(PREGUNTA_EL P)
+        public List<PREGUNTA_EL> GetAllPREGUNTA(int iIdPregunta)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -33,7 +33,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_PREGUNTA", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdPregunta", SqlDbType.Int).Value = P.iIdPregunta;
+                    com.Parameters.Add("@iIdPregunta", SqlDbType.Int).Value = iIdPregunta;
 
                     List<PREGUNTA_EL> list = new List<PREGUNTA_EL>();
 

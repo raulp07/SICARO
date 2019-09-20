@@ -9,8 +9,10 @@ using WEBAPI_SICARO.Persistencia;
 
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/OPCION")]
     public class OPCIONController : ApiController
     {
+        [HttpGet]
         public Opcion_EL GET(int value)
         {
             return OPCION_DA.Opcion.GetOpcionByID(value);

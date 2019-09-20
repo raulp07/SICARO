@@ -8,19 +8,22 @@ using WEBAPI_SICARO.Modles;
 using WEBAPI_SICARO.Persistencia;
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/PERSONAL")]
     public class PERSONALController : ApiController
     {
-        public IEnumerable<PERSONAL_EL> GET(PERSONAL_EL value)
+        [HttpGet]
+        public IEnumerable<PERSONAL_EL> GET(int value)
         {
             return PERSONAL_DA.Accion.GetAllPERSONAL(value);
         }
 
+        [HttpPost]
         public int POST(PERSONAL_EL value)
         {
             return PERSONAL_DA.Accion.InsertPERSONAL(value);
         }
 
-        // PUT api/values/5
+        [HttpPut]
         public int Put(int id,PERSONAL_EL value)
         {
             return PERSONAL_DA.Accion.UpdatePERSONAL(value);

@@ -24,7 +24,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<REPRESENTANTE_EL> GetAllREPRESENTANTE(REPRESENTANTE_EL R)
+        public List<REPRESENTANTE_EL> GetAllREPRESENTANTE(int iIdRepresentante)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -32,7 +32,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_REPRESENTANTE", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdRepresentante", SqlDbType.Int).Value = R.iIdRepresentante;
+                    com.Parameters.Add("@iIdRepresentante", SqlDbType.Int).Value = iIdRepresentante;
 
                     List<REPRESENTANTE_EL> list = new List<REPRESENTANTE_EL>();
 

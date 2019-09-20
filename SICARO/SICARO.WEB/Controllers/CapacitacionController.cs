@@ -26,10 +26,7 @@ namespace SICARO.WEB.Controllers
             try
             {
                 
-                var Lis = JsonConvert.DeserializeObject<List<CAPACITACION_EL>>(Utilitario.Accion.ConectWEBAPI("CAPACITACION", "GET"));
-
-                //List<CAPACITACION_EL> ListaCAPACITACION = new List<CAPACITACION_EL>();
-                //ListaCAPACITACION = js.Deserialize<List<CAPACITACION_EL>>(Utilitario.Accion.ConectREST("CAPACITACION", "POST", "{ }"));
+                var Lis = JsonConvert.DeserializeObject<List<CAPACITACION_EL>>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "GET"));
                 return Json(new { ListaCAPACITACION = Lis }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

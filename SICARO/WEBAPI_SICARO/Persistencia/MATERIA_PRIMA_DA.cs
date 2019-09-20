@@ -23,7 +23,7 @@ namespace WEBAPI_SICARO.Persistencia
                 return accion;
             }
         }
-        public List<MATERIA_PRIMA_EL> GetAllMATERIA_PRIMA(MATERIA_PRIMA_EL MP)
+        public List<MATERIA_PRIMA_EL> GetAllMATERIA_PRIMA(int iIdMateriaPrima)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -31,7 +31,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_MATERIA_PRIMA", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdMateriaPrima", SqlDbType.Int).Value = MP.iIdMateriaPrima;
+                    com.Parameters.Add("@iIdMateriaPrima", SqlDbType.Int).Value = iIdMateriaPrima;
 
                     List<MATERIA_PRIMA_EL> list = new List<MATERIA_PRIMA_EL>();
 

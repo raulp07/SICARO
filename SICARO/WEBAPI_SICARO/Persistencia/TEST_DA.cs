@@ -25,7 +25,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<TEST_EL> GetAllTEST(TEST_EL T)
+        public List<TEST_EL> GetAllTEST(int iIdTest)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -33,7 +33,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_TEST", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdTest", SqlDbType.Int).Value = T.iIdTest;
+                    com.Parameters.Add("@iIdTest", SqlDbType.Int).Value = iIdTest;
 
                     List<TEST_EL> list = new List<TEST_EL>();
 

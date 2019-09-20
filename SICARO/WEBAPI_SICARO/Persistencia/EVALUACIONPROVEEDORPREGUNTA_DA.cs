@@ -24,7 +24,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<EVALUACIONPROVEEDORPREGUNTA_EL> GetAllEVALUACIONPROVEEDORPREGUNTA(EVALUACIONPROVEEDORPREGUNTA_EL EPP)
+        public List<EVALUACIONPROVEEDORPREGUNTA_EL> GetAllEVALUACIONPROVEEDORPREGUNTA(int iIdEvaluacionProveedorPregunta)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -32,7 +32,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_EVALUACIONPROVEEDORPREGUNTA", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdEvaluacionProveedorPregunta", SqlDbType.Int).Value = EPP.iIdEvaluacionProveedorPregunta;
+                    com.Parameters.Add("@iIdEvaluacionProveedorPregunta", SqlDbType.Int).Value = iIdEvaluacionProveedorPregunta;
 
                     List<EVALUACIONPROVEEDORPREGUNTA_EL> list = new List<EVALUACIONPROVEEDORPREGUNTA_EL>();
 

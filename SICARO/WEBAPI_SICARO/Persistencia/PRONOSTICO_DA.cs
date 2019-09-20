@@ -25,7 +25,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<PRONOSTICO_EL> GetPRONOSTICOAll(PRONOSTICO_EL CP)
+        public List<PRONOSTICO_EL> GetPRONOSTICOAll(int idPronostico)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -33,7 +33,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGetPRONOSTICOAll", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@idPronostico", SqlDbType.Int).Value = CP.idPronostico;
+                    com.Parameters.Add("@idPronostico", SqlDbType.Int).Value = idPronostico;
 
                     List<PRONOSTICO_EL> list = new List<PRONOSTICO_EL>();
 

@@ -9,19 +9,22 @@ using WEBAPI_SICARO.Persistencia;
 
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/MATERIA_PRIMA")]
     public class MATERIA_PRIMAController : ApiController
     {
-        public IEnumerable<MATERIA_PRIMA_EL> GET(MATERIA_PRIMA_EL value)
+        [HttpGet]
+        public IEnumerable<MATERIA_PRIMA_EL> GET(int value)
         {
             return MATERIA_PRIMA_DA.Accion.GetAllMATERIA_PRIMA(value);
         }
 
+        [HttpPost]
         public int POST(MATERIA_PRIMA_EL value)
         {
             return MATERIA_PRIMA_DA.Accion.InsertMATERIA_PRIMA(value);
         }
 
-        // PUT api/values/5
+        [HttpPut]
         public int Put(int id,MATERIA_PRIMA_EL value)
         {
             return MATERIA_PRIMA_DA.Accion.UpdateMATERIA_PRIMA(value);

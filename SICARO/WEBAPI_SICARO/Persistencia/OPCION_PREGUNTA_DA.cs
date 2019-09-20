@@ -24,7 +24,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<OPCION_PREGUNTA_EL> GetAllOPCION_PREGUNTA(OPCION_PREGUNTA_EL OP)
+        public List<OPCION_PREGUNTA_EL> GetAllOPCION_PREGUNTA(int iIdOpcion)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -32,7 +32,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_OPCION_PREGUNTA", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdOpcion", SqlDbType.Int).Value = OP.iIdOpcion;
+                    com.Parameters.Add("@iIdOpcion", SqlDbType.Int).Value = iIdOpcion;
                     List<OPCION_PREGUNTA_EL> list = new List<OPCION_PREGUNTA_EL>();
                     using (IDataReader dataReader = com.ExecuteReader())
                     {

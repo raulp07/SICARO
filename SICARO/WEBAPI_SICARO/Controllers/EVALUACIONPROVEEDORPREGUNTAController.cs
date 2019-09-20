@@ -8,20 +8,22 @@ using WEBAPI_SICARO.Modles;
 using WEBAPI_SICARO.Persistencia;
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/EVALUACIONPROVEEDORPREGUNTA")]
     public class EVALUACIONPROVEEDORPREGUNTAController : ApiController
     {
-
-        public IEnumerable<EVALUACIONPROVEEDORPREGUNTA_EL> GET(EVALUACIONPROVEEDORPREGUNTA_EL value)
+        [HttpGet]
+        public IEnumerable<EVALUACIONPROVEEDORPREGUNTA_EL> GET(int value)
         {
             return EVALUACIONPROVEEDORPREGUNTA_DA.Accion.GetAllEVALUACIONPROVEEDORPREGUNTA(value);
         }
 
+        [HttpPost]
         public int POST(EVALUACIONPROVEEDORPREGUNTA_EL value)
         {
             return EVALUACIONPROVEEDORPREGUNTA_DA.Accion.InsertEVALUACIONPROVEEDORPREGUNTA(value);
         }
 
-        // PUT api/values/5
+        [HttpPut]
         public int Put(int id,EVALUACIONPROVEEDORPREGUNTA_EL value)
         {
             return EVALUACIONPROVEEDORPREGUNTA_DA.Accion.UpdateEVALUACIONPROVEEDORPREGUNTA(value);

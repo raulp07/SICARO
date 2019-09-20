@@ -25,7 +25,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<PROVEEDOR_EL> GetAllPROVEEDOR(PROVEEDOR_EL P)
+        public List<PROVEEDOR_EL> GetAllPROVEEDOR(int iIdProveedor)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -33,7 +33,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_PROVEEDOR", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdProveedor", SqlDbType.Int).Value = P.iIdProveedor;
+                    com.Parameters.Add("@iIdProveedor", SqlDbType.Int).Value = iIdProveedor;
 
                     List<PROVEEDOR_EL> list = new List<PROVEEDOR_EL>();
 

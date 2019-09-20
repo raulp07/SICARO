@@ -24,7 +24,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<PERSONAL_EL> GetAllPERSONAL(PERSONAL_EL P)
+        public List<PERSONAL_EL> GetAllPERSONAL(int iIdPersonal)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -32,7 +32,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_PERSONAL", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdPersonal", SqlDbType.Int).Value = P.iIdPersonal;
+                    com.Parameters.Add("@iIdPersonal", SqlDbType.Int).Value = iIdPersonal;
                     List<PERSONAL_EL> list = new List<PERSONAL_EL>();
 
                     using (IDataReader dataReader = com.ExecuteReader())

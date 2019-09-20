@@ -1,4 +1,5 @@
-﻿using SICARO.WEB.Models;
+﻿using Newtonsoft.Json;
+using SICARO.WEB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,7 @@ namespace SICARO.WEB.Controllers
 {
     public class LoginController : Controller
     {
-
-        JavaScriptSerializer js = new JavaScriptSerializer();
+        
         // GET: Login
         public ActionResult Index()
         {
@@ -26,8 +26,8 @@ namespace SICARO.WEB.Controllers
             try
             {
                 List<USUARIO_EL> ListaCAPACITACION = new List<USUARIO_EL>();
-                string postdata = js.Serialize(Ususario);
-                ListaCAPACITACION = js.Deserialize<List<USUARIO_EL>>(Utilitario.Accion.ConectREST("GETUSUARIO", "POST", postdata));
+                string postdata = JsonConvert.SerializeObject(Ususario);
+                ListaCAPACITACION = JsonConvert.DeserializeObject<List<USUARIO_EL>>(Utilitario.Accion.Conect_WEBAPI("USUARIO/ValidarUsuario", "POST", postdata));
                                 
                 if (ListaCAPACITACION.Count>0)
                 {
@@ -58,9 +58,8 @@ namespace SICARO.WEB.Controllers
             {
                 Rol = Rol
             };
-            JavaScriptSerializer js = new JavaScriptSerializer();
-            string postdata = js.Serialize(opcionesXPerfil);
-            lista = js.Deserialize<List<OpcionXPerfil_EL>>(Utilitario.Accion.ConectREST("ListaMenu", "POST", postdata));  //menuBL.ListMenu(opcionesXPerfil);
+            string postdata = JsonConvert.SerializeObject(opcionesXPerfil);
+            lista = JsonConvert.DeserializeObject<List<OpcionXPerfil_EL>>(Utilitario.Accion.ConectREST("ListaMenu", "POST", postdata));  //menuBL.ListMenu(opcionesXPerfil);
 
             List<OpcionXPerfil_EL> menuArbol = new List<OpcionXPerfil_EL>();
             //primero seteamos los padres

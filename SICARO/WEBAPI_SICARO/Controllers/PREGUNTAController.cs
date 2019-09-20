@@ -8,19 +8,22 @@ using WEBAPI_SICARO.Modles;
 using WEBAPI_SICARO.Persistencia;
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/PREGUNTA")]
     public class PREGUNTAController : ApiController
     {
-        public IEnumerable<PREGUNTA_EL> GET(PREGUNTA_EL value)
+        [HttpGet]
+        public IEnumerable<PREGUNTA_EL> GET(int value)
         {
             return PREGUNTA_DA.Accion.GetAllPREGUNTA(value);
         }
 
+        [HttpPost]
         public int POST(PREGUNTA_EL value)
         {
             return PREGUNTA_DA.Accion.InsertPREGUNTA(value);
         }
 
-        // PUT api/values/5
+        [HttpPut]
         public int Put(int id,PREGUNTA_EL value)
         {
             return PREGUNTA_DA.Accion.UpdatePREGUNTA(value);

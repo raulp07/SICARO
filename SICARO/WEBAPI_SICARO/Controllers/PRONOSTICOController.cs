@@ -8,19 +8,22 @@ using WEBAPI_SICARO.Modles;
 using WEBAPI_SICARO.Persistencia;
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/PRONOSTICO")]
     public class PRONOSTICOController : ApiController
     {
-        public IEnumerable<PRONOSTICO_EL> GET(PRONOSTICO_EL value)
+        [HttpGet]
+        public IEnumerable<PRONOSTICO_EL> GET(int value)
         {
             return PRONOSTICO_DA.Accion.GetPRONOSTICOAll(value);
         }
 
+        [HttpPost]
         public int POST(PRONOSTICO_EL value)
         {
             return PRONOSTICO_DA.Accion.InsertPRONOSTICO(value);
         }
 
-        // PUT api/values/5
+        [HttpPut]
         public int Put(int id,PRONOSTICO_EL value)
         {
             return PRONOSTICO_DA.Accion.UpdatePRONOSTICO(value);

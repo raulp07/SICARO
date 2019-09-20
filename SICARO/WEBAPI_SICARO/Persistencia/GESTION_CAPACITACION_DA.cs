@@ -24,7 +24,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<GESTION_CAPACITACION_EL> GetAllGESTION_CAPACITACION(GESTION_CAPACITACION_EL GC)
+        public List<GESTION_CAPACITACION_EL> GetAllGESTION_CAPACITACION(int iIdGestionCapacitacion)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -32,7 +32,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_GESTION_CAPACITACION", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdGestionCapacitacion", SqlDbType.Int).Value = GC.iIdGestionCapacitacion;
+                    com.Parameters.Add("@iIdGestionCapacitacion", SqlDbType.Int).Value = iIdGestionCapacitacion;
 
 
                     List<GESTION_CAPACITACION_EL> list = new List<GESTION_CAPACITACION_EL>();

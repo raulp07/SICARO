@@ -8,9 +8,12 @@ using WEBAPI_SICARO.Modles;
 using WEBAPI_SICARO.Persistencia;
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/USUARIO")]
     public class USUARIOController : ApiController
     {
-        public IEnumerable<USUARIO_EL> GET(USUARIO_EL value)
+        [HttpPost]
+        [Route("ValidarUsuario")]
+        public IEnumerable<USUARIO_EL> ValidarUsuario(USUARIO_EL value)
         {
             return USUARIO_DA.Accion.GetAllUSUARIO(value);
         }

@@ -8,9 +8,11 @@ using WEBAPI_SICARO.Modles;
 using WEBAPI_SICARO.Persistencia;
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/OpcionXPerfil")]
     public class OpcionXPerfilController : ApiController
     {
-        public IEnumerable<OpcionXPerfil_EL> GET(OpcionXPerfil_EL value)
+        [HttpGet]
+        public IEnumerable<OpcionXPerfil_EL> GET(int value)
         {
             return OpcionXPerfil_DA.Accion.ListMenu(value);
         }

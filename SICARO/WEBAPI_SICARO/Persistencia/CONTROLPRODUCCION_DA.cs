@@ -25,7 +25,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<CONTROLPRODUCCION_EL> GetCONTROLPRODUCCIONAll(CONTROLPRODUCCION_EL CP)
+        public List<CONTROLPRODUCCION_EL> GetCONTROLPRODUCCIONAll(int idControlProduccion)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -33,7 +33,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGetCONTROLPRODUCCIONAll", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@idControlProduccion", SqlDbType.Int).Value = CP.idControlProduccion;
+                    com.Parameters.Add("@idControlProduccion", SqlDbType.Int).Value = idControlProduccion;
 
                     List<CONTROLPRODUCCION_EL> list = new List<CONTROLPRODUCCION_EL>();
 

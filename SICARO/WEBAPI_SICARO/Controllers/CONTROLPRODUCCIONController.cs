@@ -9,19 +9,22 @@ using WEBAPI_SICARO.Persistencia;
 
 namespace WEBAPI_SICARO.Controllers
 {
+    [RoutePrefix("api/CONTROLPRODUCCION")]
     public class CONTROLPRODUCCIONController : ApiController
     {
-        public IEnumerable<CONTROLPRODUCCION_EL> GET(CONTROLPRODUCCION_EL value)
+        [HttpGet]
+        public IEnumerable<CONTROLPRODUCCION_EL> GET(int value)
         {
             return CONTROLPRODUCCION_DA.Accion.GetCONTROLPRODUCCIONAll(value);
         }
         
+        [HttpPost]
         public int POST(CONTROLPRODUCCION_EL value)
         {
             return CONTROLPRODUCCION_DA.Accion.InsertCONTROLPRODUCCION(value);
         }
 
-        // PUT api/values/5
+        [HttpPut]
         public int Put(int id,CONTROLPRODUCCION_EL value)
         {
             return CONTROLPRODUCCION_DA.Accion.UpdateCONTROLPRODUCCION(value);
