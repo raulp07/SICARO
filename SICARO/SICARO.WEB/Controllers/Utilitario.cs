@@ -90,29 +90,43 @@ namespace SICARO.WEB.Controllers
 
         }
 
-        public string Conect_WEBAPI(string url, string method, string postdata = "", int id = 0)
+        public string Conect_WEBAPI(string url, string method, string postdata = "", int id = -1)
         {
             try
             {
                 HttpClient clientHttp = new HttpClient();
                 clientHttp.BaseAddress = new Uri(urlSiteWEBAPI);
-
+                byte[] buffer;
+                ByteArrayContent byteContent;
                 HttpResponseMessage request;
 
                 switch (method)
                 {
                     case "GET":
-                        request =  clientHttp.GetAsync("api/" + url).Result; break;
-                    case "POST":                        
-                        var buffer = Encoding.UTF8.GetBytes(postdata);
-                        var byteContent = new ByteArrayContent(buffer);
+                        if (id == -1)
+                        {
+                            request = clientHttp.GetAsync("api/" + url).Result; break;
+                        }
+                        else
+                        {
+                            request = clientHttp.GetAsync("api/" + url + "?value=" + id).Result; break;
+                        }
+
+                    case "POST":
+                        buffer = Encoding.UTF8.GetBytes(postdata);
+                        byteContent = new ByteArrayContent(buffer);
                         byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         request = clientHttp.PostAsync("api/" + url, byteContent).Result; break;
+                    case "PUT":
+                        buffer = Encoding.UTF8.GetBytes(postdata);
+                        byteContent = new ByteArrayContent(buffer);
+                        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        request = clientHttp.PostAsync("api/" + url + "?value=" + id, byteContent).Result; break;
                     default: return "";
                 }
                 if (request.IsSuccessStatusCode)
                 {
-                    return   request.Content.ReadAsStringAsync().Result;
+                    return request.Content.ReadAsStringAsync().Result;
                 }
                 else
                 {

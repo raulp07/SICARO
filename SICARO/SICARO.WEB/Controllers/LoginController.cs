@@ -25,9 +25,9 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                List<USUARIO_EL> ListaCAPACITACION = new List<USUARIO_EL>();
+                
                 string postdata = JsonConvert.SerializeObject(Ususario);
-                ListaCAPACITACION = JsonConvert.DeserializeObject<List<USUARIO_EL>>(Utilitario.Accion.Conect_WEBAPI("USUARIO/ValidarUsuario", "POST", postdata));
+                var ListaCAPACITACION = JsonConvert.DeserializeObject<List<USUARIO_EL>>(Utilitario.Accion.Conect_WEBAPI("USUARIO/ValidarUsuario", "POST", postdata));
                                 
                 if (ListaCAPACITACION.Count>0)
                 {
@@ -53,13 +53,12 @@ namespace SICARO.WEB.Controllers
 
         public static List<OpcionXPerfil_EL> SetearMenu(Rol_EL Rol,bool padre)
         {
-            List<OpcionXPerfil_EL> lista = null;
             OpcionXPerfil_EL opcionesXPerfil = new OpcionXPerfil_EL()
             {
                 Rol = Rol
             };
             string postdata = JsonConvert.SerializeObject(opcionesXPerfil);
-            lista = JsonConvert.DeserializeObject<List<OpcionXPerfil_EL>>(Utilitario.Accion.ConectREST("ListaMenu", "POST", postdata));  //menuBL.ListMenu(opcionesXPerfil);
+            var lista = JsonConvert.DeserializeObject<List<OpcionXPerfil_EL>>(Utilitario.Accion.Conect_WEBAPI("OpcionXPerfil", "GET", "", opcionesXPerfil.Rol.Id));  //menuBL.ListMenu(opcionesXPerfil);
 
             List<OpcionXPerfil_EL> menuArbol = new List<OpcionXPerfil_EL>();
             //primero seteamos los padres

@@ -25,7 +25,7 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                
+
                 var Lis = JsonConvert.DeserializeObject<List<CAPACITACION_EL>>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "GET"));
                 return Json(new { ListaCAPACITACION = Lis }, JsonRequestBehavior.AllowGet);
             }
@@ -39,7 +39,7 @@ namespace SICARO.WEB.Controllers
         public JsonResult ListaPersonal()
         {
             List<PERSONAL_EL> ListaPersonal = new List<PERSONAL_EL>();
-            ListaPersonal = js.Deserialize<List<PERSONAL_EL>>(Utilitario.Accion.ConectREST("PERSONAL", "POST", "{ }"));
+            ListaPersonal = js.Deserialize<List<PERSONAL_EL>>(Utilitario.Accion.Conect_WEBAPI("PERSONAL", "GET", "", 0));
             return Json(new { ListaPersonal = ListaPersonal, JsonRequestBehavior.AllowGet });
         }
 
@@ -48,7 +48,7 @@ namespace SICARO.WEB.Controllers
         {
             string perosnalizaicon = "1";
             string postdata = js.Serialize(GestionCapacitacion);
-            int respuesta = js.Deserialize<int>(Utilitario.Accion.ConectREST("ICAPACITACIONCABECERA", "POST", postdata));
+            int respuesta = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "POST", postdata));
 
             return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
         }
@@ -58,7 +58,7 @@ namespace SICARO.WEB.Controllers
         {
             string perosnalizaicon = "1";
             string postdata = js.Serialize(GestionCapacitacion);
-            int respuesta = js.Deserialize<int>(Utilitario.Accion.ConectREST("UCAPACITACIONCABECERA", "POST", postdata));
+            int respuesta = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "PUT", postdata, GestionCapacitacion.iIdCapacitacion));
 
             return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
         }
@@ -69,18 +69,18 @@ namespace SICARO.WEB.Controllers
         {
             string perosnalizaicon = "1";
             string postdata = js.Serialize(GestionCapacitacion);
-            int respuesta = js.Deserialize<int>(Utilitario.Accion.ConectREST("ICAPACITACION", "POST", postdata));
+            int respuesta = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "POST", postdata));
 
             foreach (PREGUNTA_EL item in _Preguntas)
             {
                 string postdataP = js.Serialize(item);
-                int respuestaP = js.Deserialize<int>(Utilitario.Accion.ConectREST("IPREGUNTA", "POST", postdataP));
+                int respuestaP = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA", "POST", postdataP));
                 foreach (OPCION_PREGUNTA_EL itemR in _Respuestas)
                 {
                     if (item.iIdPregunta == itemR.iIdPregunta)
                     {
                         string postdataR = js.Serialize(itemR);
-                        int respuestaR = js.Deserialize<int>(Utilitario.Accion.ConectREST("IOPCION_PREGUNTA", "POST", postdataR));
+                        int respuestaR = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA", "POST", postdataR));
                     }
                 }
             }
