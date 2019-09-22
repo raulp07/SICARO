@@ -202,6 +202,7 @@
     <Compile Include="Controllers\PROVEEDORController.cs" />
     <Compile Include="Controllers\REPRESENTANTEController.cs" />
     <Compile Include="Controllers\TESTController.cs" />
+    <Compile Include="Controllers\TGeneralController.cs" />
     <Compile Include="Controllers\UBIGEOController.cs" />
     <Compile Include="Controllers\USUARIOController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Models\Rol_EL.cs" />
     <Compile Include="Models\stats.cs" />
     <Compile Include="Models\TEST_EL.cs" />
+    <Compile Include="Models\TGeneral_EL.cs" />
     <Compile Include="Models\UBIGEO_EL.cs" />
     <Compile Include="Models\USUARIO_EL.cs" />
     <Compile Include="Persistencia\CAPACITACION_DA.cs" />
@@ -251,6 +253,7 @@
     <Compile Include="Persistencia\PROVEEDOR_DA.cs" />
     <Compile Include="Persistencia\REPRESENTANTE_DA.cs" />
     <Compile Include="Persistencia\TEST_DA.cs" />
+    <Compile Include="Persistencia\TGeneral_DA.cs" />
     <Compile Include="Persistencia\UBIGEO_DA.cs" />
     <Compile Include="Persistencia\USUARIO_DA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

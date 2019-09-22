@@ -121,7 +121,9 @@ namespace SICARO.WEB.Controllers
                         buffer = Encoding.UTF8.GetBytes(postdata);
                         byteContent = new ByteArrayContent(buffer);
                         byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                        request = clientHttp.PostAsync("api/" + url + "?value=" + id, byteContent).Result; break;
+                        request = clientHttp.PutAsync("api/" + url + "/" + id, byteContent).Result; break;
+                    case "DEL":
+                        request = clientHttp.DeleteAsync("api/" + url + "/" + id).Result; break;
                     default: return "";
                 }
                 if (request.IsSuccessStatusCode)

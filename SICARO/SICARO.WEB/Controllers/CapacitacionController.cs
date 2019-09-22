@@ -39,7 +39,7 @@ namespace SICARO.WEB.Controllers
         public JsonResult ListaPersonal()
         {
             List<PERSONAL_EL> ListaPersonal = new List<PERSONAL_EL>();
-            ListaPersonal = js.Deserialize<List<PERSONAL_EL>>(Utilitario.Accion.Conect_WEBAPI("PERSONAL", "GET", "", 0));
+            ListaPersonal = JsonConvert.DeserializeObject<List<PERSONAL_EL>>(Utilitario.Accion.Conect_WEBAPI("PERSONAL", "GET", "", 0));
             return Json(new { ListaPersonal = ListaPersonal, JsonRequestBehavior.AllowGet });
         }
 
@@ -47,8 +47,8 @@ namespace SICARO.WEB.Controllers
         public JsonResult RegistrarCapacitacionCabecera(CAPACITACION_EL GestionCapacitacion)
         {
             string perosnalizaicon = "1";
-            string postdata = js.Serialize(GestionCapacitacion);
-            int respuesta = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "POST", postdata));
+            string postdata = JsonConvert.SerializeObject(GestionCapacitacion);
+            int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "POST", postdata));
 
             return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
         }
@@ -57,8 +57,8 @@ namespace SICARO.WEB.Controllers
         public JsonResult ActualizarCapacitacionCabecera(CAPACITACION_EL GestionCapacitacion)
         {
             string perosnalizaicon = "1";
-            string postdata = js.Serialize(GestionCapacitacion);
-            int respuesta = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "PUT", postdata, GestionCapacitacion.iIdCapacitacion));
+            string postdata = JsonConvert.SerializeObject(GestionCapacitacion);
+            int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "PUT", postdata, GestionCapacitacion.iIdCapacitacion));
 
             return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
         }
@@ -68,19 +68,19 @@ namespace SICARO.WEB.Controllers
         public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion, List<PREGUNTA_EL> _Preguntas, List<OPCION_PREGUNTA_EL> _Respuestas)
         {
             string perosnalizaicon = "1";
-            string postdata = js.Serialize(GestionCapacitacion);
-            int respuesta = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "POST", postdata));
+            string postdata = JsonConvert.SerializeObject(GestionCapacitacion);
+            int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "POST", postdata));
 
             foreach (PREGUNTA_EL item in _Preguntas)
             {
-                string postdataP = js.Serialize(item);
-                int respuestaP = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA", "POST", postdataP));
+                string postdataP = JsonConvert.SerializeObject(item);
+                int respuestaP = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA", "POST", postdataP));
                 foreach (OPCION_PREGUNTA_EL itemR in _Respuestas)
                 {
                     if (item.iIdPregunta == itemR.iIdPregunta)
                     {
-                        string postdataR = js.Serialize(itemR);
-                        int respuestaR = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA", "POST", postdataR));
+                        string postdataR = JsonConvert.SerializeObject(itemR);
+                        int respuestaR = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA", "POST", postdataR));
                     }
                 }
             }

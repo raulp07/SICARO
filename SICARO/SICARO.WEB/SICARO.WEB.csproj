@@ -210,6 +210,7 @@
     <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\TestEvaluacionController.cs" />
     <Compile Include="Controllers\TestRespuestaController.cs" />
+    <Compile Include="Controllers\TGeneralController.cs" />
     <Compile Include="Controllers\UbigeoController.cs" />
     <Compile Include="Controllers\Utilitario.cs" />
     <Compile Include="Global.asax.cs">
@@ -237,6 +238,7 @@
     <Compile Include="Models\PROVEEDOR_EL.cs" />
     <Compile Include="Models\REPRESENTANTE_EL.cs" />
     <Compile Include="Models\TEST_EL.cs" />
+    <Compile Include="Models\TGeneral_EL.cs" />
     <Compile Include="Models\UBIGEO_EL.cs" />
     <Compile Include="Models\USUARIO_EL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -304,6 +306,7 @@
     <Content Include="Scripts\JsGestionCapacitacion\GestionCapacitacion.js" />
     <Content Include="Scripts\JsPredicciones\Predicciones.js" />
     <Content Include="Scripts\JsPronostico\Pronostico.js" />
+    <Content Include="Scripts\JSSICARO\TGeneral.js" />
     <Content Include="Scripts\JsTestEvaluacion\TestEvaluacion.js" />
     <Content Include="Scripts\JsTestRespuesta\TestRespuesta.js" />
     <Content Include="Scripts\JsUsuario\Ususario.js" />
@@ -361,6 +364,7 @@
     <Content Include="Views\Ubigeo\Index.cshtml" />
     <Content Include="Views\Utilitarios\Documentos.cshtml" />
     <Content Include="Views\Utilitarios\Ubigeo.cshtml" />
+    <Content Include="Views\TGeneral\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
