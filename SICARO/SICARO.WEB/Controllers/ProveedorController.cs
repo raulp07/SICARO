@@ -1,4 +1,5 @@
-﻿using SICARO.WEB.Models;
+﻿using Newtonsoft.Json;
+using SICARO.WEB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,8 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                string postdata = js.Serialize(MP);
-                List<PROVEEDOR_EL> data = new List<PROVEEDOR_EL>();
-                data = js.Deserialize<List<PROVEEDOR_EL>>(Utilitario.Accion.ConectREST("PROVEEDOR", "POST", postdata));
+                string postdata = JsonConvert.SerializeObject(MP);
+                var data = JsonConvert.DeserializeObject<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", MP.iIdProveedor));
                 return Json(new { data = data }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -33,5 +33,21 @@ namespace SICARO.WEB.Controllers
                 return Json(new { ListaMATERIA_PRIMA = "" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        //[HttpPost]
+        //public JsonResult ListarProveedor(PROVEEDOR_EL MP)
+        //{
+        //    try
+        //    {
+        //        string postdata = js.Serialize(MP);
+        //        List<PROVEEDOR_EL> data = new List<PROVEEDOR_EL>();
+        //        data = js.Deserialize<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", postdata));
+        //        return Json(new { data = data }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return Json(new { ListaMATERIA_PRIMA = "" }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
     }
 }

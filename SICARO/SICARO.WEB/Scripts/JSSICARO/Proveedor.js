@@ -7,6 +7,9 @@
             dDepartamentos: [],
             dProvincia: [],
             dDistrito: [],
+            dTipoDocumento: [],
+            selectedDocumento: 0,
+
         },
         methods: {
             ListaTipoDocumento: function () {
@@ -92,12 +95,13 @@
                     this.errored = true;
                 });
             },
-            Nuevo: function(){
+            Nuevo: function () {
                 $('#ModalMantenimiento').modal('show');
             },
         },
         created: function () {
             this.ListarProveedor();
+            this.ListaTipoDocumento();
         },
     });
 

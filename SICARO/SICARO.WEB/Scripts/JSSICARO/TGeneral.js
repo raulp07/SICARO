@@ -198,7 +198,7 @@
 
                 combo.find('option').remove();
 
-                //combo.append('<option value="" selected>' + 'Seleccione' + '</option>');
+                combo.append('<option value="0" selected>' + 'Seleccione' + '</option>');
 
                 var flag = 0;
                 var flagH = 0;

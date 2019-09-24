@@ -6,7 +6,7 @@
             <label for="cboTipoDocumentoModal">Tipo Documento</label>
             <select id="cboTipoDocumentoModal" v-model="selectedDocumento" class="form-control Obligatorio btnGuardarModal TipoDocumentoModal">
                 <option value="0">Seleccione</option>
-                <option v-for="lista in dTipoDocumento" selected="selectedDocumento === lista.co_codigo" v-bind:value="lista.co_codigo" v-bind:data-documento="lista.tx_valor1"> {{ lista.de_tabla }}</option>
+                <option v-for="lista in dTipoDocumento"  v-bind:value="lista.co_codigo" v-bind:data-documento="lista.tx_valor1"> {{ lista.de_tabla }}</option>
             </select>
         </div>
     </div>
