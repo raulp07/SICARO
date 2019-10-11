@@ -28,10 +28,12 @@
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>RUC</th>
+                        <th>Documento</th>
                         <th>Telefono</th>
                         <th>Nro Licencia Municipal</th>
                         <th>Nro Inspeccion Sanitaria</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
             </table>
@@ -43,7 +45,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="exampleModalLabel">Capacitación</h3>
+                    <h3 class="modal-title" id="exampleModalLabel">Proveedor</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -54,65 +56,102 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label for="txtNombre" class="control-label">Nombre</label>
-                                    <input type="text" id="txtNombre" class="form-control" disabled />
+                                    <input type="text" id="txtNombre" class="form-control btnGuardarModal"  />
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="txtApellidoPaterno" class="control-label">Apellido Paterno</label>
-                                    <input type="text" id="txtApellidoPaterno" class="form-control" disabled />
+                                    <input type="text" id="txtApellidoPaterno" class="form-control btnGuardarModal"  />
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="txtApellidoMaterno" class="control-label">Apellido Materno</label>
-                                    <input type="text" id="txtApellidoMaterno" class="form-control" disabled />
+                                    <input type="text" id="txtApellidoMaterno" class="form-control btnGuardarModal" />
                                 </div>
                             </div>
                         </div>
 
                         @{Html.RenderPartial("~/Views/Utilitarios/Documentos.cshtml");}
+
+                        @{Html.RenderPartial("~/Views/Utilitarios/Ubigeo.cshtml");}
+
                         <div class="row">
-                            <div class="col-sm-12">
+
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                    <label for="cboEstadoEmpresa">Estado</label>
+                                    <select id="cboEstadoEmpresa" class="form-control Obligatorio btnGuardarModal">
+                                        <option value="0">Seleccione</option>
+                                        <option v-for="lista in dEstadoEmpresa" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group ">
+                                    <label for="cboTipoEmpresa">Tipo Empresa</label>
+                                    <select id="cboTipoEmpresa" class="form-control Obligatorio btnGuardarModal ">
+                                        <option value="0">Seleccione</option>
+                                        <option v-for="lista in dTipoEmpresa" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label for="txtTema" class="control-label">Tema</label>
-                                    <input type="text" id="txtTema" class="form-control" />
+                                    <label for="txtTema" class="control-label">Telefono</label>
+                                    <input type="text" id="txttelefono" class="form-control btnGuardarModal" />
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+
+                        <div class="row">                            
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="txtFechaCapacitacion" class="control-label">Fecha Propuesta</label>
-                                    <div class='input-group date' id='txtFechaCapacitacion' data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
-                                        <input type='text' class="form-control" />
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                    </div>
+                                    <label for="txtTema" class="control-label">Nro. Licencia Municipal</label>
+                                    <input type="text" id="txtLicenciaMunicipal" class="form-control btnGuardarModal" />
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label id="txtEstado" class="control-label">Estado</label>
-                                    <input type="text" id="txtEstado" class="form-control" />
+                                    <label for="txtTema" class="control-label">Nro. Inspección Sanitaria</label>
+                                    <input type="text" id="txtInspeccionSanitaria" class="form-control btnGuardarModal" />
                                 </div>
                             </div>
                         </div>
+
+                      
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" >Aceptar</button>
+                    <button type="button" class="btn btn-primary" v-on:click="Guardar" >Aceptar</button>
                 </div>
             </div>
         </div>
     </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Proveedor?</h5>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" id="btnSiModal" v-on:Click="SiModal()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </div>

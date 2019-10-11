@@ -204,6 +204,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MateriaPrimaController.cs" />
     <Compile Include="Controllers\PrediccionesController.cs" />
     <Compile Include="Controllers\PronosticoController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
@@ -280,6 +281,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\ICAROWEB - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ICAROWEB - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\WEB.pubxml" />
     <Content Include="RPTDataSet\datosreporte.xsc">
       <DependentUpon>datosreporte.xsd</DependentUpon>
@@ -306,6 +309,7 @@
     <Content Include="Scripts\JsGestionCapacitacion\GestionCapacitacion.js" />
     <Content Include="Scripts\JsPredicciones\Predicciones.js" />
     <Content Include="Scripts\JsPronostico\Pronostico.js" />
+    <Content Include="Scripts\JSSICARO\MateriaPrima.js" />
     <Content Include="Scripts\JSSICARO\TGeneral.js" />
     <Content Include="Scripts\JsTestEvaluacion\TestEvaluacion.js" />
     <Content Include="Scripts\JsTestRespuesta\TestRespuesta.js" />
@@ -365,6 +369,7 @@
     <Content Include="Views\Utilitarios\Documentos.cshtml" />
     <Content Include="Views\Utilitarios\Ubigeo.cshtml" />
     <Content Include="Views\TGeneral\Index.cshtml" />
+    <Content Include="Views\MateriaPrima\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

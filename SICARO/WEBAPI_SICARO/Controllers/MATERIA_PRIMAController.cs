@@ -29,5 +29,11 @@ namespace WEBAPI_SICARO.Controllers
         {
             return MATERIA_PRIMA_DA.Accion.UpdateMATERIA_PRIMA(value);
         }
+
+        [HttpDelete]
+        public int Delete(int value)
+        {
+            return MATERIA_PRIMA_DA.Accion.DeleteMATERIA_PRIMA(value);
+        }
     }
 }

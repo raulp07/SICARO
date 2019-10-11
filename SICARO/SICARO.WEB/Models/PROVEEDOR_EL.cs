@@ -29,6 +29,33 @@ namespace SICARO.WEB.Models
         }
         private string _vNombreProveedor;
 
+        public string vApellidoPaterno
+        {
+            get { return _vApellidoPaterno; }
+            set { _vApellidoPaterno = value; }
+        }
+        private string _vApellidoPaterno;
+        
+        public string vApellidoMaterno
+        {
+            get { return _vApellidoMaterno; }
+            set { _vApellidoMaterno = value; }
+        }
+        private string _vApellidoMaterno;
+
+        public string vDocumento
+        {
+            get { return _vDocumento; }
+            set { _vDocumento = value; }
+        }
+        private string _vDocumento;
+
+        public string iTipoDocumento
+        {
+            get { return _iTipoDocumento; }
+            set { _iTipoDocumento = value; }
+        }
+        private string _iTipoDocumento;
         ///
 
         /// Gets or Sets vRUC
@@ -106,12 +133,12 @@ namespace SICARO.WEB.Models
 
         /// Gets or Sets iUbigeo
         ///
-        public int iUbigeo
+        public string iUbigeo
         {
             get { return _iUbigeo; }
             set { _iUbigeo = value; }
         }
-        private int _iUbigeo;
+        private string _iUbigeo;
 
         ///
 

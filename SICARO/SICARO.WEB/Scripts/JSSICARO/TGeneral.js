@@ -224,7 +224,7 @@
     $('#btnNuevo').click(function () {
         limpiarModal();
         LimpiarFormularioModal($('#btnGuardarModal').attr('id'));
-        $('#cboTGeneralModal').val('');
+        $('#cboTGeneralModal').val(0);
     })
 
     $("#btnGuardarModal").click(function () {

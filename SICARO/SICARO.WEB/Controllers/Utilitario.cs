@@ -123,7 +123,7 @@ namespace SICARO.WEB.Controllers
                         byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         request = clientHttp.PutAsync("api/" + url + "/" + id, byteContent).Result; break;
                     case "DEL":
-                        request = clientHttp.DeleteAsync("api/" + url + "/" + id).Result; break;
+                        request = clientHttp.DeleteAsync("api/" + url + "?value=" + id).Result; break;
                     default: return "";
                 }
                 if (request.IsSuccessStatusCode)

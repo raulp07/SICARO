@@ -80,7 +80,6 @@ namespace WEBAPI_SICARO.Persistencia
                 {
                     com.CommandType = CommandType.StoredProcedure;
                     
-                    com.Parameters.Add("@vCodMateriaPrima", SqlDbType.VarChar).Value = MP.vCodMateriaPrima;
                     com.Parameters.Add("@vNombreMateriaPrima", SqlDbType.VarChar).Value = MP.vNombreMateriaPrima;
                     com.Parameters.Add("@vDescripcionMateriaPrima", SqlDbType.VarChar).Value = MP.vDescripcionMateriaPrima;
                     com.Parameters.Add("@iOlorCS", SqlDbType.Int).Value = MP.iOlorCS;
@@ -112,7 +111,6 @@ namespace WEBAPI_SICARO.Persistencia
                     com.CommandType = CommandType.StoredProcedure;
 
                     com.Parameters.Add("@iIdMateriaPrima", SqlDbType.Int).Value = MP.iIdMateriaPrima;
-                    com.Parameters.Add("@vCodMateriaPrima", SqlDbType.VarChar).Value = MP.vCodMateriaPrima;
                     com.Parameters.Add("@vNombreMateriaPrima", SqlDbType.VarChar).Value = MP.vNombreMateriaPrima;
                     com.Parameters.Add("@vDescripcionMateriaPrima", SqlDbType.VarChar).Value = MP.vDescripcionMateriaPrima;
                     com.Parameters.Add("@iOlorCS", SqlDbType.Int).Value = MP.iOlorCS;
@@ -134,5 +132,23 @@ namespace WEBAPI_SICARO.Persistencia
                 }
             }
         }
+        public int DeleteMATERIA_PRIMA(int dato)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("spDeleteMATERIA_PRIMA", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    //Inicio Parámetros
+                    cmd.Parameters.Add("@iIdMateriaPrima", SqlDbType.Int).Value = dato;
+                    return cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
+
+
     }
 }

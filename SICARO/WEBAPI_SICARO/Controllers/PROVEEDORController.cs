@@ -28,5 +28,10 @@ namespace WEBAPI_SICARO.Controllers
         {
             return PROVEEDOR_DA.Accion.UpdatePROVEEDOR(value);
         }
+        [HttpDelete]
+        public int Delete(int value)
+        {
+            return PROVEEDOR_DA.Accion.DeleteTGeneral(value);
+        }
     }
 }

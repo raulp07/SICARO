@@ -26,13 +26,62 @@ namespace SICARO.WEB.Controllers
             {
                 string postdata = JsonConvert.SerializeObject(MP);
                 var data = JsonConvert.DeserializeObject<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", MP.iIdProveedor));
-                return Json(new { data = data }, JsonRequestBehavior.AllowGet);
+                return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
                 return Json(new { ListaMATERIA_PRIMA = "" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public JsonResult Ins_PROVEEDOR(PROVEEDOR_EL Datos)
+        {
+            try
+            {
+                string postdata = JsonConvert.SerializeObject(Datos);
+                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "POST", postdata));
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult Upd_PROVEEDOR(PROVEEDOR_EL Datos)
+        {
+            try
+            {
+                string postdata = JsonConvert.SerializeObject(Datos);
+                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "PUT", postdata, 0));
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
+        [HttpPost]
+        public JsonResult Del_PROVEEDOR(PROVEEDOR_EL Datos)
+        {
+            try
+            {
+                string postdata = JsonConvert.SerializeObject(Datos);
+                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "DEL", "", Datos.iIdProveedor));
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(e.Message, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
 
         //[HttpPost]
         //public JsonResult ListarProveedor(PROVEEDOR_EL MP)

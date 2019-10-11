@@ -1,4 +1,5 @@
-﻿using SICARO.WEB.Models;
+﻿using Newtonsoft.Json;
+using SICARO.WEB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,9 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                string postdata = js.Serialize(Datos);
-                List<UBIGEO_EL> Lista = new List<UBIGEO_EL>();
-                Lista = js.Deserialize<List<UBIGEO_EL>>(Utilitario.Accion.ConectREST("UBIGEO", "POST", postdata));
-                return Json(new { Lista = Lista }, JsonRequestBehavior.AllowGet);
+                string postdata = JsonConvert.SerializeObject(Datos);
+                var lista = JsonConvert.DeserializeObject<List<UBIGEO_EL>>(Utilitario.Accion.Conect_WEBAPI("UBIGEO/ObtenerUbigeo", "POST", postdata));
+                return Json(lista , JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {

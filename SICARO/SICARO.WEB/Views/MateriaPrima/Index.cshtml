@@ -1,0 +1,197 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<script src="~/Scripts/JSSICARO/MateriaPrima.js"></script>
+
+<div id="MateriaPrima">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <h1 class="text-center">Materia Prima</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-8">
+            <div class="form-group">
+                <button type="button" class="btn btn-success col-sm-12" v-on:click="Nuevo()">Nuevo</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="tbTabla" class="display">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Olor</th>
+                        <th>Color</th>
+                        <th>Sabor</th>
+                        <th>Textura</th>
+                        <th>BrixRF</th>
+                        <th>PHRF</th>
+                        <th>Acides</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    @*Moda*@
+    <div class="modal fade" id="ModalMantenimiento" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="exampleModalLabel">Materia Prima</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="txtNombre" class="control-label">Nombre</label>
+                                    <input type="text" id="txtNombre" class="form-control btnGuardarModal" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="txtDescripcion" class="control-label">Descripción</label>
+                                    <textarea id="txtDescripcion" cols="5" class="form-control btnGuardarModal"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtOlorCS" class="control-label">Olor CS</label>
+                                    <input type="text" id="txtOlorCS" class="form-control btnGuardarModal" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtColorCS" class="control-label">Color CS</label>
+                                    <input type="text" id="txtColorCS" class="form-control btnGuardarModal" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtSaborCS" class="control-label">Sabor CS</label>
+                                    <input type="text" id="txtSaborCS" class="form-control btnGuardarModal" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtTexturaCS" class="control-label">Textura CS</label>
+                                    <input type="text" id="txtTexturaCS" class="form-control btnGuardarModal" />
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtBrixRF" class="control-label">Brix RF</label>
+                                    <input type="text" id="txtBrixRF" class="form-control btnGuardarModal" />
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtPHRF" class="control-label">PH RF</label>
+                                    <input type="text" id="txtPHRF" class="form-control btnGuardarModal" />
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="txtAcidesRF" class="control-label">Acides RF</label>
+                                    <input type="text" id="txtAcidesRF" class="form-control btnGuardarModal" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtRequisitosMicrobiolicos" class="control-label">Requisitos Microbiolicos</label>
+                                    <textarea id="txtRequisitosMicrobiolicos" cols="5" class="form-control btnGuardarModal"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtRequisitoRotulado" class="control-label">Requisito Rotulado</label>
+                                    <textarea id="txtRequisitoRotulado" cols="5" class="form-control btnGuardarModal"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtRequisitosEmpaquetado" class="control-label">Requisitos Empaquetado</label>
+                                    <textarea id="txtRequisitosEmpaquetado" cols="5" class="form-control btnGuardarModal"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtRequisitosPresentacion" class="control-label">Requisitos Presentacion</label>
+                                    <textarea id="txtRequisitosPresentacion" cols="5" class="form-control btnGuardarModal"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtCondicionFisicaEntrega" class="control-label">Condicion FisicaEntrega</label>
+                                    <textarea id="txtCondicionFisicaEntrega" cols="5" class="form-control btnGuardarModal"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="txtCondicionFisicaAlmacenamiento" class="control-label">CondicionFisica Almacenamiento</label>
+                                    <textarea id="txtCondicionFisicaAlmacenamiento" cols="5" class="form-control btnGuardarModal"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" v-on:click="Guardar">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Proveedor?</h5>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" id="btnSiModal" v-on:Click="SiModal()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

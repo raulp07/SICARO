@@ -28,7 +28,7 @@ namespace WEBAPI_SICARO.Persistencia
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
                 con.Open();
-                using (SqlCommand com = new SqlCommand("spGet_UBIGEO", con))
+                using (SqlCommand com = new SqlCommand("spGetUBIGEOAll", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.Add("@co_ubigeo", SqlDbType.Char, 8).Value = U.co_ubigeo;

@@ -143,6 +143,11 @@ $(document).ready(function () {
                     itemElement.val('0');
                 }
             }
+            if (itemElement.is("textarea")) {
+                itemElement.siblings().remove('.MensajeError');
+                itemElement.removeClass('is-validModal is-invalidModal');
+                itemElement.val('');
+            }
         });
 
     }

@@ -32,6 +32,37 @@ namespace WEBAPI_SICARO.Modles
         }
         private string _vNombreProveedor;
 
+        [DataMember]
+        public string vApellidoPaterno
+        {
+            get { return _vApellidoPaterno; }
+            set { _vApellidoPaterno = value; }
+        }
+        private string _vApellidoPaterno;
+
+        [DataMember]
+        public string vApellidoMaterno
+        {
+            get { return _vApellidoMaterno; }
+            set { _vApellidoMaterno = value; }
+        }
+        private string _vApellidoMaterno;
+
+        public string vDocumento
+        {
+            get { return _vDocumento; }
+            set { _vDocumento = value; }
+        }
+        private string _vDocumento;
+
+        public int iTipoDocumento
+        {
+            get { return _iTipoDocumento; }
+            set { _iTipoDocumento = value; }
+        }
+        private int _iTipoDocumento;
+
+        
         ///
 
         /// Gets or Sets vRUC
@@ -109,12 +140,12 @@ namespace WEBAPI_SICARO.Modles
         /// Gets or Sets iUbigeo
         ///
         [DataMember]
-        public int iUbigeo
+        public string iUbigeo
         {
             get { return _iUbigeo; }
             set { _iUbigeo = value; }
         }
-        private int _iUbigeo;
+        private string _iUbigeo;
 
         [DataMember]
         public string vDireccion
