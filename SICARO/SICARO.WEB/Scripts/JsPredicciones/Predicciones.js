@@ -71,9 +71,9 @@ new Vue({
         ConsultarProveedor: function () {
 
             var MP = $('#slProducto').val();
-            if (MP == 0) {
-                return;
-            }
+            //if (MP == 0) {
+            //    return;
+            //}
             var jsonData = { iUbigeo: MP };
             axios.post("/Predicciones/ListaMateriaPrimaProveedor/", jsonData).then(function (response) {
                 this.Lista_Proveedor = response.data.ListaMATERIA_PRIMAProveedor;
@@ -107,9 +107,9 @@ new Vue({
             }
             axios.post("/Predicciones/GuardarPronosticos/", param).then(function (response) {
                 debugger;
-                if (response.data.resultado > 0)
+                if (response.data > 0)
                 {
-                    alert('Registro Completo');
+                    alert(response.data);
                 }
             }.bind(this)).catch(function (error) {
             });
@@ -118,6 +118,7 @@ new Vue({
     computed: {},
     created: function () {
         this.EmpezarEvaluacion();
+        this.ConsultarProveedor();
     },
     mounted: function () {
     }

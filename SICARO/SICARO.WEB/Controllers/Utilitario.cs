@@ -143,5 +143,60 @@ namespace SICARO.WEB.Controllers
             }
 
         }
+
+        public string Conect_WEBPython(string url, string method, string postdata = "", int id = -1)
+        {
+            try
+            {
+                HttpClient clientHttp = new HttpClient();
+                clientHttp.BaseAddress = new Uri(urlSiteWEBAPI);
+                byte[] buffer;
+                ByteArrayContent byteContent;
+                HttpResponseMessage request;
+
+                switch (method)
+                {
+                    case "GET":
+                        if (id == -1)
+                        {
+                            request = clientHttp.GetAsync("api/" + url).Result; break;
+                        }
+                        else
+                        {
+                            request = clientHttp.GetAsync("api/" + url + "?value=" + id).Result; break;
+                        }
+
+                    case "POST":
+                        buffer = Encoding.UTF8.GetBytes(postdata);
+                        byteContent = new ByteArrayContent(buffer);
+                        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        request = clientHttp.PostAsync("api/" + url, byteContent).Result; break;
+                    case "PUT":
+                        buffer = Encoding.UTF8.GetBytes(postdata);
+                        byteContent = new ByteArrayContent(buffer);
+                        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                        request = clientHttp.PutAsync("api/" + url + "/" + id, byteContent).Result; break;
+                    case "DEL":
+                        request = clientHttp.DeleteAsync("api/" + url + "?value=" + id).Result; break;
+                    default: return "";
+                }
+                if (request.IsSuccessStatusCode)
+                {
+                    return request.Content.ReadAsStringAsync().Result;
+                }
+                else
+                {
+                    return "";
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentNullException(e.Message);
+            }
+
+        }
+
     }
 }

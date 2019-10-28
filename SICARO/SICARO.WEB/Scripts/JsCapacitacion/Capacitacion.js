@@ -10,6 +10,7 @@ var Capacitacion = new Vue({
         OpcionesRespuesta: [],
         tempOpcionesRespuesta: [],
         tempOpcionesRespuestaMultiple: [],
+        dEstadoCapacitacion: [],
         vCodCapacitacion: "",
         vTemaCapacitacion: "",
         vCodPersonal: "",
@@ -54,13 +55,33 @@ var Capacitacion = new Vue({
                         { "data": "vTemaCapacitacion" },
                         { "data": "dFechaPropuestaCapacitacion" },
                         {
-                            render: function () {
-                                return '<button type="button" id="ButtonGestionar" class="Gestionar edit-modal btn btn-succes botonGestionar"><span class="glyphicon glyphicon-wrench"></span></button>';
+                            render: function (j, k, r) {
+                                var Estado = '';
+                                $.each(Capacitacion.dEstadoCapacitacion, function (key, val) {
+                                    if (val.co_codigo == r['iEstadoCapactiacion']) {
+                                        Estado = val.de_tabla;
+                                    }
+                                });
+                                return Estado;
                             }
                         },
                         {
-                            render: function () {
-                                return '<button type="button" id="ButtonEditar" class="Editar edit-modal btn btn-warning botonEditar"><span class="glyphicon glyphicon-pencil"></span></button>';
+                            render: function (j, k, r) {
+                                if (r['iEstadoCapactiacion'] == '3') {
+                                    return '';
+                                } else {
+                                    return '<button type="button" id="ButtonGestionar" class="Gestionar edit-modal btn btn-succes botonGestionar"><span class="glyphicon glyphicon-wrench"></span></button>';
+                                }
+
+                            }
+                        },
+                        {
+                            render: function (j, k, r) {
+                                if (r['iEstadoCapactiacion'] == '3') {
+                                    return '';
+                                } else {
+                                    return '<button type="button" id="ButtonEditar" class="Editar edit-modal btn btn-warning botonEditar"><span class="glyphicon glyphicon-pencil"></span></button>';
+                                }
                             }
                         },
 
@@ -68,6 +89,18 @@ var Capacitacion = new Vue({
                 });
 
             }.bind(this)).catch(function (error) {
+            });
+        },
+        ListaEstadoCapacitacion: function () {
+            var data = {
+                co_tabla: 4
+            };
+            axios.post('/TGeneral/CargaTGeneral', data).then(response => {
+                this.dEstadoCapacitacion = response.data;
+                this.ListaCapacitacion();
+            }).catch(error => {
+                console.log(error);
+                this.errored = true;
             });
         },
         CRUDCapacitacion: function () {
@@ -95,11 +128,37 @@ var Capacitacion = new Vue({
             }.bind(this)).catch(function (error) {
             });
         },
-        ListarPersonal: function () {
-            axios.post("/Capacitacion/ListaPersonal/").then(function (response) {
-                this.Lista_Personal = response.data.ListaPersonal;
+        ListarPersonal: function (val) {
+            axios.post("/Capacitacion/ListaPersonal/", { val: val }).then(function (response) {
+                var data = response.data.ListaPersonal;
+                if (val == 0) {
+                    this.Lista_Personal = data
+                    this.ListarGestionCapacitacion();
+                } else {
+                    $('#ExpNombre').val(data[0]['vNombrePersonal']);
+                    $('#ExpoApePat').val(data[0]['vApellidoPaternoPersonal']);
+                    $('#ExpoApeMat').val(data[0]['vApellidoMaternoPersonal']);
+                }
+
             }.bind(this)).catch(function (error) {
             });
+        },
+        ListarGestionCapacitacion: function () {
+
+            axios.post("/Capacitacion/ListarGestionCapacitacion/", { value: this.iIdCapacitacion }).then(function (response) {
+                if (response.data.length > 0) {
+                    var Data = response.data;
+                    $('#dfecha').datetimepicker('setDate', new Date(parseInt(Data[0]['dFechaRealizacionCapacitacion'].substr(6))));
+                    $('#horarinicio').datetimepicker('setDate', new Date('1990-01-01 ' + Data[0]['tHoraInicio']));
+                    $('#horartermino').datetimepicker('setDate', new Date('1990-01-01 ' + Data[0]['tHoraFin']));
+                    $('#horartermino').val(Data[0]['iTiempoTest']);
+
+                    var representante = Data[0]['iIdRepresentante'];
+                    this.ListarPersonal(representante);
+                }
+            }.bind(this)).catch(function (error) {
+            });
+
         },
         GestionarCapacitacion: function (iIdCapacitacion, vCodCapacitacion, vTemaCapacitacion) {
             var f = new Date();
@@ -107,9 +166,11 @@ var Capacitacion = new Vue({
             this.iIdCapacitacion = iIdCapacitacion;
             this.vCodCapacitacion = vCodCapacitacion;
             this.vTemaCapacitacion = vTemaCapacitacion;
+
+
             $('#GESTIONCAPACITACION').removeClass('hide');
             $('#CAPACITACION').addClass('hide');
-            this.ListarPersonal();
+            this.ListarPersonal(0);
         },
         MostrarPersonal: function () {
             $("#ModalPersonal").modal('show');
@@ -119,6 +180,8 @@ var Capacitacion = new Vue({
         },
         MostrarCapacitacion: function () {
             this.iIdCapacitacion = 0;
+            $('.txtCodigo').addClass('hide');
+            $('#cboEstadoCapacitacion').val(1);
             $("#ModalCapacitacion").modal('show');
         },
         ExpositorSeleccionado: function (vCodPersonal, iIdPersonal) {
@@ -649,7 +712,9 @@ var Capacitacion = new Vue({
     },
     computed: {},
     created: function () {
-        this.ListaCapacitacion();
+        this.ListaEstadoCapacitacion();
+        //this.ListaCapacitacion();
+
     },
     mounted: function () {
     }
@@ -673,10 +738,10 @@ $("#tbCapacitacion").on("click", "button.Editar", function () {
     var table = $('#tbCapacitacion').DataTable();
     var data = null;
     data = table.row($(this).parents("tr")).data();
-
+    $('.txtCodigo').removeClass('hide');
     Capacitacion.iIdCapacitacion = data["iIdCapacitacion"];
     $('#txtTema').val(data["vTemaCapacitacion"]);
-    $('#txtCodigo').val(data["vCodCapacitacion"]);    
+    $('#txtCodigo').val(data["vCodCapacitacion"]);
     $("#txtFechaCapacitacion").datetimepicker("setDate", new Date(data["dFechaPropuestaCapacitacion"]));
     $("#ModalCapacitacion").modal('show');
 

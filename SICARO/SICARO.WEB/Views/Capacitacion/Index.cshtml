@@ -29,6 +29,7 @@
                             <th>Codigo</th>
                             <th>Tema</th>
                             <th>Fecha</th>
+                            <th>Estado</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -239,7 +240,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <div class="row">
+                        <div class="row txtCodigo">
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="txtCodigo" class="control-label">Código</label>
@@ -269,8 +270,11 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label id="txtEstado" class="control-label">Estado</label>
-                                    <input type="text" id="txtEstado" class="form-control" />
+                                    <label for="cboEstadoCapacitacion">Estado</label>
+                                    <select id="cboEstadoCapacitacion" class="form-control" disabled>
+                                        <option value="0">Seleccione</option>
+                                        <option v-for="lista in dEstadoCapacitacion" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

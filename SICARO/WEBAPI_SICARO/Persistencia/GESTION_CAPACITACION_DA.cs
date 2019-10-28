@@ -32,7 +32,7 @@ namespace WEBAPI_SICARO.Persistencia
                 using (SqlCommand com = new SqlCommand("spGet_GESTION_CAPACITACION", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdGestionCapacitacion", SqlDbType.Int).Value = iIdGestionCapacitacion;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdGestionCapacitacion;
 
 
                     List<GESTION_CAPACITACION_EL> list = new List<GESTION_CAPACITACION_EL>();
@@ -49,8 +49,8 @@ namespace WEBAPI_SICARO.Persistencia
                             if (dataReader["iIdCapacitacion"] != DBNull.Value) { obj.iIdCapacitacion = (int)dataReader["iIdCapacitacion"]; }
                             if (dataReader["iIdRepresentante"] != DBNull.Value) { obj.iIdRepresentante = (int)dataReader["iIdRepresentante"]; }
                             if (dataReader["dFechaRealizacionCapacitacion"] != DBNull.Value) { obj.dFechaRealizacionCapacitacion = (DateTime)dataReader["dFechaRealizacionCapacitacion"]; }
-                            if (dataReader["tHoraInicio"] != DBNull.Value) { obj.tHoraInicio = (string)dataReader["tHoraInicio"]; }
-                            if (dataReader["tHoraFin"] != DBNull.Value) { obj.tHoraFin = (string)dataReader["tHoraFin"]; }
+                            if (dataReader["tHoraInicio"] != DBNull.Value) { obj.tHoraInicio = Convert.ToString(dataReader["tHoraInicio"]); }
+                            if (dataReader["tHoraFin"] != DBNull.Value) { obj.tHoraFin = Convert.ToString(dataReader["tHoraFin"]); }
                             if (dataReader["iTiempoTest"] != DBNull.Value) { obj.iTiempoTest = (int)dataReader["iTiempoTest"]; }
                             if (dataReader["iUsuarioCrea"] != DBNull.Value) { obj.iUsuarioCrea = (int)dataReader["iUsuarioCrea"]; }
                             if (dataReader["dFechaCrea"] != DBNull.Value) { obj.dFechaCrea = (DateTime)dataReader["dFechaCrea"]; }

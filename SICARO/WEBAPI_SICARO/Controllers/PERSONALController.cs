@@ -18,6 +18,13 @@ namespace WEBAPI_SICARO.Controllers
         }
 
         [HttpPost]
+        [Route("PERSONAL")]
+        public IEnumerable<PERSONAL_EL> GETPersonal(int value)
+        {
+            return PERSONAL_DA.Accion.GetAllPERSONAL(value);
+        }
+
+        [HttpPost]
         public int POST(PERSONAL_EL value)
         {
             return PERSONAL_DA.Accion.InsertPERSONAL(value);

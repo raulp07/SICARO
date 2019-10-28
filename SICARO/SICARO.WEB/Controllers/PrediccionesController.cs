@@ -1,7 +1,11 @@
-﻿using SICARO.WEB.Models;
+﻿using Newtonsoft.Json;
+using SICARO.WEB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -22,9 +26,9 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                string postdata = js.Serialize(MP);
-                List<MATERIA_PRIMA_EL> ListaMATERIA_PRIMA = new List<MATERIA_PRIMA_EL>();
-                ListaMATERIA_PRIMA = js.Deserialize<List<MATERIA_PRIMA_EL>>(Utilitario.Accion.ConectREST("MATERIA_PRIMA", "POST", postdata));
+                //string postdata = js.Serialize(MP);
+
+                var ListaMATERIA_PRIMA = js.Deserialize<List<MATERIA_PRIMA_EL>>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "GET", "", 0));
                 return Json(new { ListaMATERIA_PRIMA = ListaMATERIA_PRIMA }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -38,9 +42,11 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                string postdata = js.Serialize(MP);
-                List<PROVEEDOR_EL> ListaMATERIA_PRIMAProveedor = new List<PROVEEDOR_EL>();
-                ListaMATERIA_PRIMAProveedor = js.Deserialize<List<PROVEEDOR_EL>>(Utilitario.Accion.ConectREST("PROVEEDOR", "POST", postdata));
+                var ListaMATERIA_PRIMAProveedor = js.Deserialize<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", 0));
+
+                //string postdata = JsonConvert.SerializeObject(MP);
+                //var data = JsonConvert.DeserializeObject<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", MP.iIdProveedor));
+
                 return Json(new { ListaMATERIA_PRIMAProveedor = ListaMATERIA_PRIMAProveedor }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -54,9 +60,23 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                string postdata = js.Serialize(P);
-                int resultado = js.Deserialize<int>(Utilitario.Accion.ConectREST("IPRONOSTICO", "POST", postdata));
-                return Json(new { resultado = resultado }, JsonRequestBehavior.AllowGet);
+                HttpClient clientHttp = new HttpClient();
+                clientHttp.BaseAddress = new Uri("http://127.0.0.1:5000/");
+
+                //byte[]  buffer = Encoding.UTF8.GetBytes("{}");
+                //ByteArrayContent byteContent = new ByteArrayContent(buffer);
+                //byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                //var request = clientHttp.PostAsync("api/MATERIA_PRIMA", byteContent).Result;
+
+
+                var request = clientHttp.GetAsync("escenario1?producto=1&proveedor=1&unidadmedida=1&peso=15").Result;
+                var resultado = request.Content.ReadAsStringAsync().Result;
+
+                //var resultado = clientHttp.PostAsync("api/MATERIA_PRIMA?value=1").Result;
+
+                //string postdata = js.Serialize(P);
+                //int resultado = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("IPRONOSTICO", "POST", postdata));
+                return Json("", JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {

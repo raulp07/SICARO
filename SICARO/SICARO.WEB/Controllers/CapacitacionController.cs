@@ -36,10 +36,9 @@ namespace SICARO.WEB.Controllers
         }
 
         [HttpPost]
-        public JsonResult ListaPersonal()
+        public JsonResult ListaPersonal(int val)
         {
-            List<PERSONAL_EL> ListaPersonal = new List<PERSONAL_EL>();
-            ListaPersonal = JsonConvert.DeserializeObject<List<PERSONAL_EL>>(Utilitario.Accion.Conect_WEBAPI("PERSONAL", "GET", "", 0));
+            var ListaPersonal = JsonConvert.DeserializeObject<List<PERSONAL_EL>>(Utilitario.Accion.Conect_WEBAPI("PERSONAL", "GET", "", val));
             return Json(new { ListaPersonal = ListaPersonal, JsonRequestBehavior.AllowGet });
         }
 
@@ -86,6 +85,13 @@ namespace SICARO.WEB.Controllers
             }
 
             return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
+        }
+
+        [HttpPost]
+        public JsonResult ListarGestionCapacitacion(int value)
+        {
+            var respuesta = JsonConvert.DeserializeObject<IEnumerable<GESTION_CAPACITACION_EL>>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "GET", "", value));
+            return Json(respuesta, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Capacitacion/Details/5
