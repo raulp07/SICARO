@@ -90,7 +90,7 @@ namespace SICARO.WEB.Controllers
 
         }
 
-        public string Conect_WEBAPI(string url, string method, string postdata = "", int id = -1)
+        public string Conect_WEBAPI(string url, string method, string postdata = "", string id = "-1")
         {
             try
             {
@@ -103,7 +103,7 @@ namespace SICARO.WEB.Controllers
                 switch (method)
                 {
                     case "GET":
-                        if (id == -1)
+                        if (id == "-1")
                         {
                             request = clientHttp.GetAsync("api/" + url).Result; break;
                         }

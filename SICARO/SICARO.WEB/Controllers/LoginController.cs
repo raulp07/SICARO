@@ -58,7 +58,7 @@ namespace SICARO.WEB.Controllers
                 Rol = Rol
             };
             string postdata = JsonConvert.SerializeObject(opcionesXPerfil);
-            var lista = JsonConvert.DeserializeObject<List<OpcionXPerfil_EL>>(Utilitario.Accion.Conect_WEBAPI("OpcionXPerfil", "GET", "", opcionesXPerfil.Rol.Id));  //menuBL.ListMenu(opcionesXPerfil);
+            var lista = JsonConvert.DeserializeObject<List<OpcionXPerfil_EL>>(Utilitario.Accion.Conect_WEBAPI("OpcionXPerfil", "GET", "", opcionesXPerfil.Rol.Id.ToString()));  //menuBL.ListMenu(opcionesXPerfil);
 
             List<OpcionXPerfil_EL> menuArbol = new List<OpcionXPerfil_EL>();
             //primero seteamos los padres

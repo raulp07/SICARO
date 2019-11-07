@@ -28,7 +28,7 @@ namespace SICARO.WEB.Controllers
             {
                 //string postdata = js.Serialize(MP);
 
-                var ListaMATERIA_PRIMA = js.Deserialize<List<MATERIA_PRIMA_EL>>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "GET", "", 0));
+                var ListaMATERIA_PRIMA = js.Deserialize<List<MATERIA_PRIMA_EL>>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "GET", "", "0"));
                 return Json(new { ListaMATERIA_PRIMA = ListaMATERIA_PRIMA }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -42,7 +42,7 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                var ListaMATERIA_PRIMAProveedor = js.Deserialize<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", 0));
+                var ListaMATERIA_PRIMAProveedor = js.Deserialize<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", "0"));
 
                 //string postdata = JsonConvert.SerializeObject(MP);
                 //var data = JsonConvert.DeserializeObject<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", MP.iIdProveedor));

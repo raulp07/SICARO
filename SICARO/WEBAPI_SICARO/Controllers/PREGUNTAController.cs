@@ -28,5 +28,13 @@ namespace WEBAPI_SICARO.Controllers
         {
             return PREGUNTA_DA.Accion.UpdatePREGUNTA(value);
         }
+
+        [HttpGet]
+        [Route("TESTPREGUNTA")]
+        public IEnumerable<PREGUNTA_EL> TESTPREGUNTA(int value)
+        {
+            return PREGUNTA_DA.Accion.GetTestPREGUNTA(value);
+        }
+
     }
 }

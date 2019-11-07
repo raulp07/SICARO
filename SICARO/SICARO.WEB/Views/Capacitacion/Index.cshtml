@@ -208,15 +208,17 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <td>Nombre</td>
+                                <td>Código</td>
+                                <td>Nombre y Apellido</td>
                                 <td></td>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="ListaPersonalExpositor">
                             <tr v-for="lista in Lista_Personal">
-                                <td>{{lista.vCodPersonal}}</td>
+                                <td class="vCodPersonal">{{lista.vCodPersonal}}</td>
                                 <td>{{ lista.vNombrePersonal }} {{lista.vApellidoPaternoPersonal}} {{lista.vApellidoMaternoPersonal}}</td>
-                                <td><label class="radio-inline"><input type="radio" v-on:click="ExpositorSeleccionado(lista.vCodPersonal,lista.iIdPersonal)" name="optExpositor"></label></td>
+                                <td><label class="radio-inline"><input type="radio" v-on:click="ExpositorSeleccionado(lista.vCodPersonal,lista.iIdPersonal)" name="optExpositor" class="optExpositor"></label></td>
+                                <td class="hide idexpositor" >{{lista.iIdPersonal}}</td>
                             </tr>
                         </tbody>
                     </table>

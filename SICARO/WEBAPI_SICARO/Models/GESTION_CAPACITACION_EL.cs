@@ -157,5 +157,13 @@ namespace WEBAPI_SICARO.Modles
         }
         private float _nLongitud;
 
+        public int iTipoExpositor
+        {
+            get { return _iTipoExpositor; }
+            set { _iTipoExpositor = value; }
+        }
+        private int _iTipoExpositor;
+        
+
     }
 }

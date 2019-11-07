@@ -25,7 +25,7 @@ namespace SICARO.WEB.Controllers
             try
             {
                 string postdata = JsonConvert.SerializeObject(MP);
-                var data = JsonConvert.DeserializeObject<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", MP.iIdProveedor));
+                var data = JsonConvert.DeserializeObject<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", MP.iIdProveedor.ToString()));
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -56,7 +56,7 @@ namespace SICARO.WEB.Controllers
             try
             {
                 string postdata = JsonConvert.SerializeObject(Datos);
-                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "PUT", postdata, 0));
+                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "PUT", postdata, "0"));
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -72,7 +72,7 @@ namespace SICARO.WEB.Controllers
             try
             {
                 string postdata = JsonConvert.SerializeObject(Datos);
-                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "DEL", "", Datos.iIdProveedor));
+                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "DEL", "", Datos.iIdProveedor.ToString()));
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

@@ -21,8 +21,8 @@ var Capacitacion = new Vue({
         Estado_Almacenamiento_Preguntas: 0,
         Estado_Almacenamiento_Operarios: 0,
         Estado_Ver_Test: 0,
-        Latitud: 0,
-        Longitud: 0,
+        Latitud: -9.563234298135303,
+        Longitud: -71.63956062343755,
         EmpresaE: '',
         RUCE: '',
         TelefonoE: '',
@@ -37,7 +37,7 @@ var Capacitacion = new Vue({
 
             axios.post("/Capacitacion/ListaCapacitacion/").then(function (response) {
                 var datos = response.data.ListaCAPACITACION;
-
+                this.Lista_Capacitacion = response.data.ListaCAPACITACION;
                 $.each(datos, function (key, val) {
                     var date = new Date(parseInt(val.dFechaPropuestaCapacitacion.substr(6)));
                     var dia = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
@@ -138,6 +138,7 @@ var Capacitacion = new Vue({
                     $('#ExpNombre').val(data[0]['vNombrePersonal']);
                     $('#ExpoApePat').val(data[0]['vApellidoPaternoPersonal']);
                     $('#ExpoApeMat').val(data[0]['vApellidoMaternoPersonal']);
+
                 }
 
             }.bind(this)).catch(function (error) {
@@ -146,12 +147,41 @@ var Capacitacion = new Vue({
         ListarGestionCapacitacion: function () {
 
             axios.post("/Capacitacion/ListarGestionCapacitacion/", { value: this.iIdCapacitacion }).then(function (response) {
-                if (response.data.length > 0) {
-                    var Data = response.data;
+                if (response.data.Capacitacion.length > 0) {
+                    var Data = response.data.Capacitacion;
                     $('#dfecha').datetimepicker('setDate', new Date(parseInt(Data[0]['dFechaRealizacionCapacitacion'].substr(6))));
                     $('#horarinicio').datetimepicker('setDate', new Date('1990-01-01 ' + Data[0]['tHoraInicio']));
                     $('#horartermino').datetimepicker('setDate', new Date('1990-01-01 ' + Data[0]['tHoraFin']));
                     $('#horartermino').val(Data[0]['iTiempoTest']);
+                    $('input:radio[name=optradio][value=' + Data[0]['iTipoExpositor'] + ']').prop('checked', true);
+
+                    var dasdas = this.Lista_Personal;
+
+                    $('#ListaPersonalExpositor tr').each(function (k, v) {
+
+                        var data = $(v).find('.idexpositor').prop('innerText');
+                        if (data == Data[0]['iIdRepresentante']) {
+                            $(v).find('.optExpositor').prop('checked', true);
+                            Capacitacion.vCodPersonal = $(v).find('.vCodPersonal').prop('innerText');
+                        }
+                    });
+
+                    var _Preguntas = [];
+                    $.each(response.data.preguntas, function (key, val) {
+                        var dato = {
+
+                            "codpregunta": val.iIdPregunta,
+                            "Enunciadotest": val.vEnunciadoPregunta,
+                            "TipoRespuesta": $('input:radio[name=optRespuesta]:checked').val() == val.iTipoRespuestaPregunta ? "V/F" : "Opción",
+                            "optRespuesta": val.iTipoRespuestaPregunta,
+                            "valortestPorcentaje": (val.iPuntajePregunta * 100) / 20,
+                            "valortest": val.iPuntajePregunta,
+                        };
+                        _Preguntas.push(dato);
+                    });
+
+                    this.Lista_Preguntas = _Preguntas;
+
 
                     var representante = Data[0]['iIdRepresentante'];
                     this.ListarPersonal(representante);
@@ -167,6 +197,17 @@ var Capacitacion = new Vue({
             this.vCodCapacitacion = vCodCapacitacion;
             this.vTemaCapacitacion = vTemaCapacitacion;
 
+            var _ListaCapacitacion = this.Lista_Capacitacion;
+
+            var _lista = _ListaCapacitacion.find(function (val) {
+                return (val.iIdCapacitacion == iIdCapacitacion);
+            });
+            if (_lista.length >0) {
+                Capacitacion.Latitud = _lista.dLatitud;
+                Capacitacion.Longitud = _lista.dLongitud;
+                $('#Latitud').text(_lista.dLatitud);
+                $('#Longitud').text(_lista.dLongitud);
+            }            
 
             $('#GESTIONCAPACITACION').removeClass('hide');
             $('#CAPACITACION').addClass('hide');
@@ -247,7 +288,7 @@ var Capacitacion = new Vue({
         },
         SeleccionarMapa: function () {
             $("#ModalMapa").modal('show');
-            var uluru = { lat: -9.563234298135303, lng: -71.63956062343755 };
+            var uluru = { lat: Capacitacion.Latitud, lng: Capacitacion.Longitud };
             var map = new google.maps.Map(document.getElementById('googleMap'), {
                 zoom: 6,
                 center: uluru
@@ -433,7 +474,7 @@ var Capacitacion = new Vue({
                     return;
                 }
 
-                var _optradio = $('input:radio[name=optRespuesta]:checked').val();
+                var _optRespuesta = $('input:radio[name=optRespuesta]:checked').val();
                 var _TipoRespuesta = $('input:radio[name=optRespuesta]:checked').val() == 1 ? "V/F" : "Opción";
 
                 var _codPregunta = this.codPregunta;
@@ -464,7 +505,7 @@ var Capacitacion = new Vue({
                     //alert('La suma del valor de las preguntas sobrevasa el puntaje maximo se recomienda un valor de ' + (100 - sumatoria_puntos));
                     return;
                 };
-                if (_optradio == 2) {
+                if (_optRespuesta == 2) {
                     var datosR = this.OpcionesRespuesta;
                     var _Validar = datosR.find(function (val) {
                         return (val.estadovalor == 1 && val.codpregunta == _codPregunta);
@@ -477,10 +518,10 @@ var Capacitacion = new Vue({
 
                 }
 
-                var lista = { "codpregunta": _codPregunta, "Enunciadotest": _Enunciadotest, "TipoRespuesta": _TipoRespuesta, "optradio": _optradio, "valortestPorcentaje": _valortest_porcentaje, "valortest": _valortest };
+                var lista = { "codpregunta": _codPregunta, "Enunciadotest": _Enunciadotest, "TipoRespuesta": _TipoRespuesta, "optRespuesta": _optRespuesta, "valortestPorcentaje": _valortest_porcentaje, "valortest": _valortest };
                 datos.push(lista);
 
-                if (_optradio == 1) {
+                if (_optRespuesta == 1) {
                     this.GrabarOpcionVF();
                 }
 
@@ -492,14 +533,14 @@ var Capacitacion = new Vue({
                 var _codpregunta = this.EstadoActualizar;
                 var _Enunciadotest = $('#Enunciadotest').val();
                 var _valortest = $('#valortest').val();
-                var _optradio = $('input:radio[name=optradio]:checked').val();
+                var _optRespuesta = $('input:radio[name=optRespuesta]:checked').val();
 
                 var datos = this.Lista_Preguntas;
                 $.each(datos, function (key, val) {
                     if (val.codpregunta == _codpregunta) {
                         val.Enunciadotest = _Enunciadotest;
                         val.valortest = _valortest;
-                        val.optradio = _optradio;
+                        val.optRespuesta = _optRespuesta;
                     }
                 });
             }
@@ -536,8 +577,8 @@ var Capacitacion = new Vue({
             $('#Enunciadotest').val(_ListaP.Enunciadotest);
             $('#valortest').val(_ListaP.valortest);
 
-            $('input:radio[name=optradio][value=' + _ListaP.optradio + ']').prop('checked', true);
-            if (_ListaP.optradio == 1) {
+            $('input:radio[name=optRespuesta][value=' + _ListaP.optRespuesta + ']').prop('checked', true);
+            if (_ListaP.optRespuesta == 1) {
                 $('#tipoRespuestaOpciones').addClass('hide');
                 $('#tipoRespuestaVF').removeClass('hide');
                 _ListaO = _OpcionesRespuesta.find(function (val) {
@@ -546,7 +587,7 @@ var Capacitacion = new Vue({
                 $('input:radio[name=opRespuesta][value=' + _ListaO.estadovalor + ']').prop('checked', true);
 
 
-            } else if (_ListaP.optradio == 2) {
+            } else if (_ListaP.optRespuesta == 2) {
                 $('#tipoRespuestaVF').addClass('hide');
                 $('#tipoRespuestaOpciones').removeClass('hide');
 
@@ -626,7 +667,8 @@ var Capacitacion = new Vue({
                 'tHoraFin': $('#horartermino').data('date'),//$('#horartermino').val(),
                 'iTiempoTest': $('#tiempotest').val(),
                 'nLatitud': $('#Latitud').text() == "0" ? "-76.96249462061785" : $('#Latitud').text(),
-                'nLongitud': $('#Longitud').text() == "0" ? "-12.130453115407523" : $('#Longitud').text()
+                'nLongitud': $('#Longitud').text() == "0" ? "-12.130453115407523" : $('#Longitud').text(),
+                'iTipoExpositor': $('input:radio[name=optradio]:checked').val()
             }
 
             var _Lista_Preguntas = this.Lista_Preguntas;
@@ -636,7 +678,7 @@ var Capacitacion = new Vue({
                     "iIdPregunta": parseInt(val.codpregunta),
                     "vEnunciadoPregunta": val.Enunciadotest,
                     "iPuntajePregunta": val.valortest,
-                    "iTipoRespuestaPregunta": val.optradio
+                    "iTipoRespuestaPregunta": val.optRespuesta
                 };
                 _Preguntas.push(dato);
             });
@@ -729,7 +771,7 @@ $("#tbCapacitacion").on("click", "button.Gestionar", function () {
     } else {
         data = table.row($(this).parents("tr")).data();
     }
-
+    
     Capacitacion.GestionarCapacitacion(data["iIdCapacitacion"], data["vCodCapacitacion"], data["vTemaCapacitacion"]);
 });
 
@@ -739,7 +781,7 @@ $("#tbCapacitacion").on("click", "button.Editar", function () {
     var data = null;
     data = table.row($(this).parents("tr")).data();
     $('.txtCodigo').removeClass('hide');
-    Capacitacion.iIdCapacitacion = data["iIdCapacitacion"];
+    Capacitacion.iIdCapacitacion = data["iIdCapacitacion"];    
     $('#txtTema').val(data["vTemaCapacitacion"]);
     $('#txtCodigo').val(data["vCodCapacitacion"]);
     $("#txtFechaCapacitacion").datetimepicker("setDate", new Date(data["dFechaPropuestaCapacitacion"]));

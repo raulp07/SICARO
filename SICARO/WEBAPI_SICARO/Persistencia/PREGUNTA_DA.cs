@@ -105,5 +105,41 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
+        public List<PREGUNTA_EL> GetTestPREGUNTA(int iIdCapacitacion)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("spGet_TestPregunta", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
+
+                    List<PREGUNTA_EL> list = new List<PREGUNTA_EL>();
+
+                    using (IDataReader dataReader = com.ExecuteReader())
+                    {
+
+                        while (dataReader.Read())
+                        {
+
+                            PREGUNTA_EL obj = new PREGUNTA_EL();
+
+                            if (dataReader["iIdPregunta"] != DBNull.Value) { obj.iIdPregunta = (int)dataReader["iIdPregunta"]; }
+                            if (dataReader["vEnunciadoPregunta"] != DBNull.Value) { obj.vEnunciadoPregunta = (string)dataReader["vEnunciadoPregunta"]; }
+                            if (dataReader["iPuntajePregunta"] != DBNull.Value) { obj.iPuntajePregunta = (int)dataReader["iPuntajePregunta"]; }
+                            if (dataReader["iTipoRespuestaPregunta"] != DBNull.Value) { obj.iTipoRespuestaPregunta = (int)dataReader["iTipoRespuestaPregunta"]; }
+
+                            list.Add(obj);
+
+                        }
+
+                    }
+
+                    return list;
+                }
+            }
+        }
+
     }
 }

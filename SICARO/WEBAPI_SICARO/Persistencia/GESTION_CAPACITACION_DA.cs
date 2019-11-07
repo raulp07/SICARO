@@ -56,6 +56,8 @@ namespace WEBAPI_SICARO.Persistencia
                             if (dataReader["dFechaCrea"] != DBNull.Value) { obj.dFechaCrea = (DateTime)dataReader["dFechaCrea"]; }
                             if (dataReader["iUsuarioMod"] != DBNull.Value) { obj.iUsuarioMod = (int)dataReader["iUsuarioMod"]; }
                             if (dataReader["dFechaMod"] != DBNull.Value) { obj.dFechaMod = (DateTime)dataReader["dFechaMod"]; }
+                            if (dataReader["dFechaMod"] != DBNull.Value) { obj.dFechaMod = (DateTime)dataReader["dFechaMod"]; }
+                            if (dataReader["iTipoExpositor"] != DBNull.Value) { obj.iTipoExpositor = (int)dataReader["iTipoExpositor"]; }
 
                             list.Add(obj);
 
@@ -85,7 +87,7 @@ namespace WEBAPI_SICARO.Persistencia
                     com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = GC.iUsuarioCrea;
                     com.Parameters.Add("@nLatitud", SqlDbType.Float).Value = GC.nLatitud;
                     com.Parameters.Add("@nLongitud", SqlDbType.Float).Value = GC.nLongitud;
-
+                    com.Parameters.Add("@iTipoExpositor", SqlDbType.Int).Value = GC.iTipoExpositor;
                     return com.ExecuteNonQuery();
                 }
             }
@@ -107,7 +109,7 @@ namespace WEBAPI_SICARO.Persistencia
                     com.Parameters.Add("@tHoraFin", SqlDbType.Time).Value = GC.tHoraFin;
                     com.Parameters.Add("@iTiempoTest", SqlDbType.Int).Value = GC.iTiempoTest;
                     com.Parameters.Add("@iUsuarioMod", SqlDbType.Int).Value = GC.iUsuarioCrea;
-
+                    com.Parameters.Add("@iTipoExpositor", SqlDbType.Int).Value = GC.iTipoExpositor;
                     return com.ExecuteNonQuery();
                 }
             }

@@ -118,5 +118,19 @@ namespace SICARO.WEB.Models
             set { _dFechaMod = value; }
         }
         private DateTime _dFechaMod;
+        
+        public decimal dLatitud
+        {
+            get { return _dLatitud; }
+            set { _dLatitud = value; }
+        }
+        private decimal _dLatitud;
+        
+        public decimal dLongitud
+        {
+            get { return _dLongitud; }
+            set { _dLongitud = value; }
+        }
+        private decimal _dLongitud;
     }
 }

@@ -23,7 +23,7 @@ namespace SICARO.WEB.Controllers
             try
             {
                 string postdata = JsonConvert.SerializeObject(MP);
-                var data = JsonConvert.DeserializeObject<List<MATERIA_PRIMA_EL>>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "GET", "", MP.iIdMateriaPrima));
+                var data = JsonConvert.DeserializeObject<List<MATERIA_PRIMA_EL>>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "GET", "", MP.iIdMateriaPrima.ToString()));
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -54,7 +54,7 @@ namespace SICARO.WEB.Controllers
             try
             {
                 string postdata = JsonConvert.SerializeObject(Datos);
-                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "PUT", postdata, 0));
+                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "PUT", postdata, "0"));
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -70,7 +70,7 @@ namespace SICARO.WEB.Controllers
             try
             {
                 string postdata = JsonConvert.SerializeObject(Datos);
-                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "DEL", "", Datos.iIdMateriaPrima));
+                var data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "DEL", "", Datos.iIdMateriaPrima.ToString()));
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

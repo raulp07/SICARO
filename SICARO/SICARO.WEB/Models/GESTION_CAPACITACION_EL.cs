@@ -142,5 +142,12 @@ namespace SICARO.WEB.Models
             set { _nLongitud = value; }
         }
         private float _nLongitud;
+
+        public int iTipoExpositor
+        {
+            get { return _iTipoExpositor; }
+            set { _iTipoExpositor = value; }
+        }
+        private int _iTipoExpositor;
     }
 }

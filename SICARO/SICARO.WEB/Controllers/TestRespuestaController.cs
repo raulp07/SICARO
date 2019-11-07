@@ -21,10 +21,10 @@ namespace SICARO.WEB.Controllers
 
         public JsonResult GenerarCamposCapacitacion()
         {
-            var ListaPregunta = js.Deserialize<List<PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA", "GET", "",0));
+            var ListaPregunta = js.Deserialize<List<PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA", "GET", "","0"));
 
             List<OPCION_PREGUNTA_EL> ListaOpciones = new List<OPCION_PREGUNTA_EL>();
-            ListaOpciones = js.Deserialize<List<OPCION_PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA", "POST", "",0));
+            ListaOpciones = js.Deserialize<List<OPCION_PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA", "POST", "","0"));
             return Json(new { ListaPregunta = ListaPregunta, ListaOpciones = ListaOpciones }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
