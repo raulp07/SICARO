@@ -116,5 +116,7 @@ namespace WEBAPI_SICARO.Modles
             set { _dFechaMod = value; }
         }
         private DateTime _dFechaMod;
+
+        public string FormatoRespuesta { get; set; }
     }
 }

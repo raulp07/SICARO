@@ -55,6 +55,7 @@ namespace WEBAPI_SICARO.Persistencia
                 }
             }
         }
+
         public int InsertOPCION_PREGUNTA(OPCION_PREGUNTA_EL OP)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
@@ -87,6 +88,38 @@ namespace WEBAPI_SICARO.Persistencia
                     com.Parameters.Add("@iUsuarioMod", SqlDbType.Int).Value = OP.iUsuarioMod;
 
                     return com.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public List<OPCION_PREGUNTA_EL> GetAllTestPreguntaOpcion(int iIdCapacitacion)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("spGet_TestPreguntaOpcion", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
+                    List<OPCION_PREGUNTA_EL> list = new List<OPCION_PREGUNTA_EL>();
+                    using (IDataReader dataReader = com.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            OPCION_PREGUNTA_EL obj = new OPCION_PREGUNTA_EL();
+                            if (dataReader["iIdOpcion"] != DBNull.Value) { obj.iIdOpcion = (int)dataReader["iIdOpcion"]; }
+                            if (dataReader["iIdPregunta"] != DBNull.Value) { obj.iIdPregunta = (int)dataReader["iIdPregunta"]; }
+                            if (dataReader["vEnunciadoOpcion"] != DBNull.Value) { obj.vEnunciadoOpcion = (string)dataReader["vEnunciadoOpcion"]; }
+                            if (dataReader["iEstadoOpcion"] != DBNull.Value) { obj.iEstadoOpcion = (int)dataReader["iEstadoOpcion"]; }
+                            if (dataReader["iUsuarioCrea"] != DBNull.Value) { obj.iUsuarioCrea = (int)dataReader["iUsuarioCrea"]; }
+                            if (dataReader["dFechaCrea"] != DBNull.Value) { obj.dFechaCrea = (DateTime)dataReader["dFechaCrea"]; }
+                            if (dataReader["iUsuarioMod"] != DBNull.Value) { obj.iUsuarioMod = (int)dataReader["iUsuarioMod"]; }
+                            if (dataReader["dFechaMod"] != DBNull.Value) { obj.dFechaMod = (DateTime)dataReader["dFechaMod"]; }
+
+                            list.Add(obj);
+                        }
+                    }
+                    return list;
                 }
             }
         }

@@ -124,20 +124,20 @@ namespace WEBAPI_SICARO.Modles
         /// Gets or Sets dFechaMod
         ///
         [DataMember]
-        public decimal dLatitud
+        public string dLatitud
         {
             get { return _dLatitud; }
             set { _dLatitud = value; }
         }
-        private decimal _dLatitud;
+        private string _dLatitud;
 
         [DataMember]
-        public decimal dLongitud
+        public string dLongitud
         {
             get { return _dLongitud; }
             set { _dLongitud = value; }
         }
-        private decimal _dLongitud;
+        private string _dLongitud;
 
         [DataMember]
         public DateTime dFechaMod

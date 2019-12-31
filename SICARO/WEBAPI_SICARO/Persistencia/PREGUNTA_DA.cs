@@ -25,7 +25,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<PREGUNTA_EL> GetAllPREGUNTA(int iIdPregunta)
+        public List<PREGUNTA_EL> GetAllPREGUNTA(int iIdPregunta,int? idUsusario)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -34,6 +34,7 @@ namespace WEBAPI_SICARO.Persistencia
                 {
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.Add("@iIdPregunta", SqlDbType.Int).Value = iIdPregunta;
+                    com.Parameters.Add("@idUsusario", SqlDbType.Int).Value = idUsusario;
 
                     List<PREGUNTA_EL> list = new List<PREGUNTA_EL>();
 
@@ -54,6 +55,7 @@ namespace WEBAPI_SICARO.Persistencia
                             if (dataReader["dFechaCrea"] != DBNull.Value) { obj.dFechaCrea = (DateTime)dataReader["dFechaCrea"]; }
                             if (dataReader["iUsuarioMod"] != DBNull.Value) { obj.iUsuarioMod = (int)dataReader["iUsuarioMod"]; }
                             if (dataReader["dFechaMod"] != DBNull.Value) { obj.dFechaMod = (DateTime)dataReader["dFechaMod"]; }
+                            //if (dataReader["FormatoRespuesta"] != DBNull.Value) { obj.FormatoRespuesta = (string)dataReader["FormatoRespuesta"]; }
 
                             list.Add(obj);
 
@@ -129,7 +131,7 @@ namespace WEBAPI_SICARO.Persistencia
                             if (dataReader["vEnunciadoPregunta"] != DBNull.Value) { obj.vEnunciadoPregunta = (string)dataReader["vEnunciadoPregunta"]; }
                             if (dataReader["iPuntajePregunta"] != DBNull.Value) { obj.iPuntajePregunta = (int)dataReader["iPuntajePregunta"]; }
                             if (dataReader["iTipoRespuestaPregunta"] != DBNull.Value) { obj.iTipoRespuestaPregunta = (int)dataReader["iTipoRespuestaPregunta"]; }
-
+                            if (dataReader["FormatoRespuesta"] != DBNull.Value) { obj.FormatoRespuesta = (string)dataReader["FormatoRespuesta"]; }
                             list.Add(obj);
 
                         }

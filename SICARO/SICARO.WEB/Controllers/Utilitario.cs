@@ -10,6 +10,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace SICARO.WEB.Controllers
 {
@@ -42,7 +44,27 @@ namespace SICARO.WEB.Controllers
                 return js;
             }
         }
-
+        public static string Serialize<T>(List<T> value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+            try
+            {
+                var xmlserializer = new XmlSerializer(typeof(List<T>));
+                var stringWriter = new StringWriter();
+                using (var writer = XmlWriter.Create(stringWriter))
+                {
+                    xmlserializer.Serialize(writer, value);
+                    return stringWriter.ToString();//.Replace("<?xml version="""+"1.0" + "encoding=\"utf-16\"?>", "");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred", ex);
+            }
+        }
 
 
         public static string urlSite = ConfigurationManager.AppSettings["urlWS"];
@@ -144,7 +166,7 @@ namespace SICARO.WEB.Controllers
 
         }
 
-        public string Conect_WEBPython(string url, string method, string postdata = "", int id = -1)
+        public string Conect_WEBPython(string url, string method, string postdata = "", string id = "-1")
         {
             try
             {
@@ -157,13 +179,13 @@ namespace SICARO.WEB.Controllers
                 switch (method)
                 {
                     case "GET":
-                        if (id == -1)
+                        if (id == "-1")
                         {
-                            request = clientHttp.GetAsync("api/" + url).Result; break;
+                            request = clientHttp.GetAsync(url).Result; break;
                         }
                         else
                         {
-                            request = clientHttp.GetAsync("api/" + url + "?value=" + id).Result; break;
+                            request = clientHttp.GetAsync(url + "?value=" + id).Result; break;
                         }
 
                     case "POST":

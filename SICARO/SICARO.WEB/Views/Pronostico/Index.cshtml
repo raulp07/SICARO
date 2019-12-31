@@ -1,8 +1,12 @@
-﻿
+﻿@using SICARO.WEB.Models
 @{
     ViewBag.Title = "Index";
+    var usuario = SesionUsuario.Usuario;
 }
+@if (@usuario != null)
+{
 
+<script src="~/Scripts/JsPronostico/Pronostico.js"></script>
 
 <div id="app">
     <br /><br />
@@ -16,12 +20,9 @@
                 <label class="">Seleccione Pronostico:</label>
             </div>
             <div class="col-sm-5 form-group ">
-                <select class="form-control" id="Consulta" v-on:change="ModificarConulta">
-                    <option>Seleccione</option>
-                    <option>Pronosticar duración de insumo pre-stock</option>
-                    <option>Pronosticar tiempo de arribo de insumo</option>
-                    <option>Pronosticar tiempo de actividades en producción</option>
-                    <option>Pronosticar merma de insumo solicitado por proveedor</option>
+                <select class="form-control" id="ddlPronostico" v-on:change="ModificarConulta()" v-model="seleccionTipoPronostico" >
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dTipoPronostico" v-bind:value="lista.co_codigo" :selected="lista.co_codigo == seleccionTipoPronostico"  >{{lista.de_tabla}}</option>
                 </select>
             </div>
         </div>
@@ -32,9 +33,9 @@
                 <label class="">Producto:</label>
             </div>
             <div class="col-sm-5 form-group ">
-                <select class="form-control" id="slProducto" v-on:change="ConsultarProveedor()">
+                <select class="form-control" id="slProducto" v-on:change="ConsultarProveedor()" v-model="seleccionProducto">
                     <option value="0">Seleccione</option>
-                    <option v-for="lista in Lista_Materia_Prima" v-bind:value="lista.iIdMateriaPrima">{{lista.vNombreMateriaPrima}}</option>
+                    <option v-for="lista in Lista_Producto" v-bind:value="lista.iIdproducto" :selected="lista.iIdproducto == seleccionProducto">{{lista.vNombreProducto}}</option>
                 </select>
             </div>
         </div>
@@ -47,27 +48,33 @@
             <div class="col-sm-5 form-group ">
                 <select class="form-control" id="slProveedor">
                     <option value="0">Seleccione</option>
-                    <option v-for="lista in Lista_Proveedor" v-bind:value="lista.iIdProveedor">{{lista.vNombreProveedor}}</option>
+                    <option v-for="lista in Lista_Proveedor" v-bind:value="lista.iIdProveedor" :selected="lista.iIdProveedor == seleccionProveedor">{{lista.vNombreProveedor}}</option>
                 </select>
             </div>
         </div>
     </div>
-    <div class="row hide divActividad">
+    <div class="row divActividad">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="col-sm-5">
                 <label class="">Actividad de producción:</label>
             </div>
             <div class="col-sm-5 form-group ">
                 <select class="form-control" id="slActividad">
-                    <option value="0">Seleccione</option>
-                    <option value="11">Pesado</option>
-                    <option value="12">Mezclado 1</option>
-                    <option value="13">Mezclado 2</option>
-                    <option value="14">Mezclado 3</option>
-                    <option value="15">Reposo</option>
-                    <option value="16">Filtrado</option>
-                    <option value="17">Llenado</option>
-                    <option value="18">Encajonado</option>
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dActividad" v-bind:value="lista.co_codigo" :selected="lista.co_codigo == seleccionActividad">{{lista.de_tabla}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row divIntervaloProduccion">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-5">
+                <label class="">Intervalo de veces utilizado en producción:</label>
+            </div>
+            <div class="col-sm-5 form-group ">
+                <select class="form-control" id="slIntervaloUtilizadoProduccion">
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dIntervaloVecesProduccion" v-bind:value="lista.co_codigo" :selected="lista.co_codigo == seleccionIntervalo">{{lista.de_tabla}}</option>
                 </select>
             </div>
         </div>
@@ -81,7 +88,7 @@
             <input type="button" class="btn" value="ACTUALIZAR INTERVALOS" v-on:click="MostrarConfiguracionIntervalo" />
         </div>
         <div class="col-sm-4  text-center">
-            <input type="button" class="btn" value="SALIR" />
+            <input type="button" class="btn" value="SALIR" v-on:click="Salir" />
         </div>
     </div>
     <br />
@@ -161,14 +168,16 @@
                     <tr>
                         <td>Fecha</td>
                         <td>Indicador</td>
-                        <td>Pronostico</td>
+                        <td>Predicción</td>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="lista in Lista_Control_Produccion">
                         <td>{{lista.fechaProduccion}}</td>
-                        <td>{{lista.indicador}}</td>
-                        <td>{{lista.cantidadProducida}}</td>
+                        <td>{{lista.Color}}</td>
+                        <td>{{lista.predicion}}</td>
+                        <td><input type="button" class="btn btn-primary" value="Ver" v-on:Click="MostrarDetalle(lista)" /></td>
                     </tr>
                 </tbody>
             </table>
@@ -177,4 +186,14 @@
     </div>
 
 </div>
-<script src="~/Scripts/JsPronostico/Pronostico.js"></script>
+<input type="hidden" id="Tipopronostico" value="@ViewBag.Tipopronostico" />
+<input type="hidden" id="Producto" value="@ViewBag.Producto"/>
+<input type="hidden" id="Proveedor" value="@ViewBag.Proveedor" />
+<input type="hidden" id="Intervalo" value="@ViewBag.Intervalo" />
+<input type="hidden" id="Actividad" value="@ViewBag.Actividad" />
+<input type="hidden" id="Prediccion" value="@ViewBag.Prediccion" />
+}
+else
+{
+    Html.RenderPartial("~/Views/Utilitarios/Desconeccion.cshtml");
+}

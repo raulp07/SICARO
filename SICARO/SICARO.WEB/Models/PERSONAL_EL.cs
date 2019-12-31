@@ -111,12 +111,12 @@ namespace SICARO.WEB.Models
 
         /// Gets or Sets iUbigeo
         ///
-        public int iUbigeo
+        public string iUbigeo
         {
             get { return _iUbigeo; }
             set { _iUbigeo = value; }
         }
-        private int _iUbigeo;
+        private string _iUbigeo;
 
         ///
 
@@ -184,5 +184,13 @@ namespace SICARO.WEB.Models
         }
         private DateTime _dFechaMod;
 
+        public string de_Area { get; set; }
+
+        public string Email { get; set; }
+        public int TipoDocumento { get; set; }
+        public string NroDocumento { get; set; }
+        public string de_TipoDocumento { get; set; }
+        public string Telefono { get; set; }
+        public string CtaUsuario { get; set; }
     }
 }

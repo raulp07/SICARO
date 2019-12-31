@@ -1,8 +1,10 @@
-﻿
+﻿@using SICARO.WEB.Models
 @{
     ViewBag.Title = "Index";
+    var usuario = SesionUsuario.Usuario;
 }
-
+@if (@usuario != null)
+{
 
 <script src="~/Scripts/JSSICARO/MateriaPrima.js"></script>
 
@@ -44,7 +46,7 @@
     </div>
 
     @*Moda*@
-    <div class="modal fade" id="ModalMantenimiento" >
+    <div class="modal fade" id="ModalMantenimiento"  data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -173,7 +175,7 @@
         </div>
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"  data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header FontheadModal">
@@ -195,3 +197,8 @@
 
 
 </div>
+}
+else
+{
+    Html.RenderPartial("~/Views/Utilitarios/Desconeccion.cshtml");
+}

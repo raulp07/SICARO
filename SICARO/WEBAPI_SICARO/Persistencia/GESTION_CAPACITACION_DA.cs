@@ -85,9 +85,11 @@ namespace WEBAPI_SICARO.Persistencia
                     com.Parameters.Add("@tHoraFin", SqlDbType.Time).Value = GC.tHoraFin;
                     com.Parameters.Add("@iTiempoTest", SqlDbType.Int).Value = GC.iTiempoTest;
                     com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = GC.iUsuarioCrea;
-                    com.Parameters.Add("@nLatitud", SqlDbType.Float).Value = GC.nLatitud;
-                    com.Parameters.Add("@nLongitud", SqlDbType.Float).Value = GC.nLongitud;
+                    com.Parameters.Add("@nLatitud", SqlDbType.VarChar).Value = GC.nLatitud;
+                    com.Parameters.Add("@nLongitud", SqlDbType.VarChar).Value = GC.nLongitud;
                     com.Parameters.Add("@iTipoExpositor", SqlDbType.Int).Value = GC.iTipoExpositor;
+                    com.Parameters.Add("@XMLPreguntas", SqlDbType.Xml).Value = GC.XMLPreguntas;
+                    com.Parameters.Add("@XMLCapacitacionPersonal", SqlDbType.Xml).Value = GC.XMLCapacitacionPersonal;
                     return com.ExecuteNonQuery();
                 }
             }

@@ -7,34 +7,58 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Web.Security;
 
 namespace SICARO.WEB.Controllers
 {
     public class LoginController : Controller
     {
-        
+
         // GET: Login
+        
         public ActionResult Index()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult Usuario()
         {
             return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult ValidarUsuario(USUARIO_EL Ususario)
+        public ActionResult Usuario(USUARIO_EL Ususario)
         {
             try
             {
-                
-                string postdata = JsonConvert.SerializeObject(Ususario);
-                var ListaCAPACITACION = JsonConvert.DeserializeObject<List<USUARIO_EL>>(Utilitario.Accion.Conect_WEBAPI("USUARIO/ValidarUsuario", "POST", postdata));
-                                
-                if (ListaCAPACITACION.Count>0)
+                string mensaje = "";
+                if (IsValid(Ususario.CtaUsuario,Ususario.Contrasenia))
                 {
-                    Rol_EL rol = new Rol_EL() { Id = ListaCAPACITACION[0].IdRol };
-                    
-                    SesionUsuario.MenuRoot = SetearMenu(rol,false);
-                    return Json(ListaCAPACITACION, JsonRequestBehavior.AllowGet);
+                    int codApp;
+                    Int32.TryParse(Constantes.CodigoAplicacion, out codApp);
+                    string postdata = JsonConvert.SerializeObject(Ususario);
+                    List<USUARIO_EL> ListaCAPACITACION = JsonConvert.DeserializeObject<List<USUARIO_EL>>(Utilitario.Accion.Conect_WEBAPI("USUARIO/ValidarUsuario", "POST", postdata));
+
+                    if (ListaCAPACITACION.Count > 0)
+                    {
+                        mensaje = "Exito";
+                        USUARIO_EL resultado = null;
+                        resultado = ListaCAPACITACION[0]; 
+                        PerfilEL rol = new PerfilEL() { Id = resultado.IdRol };
+
+                        FormsAuthentication.SetAuthCookie(Ususario.CtaUsuario, true);
+                        SesionUsuario.Usuario = resultado;
+                        SesionUsuario.Aplicacion = new AplicacionEL() { Id = codApp };      
+                        SesionUsuario.MenuRoot = SetearMenu(rol, false);
+
+                        return Json(ListaCAPACITACION, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json("", JsonRequestBehavior.AllowGet);
+                    }
                 }
                 else
                 {
@@ -47,11 +71,35 @@ namespace SICARO.WEB.Controllers
             }
         }
 
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
+        public ActionResult LogOut()
+        {
+            var entrada = SesionUsuario.Usuario;
+
+            if (entrada != null)
+            {
+                SesionUsuario.Usuario = null;
+                SesionUsuario.MenuRoot = null;
+            }
+
+            FormsAuthentication.SignOut();
+
+            Session.Clear();
+            Session.Abandon();
+            return RedirectToAction("Index", "Login");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
+
 
         #region Metodos
-        
 
-        public static List<OpcionXPerfil_EL> SetearMenu(Rol_EL Rol,bool padre)
+
+        public static List<OpcionXPerfil_EL> SetearMenu(PerfilEL Rol,bool padre)
         {
             OpcionXPerfil_EL opcionesXPerfil = new OpcionXPerfil_EL()
             {
@@ -114,6 +162,16 @@ namespace SICARO.WEB.Controllers
             }
 
             return agregado;
+        }
+
+        private bool IsValid(string usuario, string pass)
+        {
+            bool valido = false;
+            if (usuario != null || pass != null)
+            {
+                valido = true;
+            }
+            return valido;
         }
 
         #endregion

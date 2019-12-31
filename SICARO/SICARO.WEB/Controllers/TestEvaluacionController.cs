@@ -11,7 +11,7 @@ namespace SICARO.WEB.Controllers
 {
     public class TestEvaluacionController : Controller
     {
-        
+
         // GET: TestEvaluacion
         public ActionResult Index()
         {
@@ -22,7 +22,8 @@ namespace SICARO.WEB.Controllers
 
         public JsonResult GenerarCamposCapacitacion()
         {
-            var ListaPregunta = JsonConvert.DeserializeObject<List<PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA", "GET", "", "0"));
+
+            var ListaPregunta = JsonConvert.DeserializeObject<List<PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA", "GET", "", "0&value2=" + SesionUsuario.Usuario.Id));
 
             var ListaOpciones = JsonConvert.DeserializeObject<List<OPCION_PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA", "GET", "", "0"));
             return Json(new { ListaPregunta = ListaPregunta, ListaOpciones = ListaOpciones }, JsonRequestBehavior.AllowGet);
@@ -32,11 +33,11 @@ namespace SICARO.WEB.Controllers
         {
             string postdata = JsonConvert.SerializeObject(parametros);
             int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION_PERSONAL", "POST", postdata));
-            foreach (DETALLE_CAPACITACION_PERSONAL_EL item in Detalle_Capacitacion)
-            {
-                string postdataP = JsonConvert.SerializeObject(item);
-                int respuestaP = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("DETALLE_CAPACITACION_PERSONAL", "POST", postdataP));
-            }
+            //foreach (DETALLE_CAPACITACION_PERSONAL_EL item in Detalle_Capacitacion)
+            //{
+            //    string postdataP = JsonConvert.SerializeObject(item);
+            //    int respuestaP = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("DETALLE_CAPACITACION_PERSONAL", "POST", postdataP));
+            //}
 
             return Json(new { respuesta = respuesta }, JsonRequestBehavior.AllowGet);
         }

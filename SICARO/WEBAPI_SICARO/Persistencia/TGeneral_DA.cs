@@ -23,7 +23,7 @@ namespace WEBAPI_SICARO.Persistencia
                 return accion;
             }
         }
-        
+
 
         public List<TGeneral_EL> GetAllTGeneral(TGeneral_EL ent)
         {
@@ -112,7 +112,7 @@ namespace WEBAPI_SICARO.Persistencia
                     //Inicio Parámetros
                     cmd.Parameters.Add("@co_tabla", SqlDbType.Int).Value = ent.co_tabla;
                     cmd.Parameters.Add("@co_codigo", SqlDbType.Int).Value = ent.co_codigo;
-                    cmd.Parameters.Add("@de_tabla", SqlDbType.VarChar, 30).Value = ent.de_tabla;
+                    cmd.Parameters.Add("@de_tabla", SqlDbType.VarChar, 100).Value = ent.de_tabla;
                     //cmd.Parameters.Add("@ti_tabla", SqlDbType.Char, 1).Value = ent.ti_tabla;
                     //cmd.Parameters.Add("@fg_tabla", SqlDbType.Char, 1).Value = ent.fg_tabla;
                     cmd.Parameters.Add("@st_tabla", SqlDbType.Char, 1).Value = ent.st_tabla;
@@ -140,7 +140,7 @@ namespace WEBAPI_SICARO.Persistencia
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add("@co_tabla", SqlDbType.Int).Value = ent.co_tabla;
                     cmd.Parameters.Add("@co_codigo", SqlDbType.Int).Value = ent.co_codigo;
-                    cmd.Parameters.Add("@de_tabla", SqlDbType.VarChar, 30).Value = ent.de_tabla;
+                    cmd.Parameters.Add("@de_tabla", SqlDbType.VarChar, 100).Value = ent.de_tabla;
                     //cmd.Parameters.Add("@ti_tabla", SqlDbType.Char, 1).Value = ent.ti_tabla;
                     //cmd.Parameters.Add("@fg_tabla", SqlDbType.Char, 1).Value = ent.fg_tabla;
                     cmd.Parameters.Add("@st_tabla", SqlDbType.Char, 1).Value = ent.st_tabla;
@@ -176,7 +176,7 @@ namespace WEBAPI_SICARO.Persistencia
 
         }
 
-      
+
 
     }
 }

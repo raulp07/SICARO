@@ -106,5 +106,8 @@ namespace SICARO.WEB.Models
             set { _dFechaMod = value; }
         }
         private DateTime _dFechaMod;
+
+        public string respuestas { get; set; }
+        public string FormatoRespuesta { get; set; }
     }
 }

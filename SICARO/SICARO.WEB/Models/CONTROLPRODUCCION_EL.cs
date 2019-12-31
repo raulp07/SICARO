@@ -8,81 +8,20 @@ namespace SICARO.WEB.Models
     public class CONTROLPRODUCCION_EL
     {
 
-        ///
-
-        /// Gets or Sets idControlProduccion
-        ///
-        public int idControlProduccion
-        {
-            get { return _idControlProduccion; }
-            set { _idControlProduccion = value; }
-        }
-        private int _idControlProduccion;
-
-        ///
-
-        /// Gets or Sets idProducto
-        ///
-        public int idProducto
-        {
-            get { return _idProducto; }
-            set { _idProducto = value; }
-        }
-        private int _idProducto;
-
-        ///
-
-        /// Gets or Sets tipoPronostico
-        ///
-        public string tipoPronostico
-        {
-            get { return _tipoPronostico; }
-            set { _tipoPronostico = value; }
-        }
-        private string _tipoPronostico;
-
-        ///
-
-        /// Gets or Sets fechaProduccion
-        ///
-        public DateTime fechaProduccion
-        {
-            get { return _fechaProduccion; }
-            set { _fechaProduccion = value; }
-        }
-        private DateTime _fechaProduccion;
-
-        ///
-
-        /// Gets or Sets cantidadProducida
-        ///
-        public int cantidadProducida
-        {
-            get { return _cantidadProducida; }
-            set { _cantidadProducida = value; }
-        }
-        private int _cantidadProducida;
-
-        ///
-
-        /// Gets or Sets idActividadControlProduccion
-        ///
-        public int idActividadControlProduccion
-        {
-            get { return _idActividadControlProduccion; }
-            set { _idActividadControlProduccion = value; }
-        }
-        private int _idActividadControlProduccion;
-
-        ///
-
-        /// Gets or Sets indicador
-        ///
-        public string indicador
-        {
-            get { return _indicador; }
-            set { _indicador = value; }
-        }
-        private string _indicador;
+        public int idControlProduccion { get; set; }
+        public int tipoPronostico { get; set; }
+        public int idProducto { get; set; }
+        public int idProveedor { get; set; }
+        public int idIntervaloProduccion { get; set; }
+        public int idUnidadMedida { get; set; }
+        public int Peso { get; set; }
+        public int idActividad { get; set; }
+        public int cantidadProducida { get; set; }
+        public string PRECISION { get; set; }
+        public string ErrorMedioCuadratico { get; set; }
+        public int predicion { get; set; }
+        public string Color { get; set; }
+        public DateTime fechaProduccion { get; set; }
+        public string indicador { get; set; }
     }
 }

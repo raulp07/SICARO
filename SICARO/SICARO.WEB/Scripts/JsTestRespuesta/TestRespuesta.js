@@ -27,20 +27,46 @@ new Vue({
                     _html = _html +
                         '<div class="col-sm-12 text-center">' +
                         "<h3>" + (key + 1) + ".- " + val.vEnunciadoPregunta + "</h3></div>";
-                    $.each(response.data.ListaOpciones, function (keyR, valR) {
+                    switch (val.iTipoRespuestaPregunta) {
+                        case 1:
+                            $.each(response.data.ListaOpciones, function (keyR, valR) {
 
-                        if (val.iIdPregunta == valR.iIdPregunta) {
+                                if (val.iIdPregunta == valR.iIdPregunta) {
+                                    _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                                    if (valR.iEstadoOpcion == 1) {
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" checked disabled>Verdadero</label>';
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" disabled>Falso</label>';
+                                    } else {
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" disabled>Verdadero</label>';
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" checked disabled>Falso</label>';
+                                    }
+                                    _html = _html + '</div>';
+                                }
+                            });
+                            break;
+                        case 2:
                             _html = _html + '<div class="col-sm-12 text-center _Examen">';
-                            if (valR.iEstadoOpcion == 1) {
-                                _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" checked disabled>Verdadero</label>';
-                                _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" disabled>Falso</label>';
-                            } else {
-                                _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" disabled>Verdadero</label>';
-                                _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" checked disabled>Falso</label>';
-                            }
-                            _html = _html +'</div>';
-                        }
-                    });
+                            var bEstado = "checked";
+                            $.each(response.data.ListaOpciones, function (k, v) {                                
+                                if (val.iIdPregunta == v.iIdPregunta) {
+                                    bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
+                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled >' + v.vEnunciadoOpcion + '</label>';
+                                }
+                            });
+                            _html = _html + '</div>'; break;
+                        case 3:
+                            _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                            var bEstado = "checked";
+                            $.each(response.data.ListaOpciones, function (k, v) {
+                                if (val.iIdPregunta == v.iIdPregunta) {
+                                    bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
+                                    _html = _html + '<label class="checkbox-inline"><input type="checkbox" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled>' + v.vEnunciadoOpcion + '</label>';
+                                }
+                            });
+                            _html = _html + '</div>'; break;
+                        default: _html += ''; break;
+                    }
+
                 });
                 $('#PMuestra').addClass('hide');
                 $('#PTest').removeClass('hide');

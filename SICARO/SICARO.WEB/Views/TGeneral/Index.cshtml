@@ -1,8 +1,10 @@
-﻿
+﻿@using SICARO.WEB.Models
 @{
     ViewBag.Title = "Index";
+    var usuario = SesionUsuario.Usuario;
 }
-
+@if (@usuario != null)
+{
 <script src="~/Scripts/JSSICARO/TGeneral.js"></script>
 
 <div class="row">
@@ -168,7 +170,6 @@
         </div>
     </div>
 </div>
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
@@ -193,6 +194,10 @@
 
 <input id="hidIdTGeneral" type="hidden" />
 
-
+}
+else
+{
+    Html.RenderPartial("~/Views/Utilitarios/Desconeccion.cshtml");
+}
 
 

@@ -63,5 +63,19 @@ namespace WEBAPI_SICARO.Persistencia
 
         }
 
+        public int InsertOpcionXPerfil(Opcion_EL GC)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("spInsertOpcionRol", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@IdRol", SqlDbType.Int).Value = GC.Id;
+                    com.Parameters.Add("@XMLOpciones", SqlDbType.Xml).Value = GC.Nombre;
+                    return com.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

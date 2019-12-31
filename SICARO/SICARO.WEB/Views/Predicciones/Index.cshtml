@@ -1,7 +1,11 @@
-﻿
+﻿@using SICARO.WEB.Models
 @{
     ViewBag.Title = "Index";
+    var usuario = SesionUsuario.Usuario;
 }
+@if (@usuario != null)
+{
+<script src="~/Scripts/JsPredicciones/Predicciones.js"></script>
 <div id="app">
     <br /><br />
     <div class="row text-center">
@@ -15,10 +19,8 @@
             </div>
             <div class="col-sm-5 form-group ">
                 <select class="form-control" id="ddlPronostico" v-on:change="ModificarConulta()">
-                    <option value="1">Pronosticar Duración de insumo pre-stock</option>
-                    <option value="2">Pronosticar tiempo de arribo de insumo</option>
-                    <option value="3">Pronosticar tiempo de actividades en producción</option>
-                    <option value="4">Pronosticar merma de insumo solicitado</option>
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dTipoPronostico" v-bind:value="lista.co_codigo">{{lista.de_tabla}}</option>
                 </select>
             </div>
         </div>
@@ -29,15 +31,15 @@
                 <label class="">Producto:</label>
             </div>
             <div class="col-sm-5 form-group ">
-                
+
                 <select class="form-control" id="slProducto" v-on:change="ConsultarProveedor()">
                     <option value="0">Seleccione</option>
-                    <option v-for="lista in Lista_Materia_Prima" v-bind:value="lista.iIdMateriaPrima" >{{lista.vNombreMateriaPrima}}</option>
+                    <option v-for="lista in Lista_Producto" v-bind:value="lista.iIdproducto">{{lista.vNombreProducto}}</option>
                 </select>
             </div>
         </div>
     </div>
-    <div class="row divPrincipal">
+    <div class="row divProveedor">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="col-sm-5">
                 <label class="">Proveedor:</label>
@@ -50,32 +52,43 @@
             </div>
         </div>
     </div>
-    <div class="row divPrincipal">
+    <div class="row divUnidadMedida">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="col-sm-5">
                 <label class="">Unidad de Medida:</label>
             </div>
             <div class="col-sm-5 form-group ">
                 <select class="form-control" id="slUnidadMedida">
-                    <option>Seleccione</option>
-                    <option>Unidades</option>
-                    <option>Litros</option>
-                    <option>Kg</option>
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dUnidadMedida" v-bind:value="lista.co_codigo">{{lista.de_tabla}}</option>
                 </select>
             </div>
         </div>
     </div>
-    <div class="row divPrincipal">
+    <div class="row divIntervaloProduccion">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="col-sm-5">
-                <label id="lblunidadpeso" class="">Unidad de Peso:</label>
+                <label class="">Intervalo de veces utilizado en producción:</label>
             </div>
             <div class="col-sm-5 form-group ">
-                <input type="text" id="unidadpeso" class="form-control" /> 
+                <select class="form-control" id="slIntervaloUtilizadoProduccion">
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dIntervaloVecesProduccion" v-bind:value="lista.co_codigo">{{lista.de_tabla}}</option>
+                </select>
             </div>
         </div>
     </div>
-    <div class="row divActividad hide">
+    <div class="row divUnidadMedida">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-5">
+                <label id="lblunidadpeso" class="">Cantidad/Peso:</label>
+            </div>
+            <div class="col-sm-5 form-group ">
+                <input type="text" id="unidadpeso" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="row divActividad">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="col-sm-5">
                 <label id="lblunidadpeso" class="">Cantidad Producida:</label>
@@ -85,63 +98,73 @@
             </div>
         </div>
     </div>
-    <div class="row divActividad hide">
+    <div class="row divActividad">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="col-sm-5">
                 <label class="">Actividad:</label>
             </div>
             <div class="col-sm-5 form-group ">
                 <select class="form-control" id="slActividad">
-                    <option value="0">Seleccione</option>
-                    <option value="11">Pesado</option>
-                    <option value="12">Mezclado 1</option>
-                    <option value="13">Mezclado 2</option>
-                    <option value="14">Mezclado 3</option>
-                    <option value="15">Reposo</option>
-                    <option value="16">Filtrado</option>
-                    <option value="17">Llenado</option>
-                    <option value="18">Encajonado</option>
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dActividad" v-bind:value="lista.co_codigo">{{lista.de_tabla}}</option>
                 </select>
             </div>
         </div>
     </div>
-    
+
 
     <br />
     <br />
 
     <div class="row">
-        <div class="col-sm-7 col-sm-offset-2 form-group">
-            <div class="col-sm-12 ">
-                <div class="col-sm-3 form-group">
+        <div class="col-sm-4 col-sm-offset-3">
+            <div class="row ">
+                <div class="col-sm-4 form-group">
+                    <label class="">Porcentaje de Precisión:</label>
+                </div>
+                <div class="col-sm-7 form-group">
+
+                    <input type="text" id="PorcentajePrecision" class="form-control" />
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-sm-4 form-group">
                     <label class="">Error Medio Cuadrático:</label>
                 </div>
-                <div class="col-sm-9 form-group">
+                <div class="col-sm-7 form-group">
 
-                    <input type="text" id="txtErrorC" class="form-control" />
+                    <input type="text" id="ErrorMedioCuadratico" class="form-control" />
                 </div>
             </div>
             <br /><br />
             <div class="col-sm-12 text-center">
-                <div id="columnchart_values" style="width: 300px; height: 250px;"></div>
+                <div id="DiagramaDispercion" style="width: 350px; height: 300px;"></div>
             </div>
         </div>
-        <div class="col-sm-3 form-group ">
-            <div class="row form-group">
-                <label>La Predicción es:</label>
-                <label></label>
+        <div class="col-sm-5">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label>La Predicción es:</label>
+                </div>
+                <div class="form-group">
+                    <label id="NroPrediccion" style="font-size: 48pt;">
+                        0
+                    </label>
+                </div>
             </div>
-            <br /><br />
-            <div class="row">
-                <input type="button" class="btn" value="Gestionar Indicadores" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-2 form-group ">
+            <div class="col-sm-4">
+                <input type="button" class="btn btn-success col-sm-12 GestionarIndicador" value="Gestionar Indicadores" v-on:click="AbrirGestionPronostico" disabled />
             </div>
-            <br />
-            <div class="row">
-                <input type="button" class="btn" value="Pronosticar" v-on:click="GuardarPrediccion" />
+            <div class="col-sm-4">
+                <input type="button" class="btn btn-primary col-sm-12" value="Pronosticar" v-on:click="GuardarPrediccion" />
             </div>
-            <br />
-            <div class="row">
-                <input type="button" class="btn" value="Salir" />
+            <div class="col-sm-3">
+                <input type="button" class="btn btn-danger col-sm-12" value="Salir" v-on:click="Salir" />
+                @Html.ActionLink("Edit friend", "Index", "Pronostico", new { tipopronostico = 3, producto = 4, proveedor = 3 }, null)
             </div>
         </div>
     </div>
@@ -149,6 +172,10 @@
 
 
 
-
 </div>
-<script src="~/Scripts/JsPredicciones/Predicciones.js"></script>
+
+}
+else
+{
+    Html.RenderPartial("~/Views/Utilitarios/Desconeccion.cshtml");
+}

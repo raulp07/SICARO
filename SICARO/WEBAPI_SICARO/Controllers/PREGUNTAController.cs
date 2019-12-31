@@ -12,9 +12,9 @@ namespace WEBAPI_SICARO.Controllers
     public class PREGUNTAController : ApiController
     {
         [HttpGet]
-        public IEnumerable<PREGUNTA_EL> GET(int value)
+        public IEnumerable<PREGUNTA_EL> GET(int value,int? value2)
         {
-            return PREGUNTA_DA.Accion.GetAllPREGUNTA(value);
+            return PREGUNTA_DA.Accion.GetAllPREGUNTA(value, value2);
         }
 
         [HttpPost]

@@ -11,11 +11,12 @@ var Capacitacion = new Vue({
         tempOpcionesRespuesta: [],
         tempOpcionesRespuestaMultiple: [],
         dEstadoCapacitacion: [],
+        Capacitacion_Personal: [],
         vCodCapacitacion: "",
         vTemaCapacitacion: "",
         vCodPersonal: "",
         iIdPersonal: 0,
-        codPregunta: 1,
+        iIdPregunta: -100,
         EstadoActualizar: 0,
         NotaMaxima: 20,
         Estado_Almacenamiento_Preguntas: 0,
@@ -43,7 +44,7 @@ var Capacitacion = new Vue({
                     var dia = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
                     var mes = date.getMonth() < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
                     var anio = date.getFullYear();
-                    var fecha = mes + "/" + dia + "/" + anio;
+                    var fecha = dia + "/" + mes + "/" + anio;
                     val.dFechaPropuestaCapacitacion = fecha;
                 });
                 $('#tbCapacitacion').DataTable().destroy();
@@ -93,7 +94,7 @@ var Capacitacion = new Vue({
         },
         ListaEstadoCapacitacion: function () {
             var data = {
-                co_tabla: 4
+                co_tabla: 5
             };
             axios.post('/TGeneral/CargaTGeneral', data).then(response => {
                 this.dEstadoCapacitacion = response.data;
@@ -135,10 +136,11 @@ var Capacitacion = new Vue({
                     this.Lista_Personal = data
                     this.ListarGestionCapacitacion();
                 } else {
+                    this.iIdPersonal = data[0]['iIdPersonal'];
                     $('#ExpNombre').val(data[0]['vNombrePersonal']);
                     $('#ExpoApePat').val(data[0]['vApellidoPaternoPersonal']);
                     $('#ExpoApeMat').val(data[0]['vApellidoMaternoPersonal']);
-
+                    $('#ExpoDNI').val(data[0]['cDNI']);
                 }
 
             }.bind(this)).catch(function (error) {
@@ -155,8 +157,6 @@ var Capacitacion = new Vue({
                     $('#horartermino').val(Data[0]['iTiempoTest']);
                     $('input:radio[name=optradio][value=' + Data[0]['iTipoExpositor'] + ']').prop('checked', true);
 
-                    var dasdas = this.Lista_Personal;
-
                     $('#ListaPersonalExpositor tr').each(function (k, v) {
 
                         var data = $(v).find('.idexpositor').prop('innerText');
@@ -170,19 +170,20 @@ var Capacitacion = new Vue({
                     $.each(response.data.preguntas, function (key, val) {
                         var dato = {
 
-                            "codpregunta": val.iIdPregunta,
-                            "Enunciadotest": val.vEnunciadoPregunta,
+                            "iIdPregunta": val.iIdPregunta,
+                            "vEnunciadoPregunta": val.vEnunciadoPregunta,
                             "TipoRespuesta": $('input:radio[name=optRespuesta]:checked').val() == val.iTipoRespuestaPregunta ? "V/F" : "Opción",
-                            "optRespuesta": val.iTipoRespuestaPregunta,
+                            "iTipoRespuestaPregunta": val.iTipoRespuestaPregunta,
                             "valortestPorcentaje": (val.iPuntajePregunta * 100) / 20,
                             "valortest": val.iPuntajePregunta,
+                            "respuestas": val.FormatoRespuesta,
                         };
                         _Preguntas.push(dato);
                     });
 
                     this.Lista_Preguntas = _Preguntas;
-
-
+                    this.OpcionesRespuesta = response.data.Opciones;
+                    this.Capacitacion_Personal = response.data.Capacitacion_Personal;
                     var representante = Data[0]['iIdRepresentante'];
                     this.ListarPersonal(representante);
                 }
@@ -202,15 +203,23 @@ var Capacitacion = new Vue({
             var _lista = _ListaCapacitacion.find(function (val) {
                 return (val.iIdCapacitacion == iIdCapacitacion);
             });
-            if (_lista.length >0) {
-                Capacitacion.Latitud = _lista.dLatitud;
-                Capacitacion.Longitud = _lista.dLongitud;
-                $('#Latitud').text(_lista.dLatitud);
-                $('#Longitud').text(_lista.dLongitud);
-            }            
+
+            this.Latitud = _lista.dLatitud;
+            this.Longitud = _lista.dLongitud;
+            $('#Latitud').text(_lista.dLatitud);
+            $('#Longitud').text(_lista.dLongitud);
+
 
             $('#GESTIONCAPACITACION').removeClass('hide');
             $('#CAPACITACION').addClass('hide');
+
+            this.Lista_Preguntas = [];
+            this.OpcionesRespuesta = [];
+            this.Capacitacion_Personal = [];
+            $('#ExpNombre').val('');
+            $('#ExpoApePat').val('');
+            $('#ExpoApeMat').val('');
+            $('#ExpoDNI').val('');
             this.ListarPersonal(0);
         },
         MostrarPersonal: function () {
@@ -233,12 +242,11 @@ var Capacitacion = new Vue({
 
             var _Lista_Personal = this.Lista_Personal;
             var _vCodPersonal = this.vCodPersonal;
-            var _lista = _Lista_Personal.find(function (val) {
-                return (val.vCodPersonal == _vCodPersonal);
-            });
+            var _lista = _Lista_Personal.find(x => x.vCodPersonal == _vCodPersonal);
             $('#ExpNombre').val(_lista.vNombrePersonal);
             $('#ExpoApePat').val(_lista.vApellidoPaternoPersonal);
             $('#ExpoApeMat').val(_lista.vApellidoMaternoPersonal);
+            $('#ExpoDNI').val(_lista.cDNI);
             $("#ModalPersonal").modal('hide');
         },
         PrepararTest: function () {
@@ -262,7 +270,7 @@ var Capacitacion = new Vue({
         AgregarOperarios: function () {
 
             var _vCodPersonal = this.vCodPersonal;
-
+            //this.Capacitacion_Personal
             if (this.vCodPersonal.length != 0) {
                 var _Lista_Personal = this.Lista_Personal;
                 _Lista_Personal = _Lista_Personal.filter(function (eval) {
@@ -272,11 +280,24 @@ var Capacitacion = new Vue({
             } else {
                 this.Lista_Operarios = this.Lista_Personal;
             }
+
+            var _Capacitacion_Personal = this.Capacitacion_Personal;
+            if (_Capacitacion_Personal.length > 0) {
+                var _Lista_Operarios = this.Lista_Operarios;
+
+                $.each(_Lista_Operarios, function (key, value) {
+                    $.each(_Capacitacion_Personal, function (k, v) {
+                        if (value.iIdPersonal == v.iIdPersonal) {
+                            value.iEstadoPersonal = -1;
+                        }
+                    });
+                });
+                this.Lista_Operarios = _Lista_Operarios;
+            }
+
             $("#ModalOperario").modal('show');
             $('#ModalOperario input').attr('disabled', false);
             $('#ModalOperario button').attr('disabled', false);
-
-
         },
         VerOperarios: function () {
             this.Lista_Operarios = this.Lista_Personal;
@@ -288,9 +309,10 @@ var Capacitacion = new Vue({
         },
         SeleccionarMapa: function () {
             $("#ModalMapa").modal('show');
-            var uluru = { lat: Capacitacion.Latitud, lng: Capacitacion.Longitud };
+
+            var uluru = { lat: parseFloat(Capacitacion.Latitud), lng: parseFloat(Capacitacion.Longitud) };
             var map = new google.maps.Map(document.getElementById('googleMap'), {
-                zoom: 6,
+                zoom: 15,
                 center: uluru
             });
 
@@ -309,21 +331,25 @@ var Capacitacion = new Vue({
             var datos = this.OpcionesRespuesta;
             var _ResTextOpcion = "";
             var _chkEstadoCorrecto = "";
-            var _estadovalor = $('input:radio[name=opRespuesta]:checked').val();
-            var _codPregunta = this.codPregunta;
+            var _iEstadoOpcion = $('input:radio[name=opRespuesta]:checked').val();
+            var _iIdPregunta = this.iIdPregunta;
 
             if (this.EstadoActualizar == 0) {
-                var list = { "codpregunta": _codPregunta, "Respuesta": _ResTextOpcion, "estado": _chkEstadoCorrecto, "estadovalor": _estadovalor };
+                var list = {
+                    "iIdPregunta": _iIdPregunta,
+                    "vEnunciadoOpcion": _ResTextOpcion,
+                    "estado": _chkEstadoCorrecto,
+                    "iEstadoOpcion": _iEstadoOpcion
+                };
                 datos.push(list);
                 this.OpcionesRespuesta = datos;
             } else {
-                _codpregunta = this.EstadoActualizar;
+                _iIdPregunta = this.EstadoActualizar;
                 $.each(datos, function (key, val) {
-                    if (val.codpregunta == _codpregunta) {
-                        val.Respuesta = _Respuesta;
-                        val.Respuesta = _ResTextOpcion;
+                    if (val.iIdPregunta == _iIdPregunta) {
+                        val.vEnunciadoOpcion = _ResTextOpcion;
                         val.estado = _chkEstadoCorrecto;
-                        val.estadovalor = _estadovalor;
+                        val.iEstadoOpcion = _iEstadoOpcion;
                     }
                 });
             }
@@ -331,10 +357,17 @@ var Capacitacion = new Vue({
         },
         AgregarRespuesta: function () {
             var datos = this.OpcionesRespuesta;
-            var _codPregunta = this.codPregunta;
+            var _iIdPregunta = this.EstadoActualizar != 0 ? this.EstadoActualizar : this.iIdPregunta;
+
+            var _ResTextOpcion = $('#ResTextOpcion').val().trim();
+            var _chkEstadoCorrecto = $('#chkEstadoCorrecto').is(':checked') ? 'Correcto' : 'Incorrecto';
+            var _iEstadoOpcion = $('#chkEstadoCorrecto').is(':checked') ? 1 : 0;
 
             var _ValidarE = datos.find(function (val) {
-                return (val.estadovalor == 1 && val.codpregunta == _codPregunta);
+                if (_iEstadoOpcion == 1) {
+                    return (val.iEstadoOpcion == 1 && val.iIdPregunta == _iIdPregunta);
+                }
+                return false;
             });
             if (_ValidarE != undefined) {
                 MensajeModal('Ya hay una respuesta con la opcion correcta', 2);
@@ -342,10 +375,6 @@ var Capacitacion = new Vue({
                 return;
             }
 
-
-            var _ResTextOpcion = $('#ResTextOpcion').val().trim();
-            var _chkEstadoCorrecto = $('#chkEstadoCorrecto').is(':checked') ? 'Correcto' : 'Incorrecto';
-            var _estadovalor = $('#chkEstadoCorrecto').is(':checked') ? 1 : 0;
             if (_ResTextOpcion.length == 0) {
                 MensajeModal('Debe ingresar una descripción para la respuesta', 2);
                 //alert('Debe ingresar una descripción para la respuesta');
@@ -353,24 +382,29 @@ var Capacitacion = new Vue({
             }
 
             var _Validar = datos.find(function (val) {
-                return (val.Respuesta == _ResTextOpcion && val.codpregunta == _codPregunta);
+                return (val.vEnunciadoOpcion == _ResTextOpcion && val.iIdPregunta == _iIdPregunta);
             });
             if (_Validar != undefined) {
                 MensajeModal('Ya existe una respuesta igual', 2);
                 //alert('Ya existe una respuesta igual');
                 return;
             }
-            var list = { "codpregunta": _codPregunta, "Respuesta": _ResTextOpcion, "estado": _chkEstadoCorrecto, "estadovalor": _estadovalor };
+            var list = {
+                "iIdPregunta": _iIdPregunta,
+                "vEnunciadoOpcion": _ResTextOpcion,
+                "estado": _chkEstadoCorrecto,
+                "iEstadoOpcion": _iEstadoOpcion
+            };
             datos.push(list);
             this.OpcionesRespuesta = datos;
 
             var _ListaO = [];
             var _ListaO = datos.filter(function (elem) {
-                return elem.codpregunta == _codPregunta;
+                return elem.iIdPregunta == _iIdPregunta;
             });
             //$.each(datos, function (k, v) {
-            //    if (v.codpregunta == _codPregunta) {
-            //        var list = { "codpregunta": v.codpregunta, "Respuesta": v.Respuesta, "estado": v.estado, "estadovalor": v.estadovalor };
+            //    if (v.iIdPregunta == _iIdPregunta) {
+            //        var list = { "iIdPregunta": v.iIdPregunta, "vEnunciadoOpcion": v.vEnunciadoOpcion, "estado": v.estado, "iEstadoOpcion": v.iEstadoOpcion };
             //        _ListaO.push(list);
             //    }
             //});
@@ -383,12 +417,12 @@ var Capacitacion = new Vue({
         },
         AgregarRespuestaMultiple: function () {
             var datos = this.OpcionesRespuesta;
-            var _codPregunta = this.codPregunta;
+            var _iIdPregunta = this.EstadoActualizar != 0 ? this.EstadoActualizar : this.iIdPregunta;
 
 
             var _ResTextOpcion = $('#ResTextOpcionMultiple').val().trim();
             var _chkEstadoCorrecto = $('#chkEstadoCorrectoMultiple').is(':checked') ? 'Correcto' : 'Incorrecto';
-            var _estadovalor = $('#chkEstadoCorrectoMultiple').is(':checked') ? 1 : 0;
+            var _iEstadoOpcion = $('#chkEstadoCorrectoMultiple').is(':checked') ? 1 : 0;
 
             if (_ResTextOpcion.length == 0) {
                 MensajeModal('Debe ingresar una descripción para la respuesta', 2);
@@ -397,23 +431,28 @@ var Capacitacion = new Vue({
             }
 
             var _Validar = datos.find(function (val) {
-                return (val.Respuesta == _ResTextOpcion && val.codpregunta == _codPregunta);
+                return (val.vEnunciadoOpcion == _ResTextOpcion && val.iIdPregunta == _iIdPregunta);
             });
             if (_Validar != undefined) {
                 MensajeModal('Ya existe una respuesta igual', 2);
                 //alert('Ya existe una respuesta igual');
                 return;
             }
-            var list = { "codpregunta": _codPregunta, "Respuesta": _ResTextOpcion, "estado": _chkEstadoCorrecto, "estadovalor": _estadovalor };
+            var list = {
+                "iIdPregunta": _iIdPregunta,
+                "vEnunciadoOpcion": _ResTextOpcion,
+                "estado": _chkEstadoCorrecto,
+                "iEstadoOpcion": _iEstadoOpcion
+            };
             datos.push(list);
             this.OpcionesRespuesta = datos;
 
             var _ListaO = datos.filter(function (elem) {
-                return elem.codpregunta == _codPregunta;
+                return elem.iIdPregunta == _iIdPregunta;
             });
             //$.each(datos, function (k, v) {
-            //    if (v.codpregunta == _codPregunta) {
-            //        var list = { "codpregunta": v.codpregunta, "Respuesta": v.Respuesta, "estado": v.estado, "estadovalor": v.estadovalor };
+            //    if (v.iIdPregunta == _iIdPregunta) {
+            //        var list = { "iIdPregunta": v.iIdPregunta, "vEnunciadoOpcion": v.vEnunciadoOpcion, "estado": v.estado, "iEstadoOpcion": v.iEstadoOpcion };
             //        _ListaO.push(list);
             //    }
             //});
@@ -424,33 +463,33 @@ var Capacitacion = new Vue({
             $('#ResTextOpcionMultiple').val('');
             $('#chkEstadoCorrectoMultiple').attr('checked', false);
         },
-        QuitarOpcion: function (Respuesta, codpregunta) {
+        QuitarOpcion: function (vEnunciadoOpcion, iIdPregunta) {
             if (this.Estado_Ver_Test == 0) {
                 var datos = this.OpcionesRespuesta;
                 var result = datos.filter(function (elem) {
 
-                    return (elem.Respuesta != Respuesta || elem.codpregunta != codpregunta);
+                    return (elem.vEnunciadoOpcion != vEnunciadoOpcion || elem.iIdPregunta != iIdPregunta);
                 });
                 this.OpcionesRespuesta = result;
                 var _ListaO = result.filter(function (elem) {
-                    return elem.codpregunta == codpregunta;
+                    return elem.iIdPregunta == iIdPregunta;
                 });
 
                 this.tempOpcionesRespuesta = _ListaO;
             }
 
         },
-        QuitarOpcionMultiple: function (Respuesta, codpregunta) {
+        QuitarOpcionMultiple: function (vEnunciadoOpcion, iIdPregunta) {
 
             if (this.Estado_Ver_Test == 0) {
                 var datos = this.OpcionesRespuesta;
                 var result = datos.filter(function (elem) {
 
-                    return (elem.Respuesta != Respuesta || elem.codpregunta != codpregunta);
+                    return (elem.vEnunciadoOpcion != vEnunciadoOpcion || elem.iIdPregunta != iIdPregunta);
                 });
                 this.OpcionesRespuesta = result;
                 var _ListaO = result.filter(function (elem) {
-                    return elem.codpregunta == codpregunta;
+                    return elem.iIdPregunta == iIdPregunta;
                 });
 
                 this.tempOpcionesRespuestaMultiple = _ListaO;
@@ -477,14 +516,11 @@ var Capacitacion = new Vue({
                 var _optRespuesta = $('input:radio[name=optRespuesta]:checked').val();
                 var _TipoRespuesta = $('input:radio[name=optRespuesta]:checked').val() == 1 ? "V/F" : "Opción";
 
-                var _codPregunta = this.codPregunta;
+                var _iIdPregunta = this.iIdPregunta;
                 var datos = this.Lista_Preguntas;
 
-
-
-
                 var _Validar = datos.find(function (val) {
-                    return val.Enunciadotest == _Enunciadotest;
+                    return val.vEnunciadoPregunta == _Enunciadotest;
                 });
                 if (_Validar != undefined) {
                     MensajeModal('Ya existe una respuesta igual', 2);
@@ -508,7 +544,7 @@ var Capacitacion = new Vue({
                 if (_optRespuesta == 2) {
                     var datosR = this.OpcionesRespuesta;
                     var _Validar = datosR.find(function (val) {
-                        return (val.estadovalor == 1 && val.codpregunta == _codPregunta);
+                        return (val.iEstadoOpcion == 1 && val.iIdPregunta == _iIdPregunta);
                     });
                     if (_Validar == undefined) {
                         MensajeModal('Debe ingresar una opcion con estado correcto', 2);
@@ -517,45 +553,88 @@ var Capacitacion = new Vue({
                     }
 
                 }
-
-                var lista = { "codpregunta": _codPregunta, "Enunciadotest": _Enunciadotest, "TipoRespuesta": _TipoRespuesta, "optRespuesta": _optRespuesta, "valortestPorcentaje": _valortest_porcentaje, "valortest": _valortest };
+                var lista = {
+                    "iIdPregunta": _iIdPregunta,
+                    "vEnunciadoPregunta": _Enunciadotest,
+                    "TipoRespuesta": _TipoRespuesta,
+                    "iTipoRespuestaPregunta": _optRespuesta,
+                    "valortestPorcentaje": _valortest_porcentaje,
+                    "valortest": _valortest,
+                    "respuestas": Capacitacion.PreguntaOpcionXML(),
+                };
                 datos.push(lista);
 
                 if (_optRespuesta == 1) {
                     this.GrabarOpcionVF();
                 }
 
-                this.codPregunta = _codPregunta + 1;
+                this.iIdPregunta = _iIdPregunta + 1;
                 this.Lista_Preguntas = datos;
 
             } else {
 
-                var _codpregunta = this.EstadoActualizar;
+                var _iIdPregunta = this.EstadoActualizar;
                 var _Enunciadotest = $('#Enunciadotest').val();
-                var _valortest = $('#valortest').val();
                 var _optRespuesta = $('input:radio[name=optRespuesta]:checked').val();
+                var _valortest_porcentaje = $('#valortest').val();
+                var _valortest = (this.NotaMaxima * _valortest_porcentaje) / 100;
 
                 var datos = this.Lista_Preguntas;
                 $.each(datos, function (key, val) {
-                    if (val.codpregunta == _codpregunta) {
-                        val.Enunciadotest = _Enunciadotest;
+                    if (val.iIdPregunta == _iIdPregunta) {
+                        val.vEnunciadoPregunta = _Enunciadotest;
+                        val.valortestPorcentaje = _valortest_porcentaje;
                         val.valortest = _valortest;
-                        val.optRespuesta = _optRespuesta;
+                        val.iTipoRespuestaPregunta = _optRespuesta;
+                        val.respuestas = Capacitacion.PreguntaOpcionXML();
                     }
                 });
+                if (_optRespuesta == 1) {
+                    this.GrabarOpcionVF();
+                }
             }
             this.LimpiarFormulario();
 
         },
-        QuitarPregunta: function (codpregunta) {
+        PreguntaOpcionXML: function () {
+            var _Respuestas = '';
+            if ($('input:radio[name = optRespuesta]:checked').val() == 1) {
+                var _ResTextOpcion = "";
+                var _chkEstadoCorrecto = "";
+                var _iEstadoOpcion = $('input:radio[name=opRespuesta]:checked').val();
+                var _iIdPregunta = this.iIdPregunta;
+
+                var ListaRespuesta = [];
+                var Respuesta = {
+                    "iIdPregunta": _iIdPregunta,
+                    "vEnunciadoOpcion": _ResTextOpcion,
+                    "estado": _chkEstadoCorrecto,
+                    "iEstadoOpcion": _iEstadoOpcion
+                };
+                ListaRespuesta.push(Respuesta);
+                _Respuestas = this.GenerarXML(ListaRespuesta);
+                _Respuestas = _Respuestas.replace(/</g, '[').replace(/>/g, ']');
+            } else if ($('input:radio[name = optRespuesta]:checked').val() == 2) {
+                _Respuestas = this.GenerarXML(this.tempOpcionesRespuesta);
+                _Respuestas = _Respuestas.replace(/</g, '[').replace(/>/g, ']');
+            } else if ($('input:radio[name = optRespuesta]:checked').val() == 3) {
+                _Respuestas = this.GenerarXML(this.tempOpcionesRespuestaMultiple);
+                _Respuestas = _Respuestas.replace(/</g, '[').replace(/>/g, ']');
+            }
+
+
+
+            return _Respuestas;
+        },
+        QuitarPregunta: function (iIdPregunta) {
             var _Lista_Preguntas = this.Lista_Preguntas;
             var _OpcionesRespuesta = this.OpcionesRespuesta;
 
             _Lista_Preguntas = _Lista_Preguntas.filter(function (val) {
-                return val.codpregunta != codpregunta;
+                return val.iIdPregunta != iIdPregunta;
             });
             _OpcionesRespuesta = _OpcionesRespuesta.filter(function (val) {
-                return val.codpregunta != codpregunta;
+                return val.iIdPregunta != iIdPregunta;
             });
             this.Lista_Preguntas = _Lista_Preguntas;
             this.OpcionesRespuesta = _OpcionesRespuesta;
@@ -563,47 +642,71 @@ var Capacitacion = new Vue({
 
 
         },
-        EditarPeqgunta: function (codpregunta) {
+        EditarPregunta: function (iIdPregunta) {
 
             var _Lista_Preguntas = this.Lista_Preguntas;
             var _OpcionesRespuesta = this.OpcionesRespuesta;
 
             var _ListaP = _Lista_Preguntas.find(function (val) {
-                return val.codpregunta == codpregunta;
+                return val.iIdPregunta == iIdPregunta;
             });
 
             var _ListaO = [];
 
-            $('#Enunciadotest').val(_ListaP.Enunciadotest);
-            $('#valortest').val(_ListaP.valortest);
+            $('#Enunciadotest').val(_ListaP.vEnunciadoPregunta);
+            $('#valortest').val(_ListaP.valortestPorcentaje);
 
-            $('input:radio[name=optRespuesta][value=' + _ListaP.optRespuesta + ']').prop('checked', true);
-            if (_ListaP.optRespuesta == 1) {
+            $('input:radio[name=optRespuesta][value=' + _ListaP.iTipoRespuestaPregunta + ']').prop('checked', true);
+            if (_ListaP.iTipoRespuestaPregunta == 1) {
                 $('#tipoRespuestaOpciones').addClass('hide');
+                $('#tipoRespuestaOpcionesMultiple').addClass('hide');
                 $('#tipoRespuestaVF').removeClass('hide');
                 _ListaO = _OpcionesRespuesta.find(function (val) {
-                    return val.codpregunta == codpregunta;
+                    return val.iIdPregunta == iIdPregunta;
                 });
-                $('input:radio[name=opRespuesta][value=' + _ListaO.estadovalor + ']').prop('checked', true);
+                $('input:radio[name=opRespuesta][value=' + _ListaO.iEstadoOpcion + ']').prop('checked', true);
 
 
-            } else if (_ListaP.optRespuesta == 2) {
+            } else if (_ListaP.iTipoRespuestaPregunta == 2) {
                 $('#tipoRespuestaVF').addClass('hide');
+                $('#tipoRespuestaOpcionesMultiple').addClass('hide');
                 $('#tipoRespuestaOpciones').removeClass('hide');
 
                 $.each(_OpcionesRespuesta, function (k, v) {
-                    if (v.codpregunta == codpregunta) {
-                        var list = { "codpregunta": v.codpregunta, "Respuesta": v.Respuesta, "estado": v.estado, "estadovalor": v.estadovalor };
+                    if (v.iIdPregunta == iIdPregunta) {
+                        var list = {
+                            "iIdPregunta": v.iIdPregunta,
+                            "vEnunciadoOpcion": v.vEnunciadoOpcion,
+                            //"estado": v.iEstadoOpcion == 1 ? 'Correcto' : 'Incorrecto',
+                            "iEstadoOpcion": v.iEstadoOpcion,
+                        };
                         _ListaO.push(list);
                     }
                 });
                 this.tempOpcionesRespuesta = _ListaO;
+            } else if (_ListaP.iTipoRespuestaPregunta == 3) {
+                $('#tipoRespuestaVF').addClass('hide');
+                $('#tipoRespuestaOpciones').addClass('hide');
+                $('#tipoRespuestaOpcionesMultiple').removeClass('hide');
+
+                $.each(_OpcionesRespuesta, function (k, v) {
+                    if (v.iIdPregunta == iIdPregunta) {
+                        var list = {
+                            "iIdPregunta": v.iIdPregunta,
+                            "vEnunciadoOpcion": v.vEnunciadoOpcion,
+                            //"estado": v.iEstadoOpcion == 1 ? 'Correcto' : 'Incorrecto',
+                            "iEstadoOpcion": v.iEstadoOpcion,
+                        };
+                        _ListaO.push(list);
+                    }
+                });
+                this.tempOpcionesRespuestaMultiple = _ListaO;
             }
 
 
             $('#btnAgregarPregunta').text('Actualizar Pregunta');
             $('#btnCancelarPregunta').removeClass('hide');
-            this.EstadoActualizar = _ListaP.codpregunta;
+            this.EstadoActualizar = _ListaP.iIdPregunta;
 
 
 
@@ -618,9 +721,11 @@ var Capacitacion = new Vue({
             $('#btnCancelarPregunta').addClass('hide');
             $('#btnAgregarPregunta').text('Agregar Pregunta');
             this.tempOpcionesRespuesta = [];
+            this.tempOpcionesRespuestaMultiple = [];
         },
         GrabarPreguntas: function () {
-            this.ValidarCantidadPreguntas();
+            if (!this.ValidarCantidadPreguntas())
+                return;
 
             this.Estado_Almacenamiento_Preguntas = 1;
             $("#ModalTest").modal('hide');
@@ -630,6 +735,17 @@ var Capacitacion = new Vue({
             this.Estado_Almacenamiento_Preguntas = 0;
         },
         GrabarOperarios: function () {
+            var _Capacitacion_Personal = []
+            $('#ListaPersonalCapacitacion tr').each(function (k, v) {
+                var check = $(v).find('[type=checkbox]')[0];
+                if ($(check).prop('checked')) {
+                    var dato = {
+                        'iIdPersonal': $(check).attr('data-iIdPersonal'),
+                    }
+                    _Capacitacion_Personal.push(dato);
+                }
+            });
+            this.Capacitacion_Personal = _Capacitacion_Personal;
             this.Estado_Almacenamiento_Operarios = 1;
             $("#ModalOperario").modal('hide');
         },
@@ -653,12 +769,11 @@ var Capacitacion = new Vue({
             }
 
 
-            this.ValidarCantidadPreguntas();
-            //debugger;
-            //if ($('input[name="optRespuesta"]:checked').val() == 1) {
-            //    this.iIdCapacitacion = 1;
-            //}
+            if (!this.ValidarCantidadPreguntas())
+                return;
 
+            var nLatitud = ($('#Latitud').text() == "0" ? "-76.96249462061785" : $('#Latitud').text());
+            var nLongitud = ($('#Longitud').text() == "0" ? "-12.130453115407523" : $('#Longitud').text());
             var GestionCapacitacion = {
                 'iIdCapacitacion': this.iIdCapacitacion,
                 'iIdRepresentante': this.iIdPersonal,
@@ -666,8 +781,8 @@ var Capacitacion = new Vue({
                 'tHoraInicio': $('#horarinicio').data('date'),// $('#horarinicio').val(),
                 'tHoraFin': $('#horartermino').data('date'),//$('#horartermino').val(),
                 'iTiempoTest': $('#tiempotest').val(),
-                'nLatitud': $('#Latitud').text() == "0" ? "-76.96249462061785" : $('#Latitud').text(),
-                'nLongitud': $('#Longitud').text() == "0" ? "-12.130453115407523" : $('#Longitud').text(),
+                'nLatitud': nLatitud,
+                'nLongitud': nLongitud,
                 'iTipoExpositor': $('input:radio[name=optradio]:checked').val()
             }
 
@@ -675,35 +790,27 @@ var Capacitacion = new Vue({
             var _Preguntas = [];
             $.each(_Lista_Preguntas, function (key, val) {
                 var dato = {
-                    "iIdPregunta": parseInt(val.codpregunta),
-                    "vEnunciadoPregunta": val.Enunciadotest,
+                    "iIdPregunta": parseInt(val.iIdPregunta),
+                    "vEnunciadoPregunta": val.vEnunciadoPregunta,
                     "iPuntajePregunta": val.valortest,
-                    "iTipoRespuestaPregunta": val.optRespuesta
+                    "iTipoRespuestaPregunta": val.iTipoRespuestaPregunta,
+                    "respuestas": val.respuestas,
                 };
                 _Preguntas.push(dato);
             });
 
-            var _OpcionesRespuesta = this.OpcionesRespuesta;
-            var _Respuestas = [];
-            $.each(_OpcionesRespuesta, function (key, val) {
-                var dato = {
-                    "iIdPregunta": parseInt(val.codpregunta),
-                    "vEnunciadoOpcion": val.Respuesta,
-                    "iEstadoOpcion": val.estadovalor
-                };
-                _Respuestas.push(dato);
-            });
+            var _CapacitacionPersonal = this.Capacitacion_Personal;
 
 
-            var jsonData = { GestionCapacitacion: GestionCapacitacion, _Preguntas: _Preguntas, _Respuestas: _Respuestas };
+            var jsonData = { GestionCapacitacion: GestionCapacitacion, _Preguntas: _Preguntas, _CapacitacionPersonal: _CapacitacionPersonal };
             axios.post("/Capacitacion/RegistrarCapacitacion/", jsonData).then(function (response) {
                 if (response.data.perosnalizaicon == 1) {
                     Mensaje('La Capacitacion se programo correctamente', 0);
-                    //alert('La Capacitacion se programo correctamente');
-                    //this.Estado_Almacenamiento_Preguntas = 0;
-                    //this.Estado_Almacenamiento_Operarios = 0;
+
                     $('#GESTIONCAPACITACION').addClass('hide');
                     $('#CAPACITACION').removeClass('hide');
+                    this.ListaCapacitacion();
+
                 } else {
                     Mensaje('Ocurrio un error', 2);
                     //alert('Ocurrio un error');
@@ -723,11 +830,11 @@ var Capacitacion = new Vue({
                 sumatoria_puntos = sumatoria_puntos + parseInt(val.valortestPorcentaje);
             });
             if (sumatoria_puntos < 100) {
-
-                alert('El valor de las preguntas debe llegar al 100%');
+                MensajeModal('El valor de las preguntas debe llegar al 100%', 2);
                 this.Estado_Almacenamiento_Preguntas = 0;
-                return;
+                return false;
             };
+            return true;
         },
         TipoRespuestas: function () {
             if ($('input[name="optRespuesta"]:checked').val() == 1) {
@@ -751,6 +858,84 @@ var Capacitacion = new Vue({
             $('#ExpoApeMat').val(this.ApellidoME);
             $("#ModalEmpresaExterna").modal('hide');
         },
+        GenerarXML: function (dato) {
+            var object = dato;
+            var XML = '<ListaRespuesta>';
+            var hijos = '';
+            $.each(object, function (k, v) {
+                var doc = $.parseXML("<Respuesta/>")
+                var json = v;
+                var xml = doc.getElementsByTagName("Respuesta")[0];
+                var key, elem;
+                for (key in json) {
+                    if (json.hasOwnProperty(key)) {
+                        elem = doc.createElement(key)
+                        $(elem).text(json[key])
+                        xml.appendChild(elem);
+                    }
+                }
+                hijos += xml.outerHTML;
+            });
+            XML += hijos + '</ListaRespuesta>';
+            return XML;
+        },
+        MostrarTest: function () {
+            var _Lista_Preguntas = [];
+            var _Lista_Opciones = [];
+            var _html = "";
+
+            _Lista_Preguntas = this.Lista_Preguntas;
+            _Lista_Opciones = this.OpcionesRespuesta;
+
+            $.each(_Lista_Preguntas, function (key, val) {
+                _html = _html +
+                    '<div class="col-sm-12 text-center">' +
+                    "<h3>" + (key + 1) + ".- " + val.vEnunciadoPregunta + "</h3></div>";
+                switch (parseInt(val.iTipoRespuestaPregunta)) {
+                    case 1:
+                        $.each(_Lista_Opciones, function (keyR, valR) {
+
+                            if (val.iIdPregunta == valR.iIdPregunta) {
+                                _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                                if (valR.iEstadoOpcion == 1) {
+                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" checked disabled>Verdadero</label>';
+                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" disabled>Falso</label>';
+                                } else {
+                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" disabled>Verdadero</label>';
+                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" checked disabled>Falso</label>';
+                                }
+                                _html = _html + '</div>';
+                            }
+                        });
+                        break;
+                    case 2:
+                        _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                        var bEstado = "checked";
+                        $.each(_Lista_Opciones, function (k, v) {
+                            if (val.iIdPregunta == v.iIdPregunta) {
+                                bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
+                                _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled >' + v.vEnunciadoOpcion + '</label>';
+                            }
+                        });
+                        _html = _html + '</div>'; break;
+                    case 3:
+                        _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                        var bEstado = "checked";
+                        $.each(_Lista_Opciones, function (k, v) {
+                            if (val.iIdPregunta == v.iIdPregunta) {
+                                bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
+                                _html = _html + '<label class="checkbox-inline"><input type="checkbox" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled>' + v.vEnunciadoOpcion + '</label>';
+                            }
+                        });
+                        _html = _html + '</div>'; break;
+                    default: _html += ''; break;
+                }
+
+            });
+            $('#ModalVisualizarTest').modal('show');
+            $('#PContenido').html(_html);
+
+        },
     },
     computed: {},
     created: function () {
@@ -771,7 +956,7 @@ $("#tbCapacitacion").on("click", "button.Gestionar", function () {
     } else {
         data = table.row($(this).parents("tr")).data();
     }
-    
+
     Capacitacion.GestionarCapacitacion(data["iIdCapacitacion"], data["vCodCapacitacion"], data["vTemaCapacitacion"]);
 });
 
@@ -781,10 +966,11 @@ $("#tbCapacitacion").on("click", "button.Editar", function () {
     var data = null;
     data = table.row($(this).parents("tr")).data();
     $('.txtCodigo').removeClass('hide');
-    Capacitacion.iIdCapacitacion = data["iIdCapacitacion"];    
+    Capacitacion.iIdCapacitacion = data["iIdCapacitacion"];
     $('#txtTema').val(data["vTemaCapacitacion"]);
     $('#txtCodigo').val(data["vCodCapacitacion"]);
     $("#txtFechaCapacitacion").datetimepicker("setDate", new Date(data["dFechaPropuestaCapacitacion"]));
+    $('#cboEstadoCapacitacion').val(data["iEstadoCapactiacion"]);
     $("#ModalCapacitacion").modal('show');
 
 });

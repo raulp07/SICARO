@@ -20,9 +20,10 @@ namespace WEBAPI_SICARO.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<CAPACITACION_PERSONAL_EL> GET(int id)
+        [Route("GETCAPACITACION_PERSONAL")]
+        public IEnumerable<CAPACITACION_PERSONAL_EL> GET(int value, int value2, int value3)
         {
-            return CAPACITACION_PERSONAL_DA.Accion.GetAllCAPACITACION_PERSONAL(id);
+            return CAPACITACION_PERSONAL_DA.Accion.GetAllCAPACITACION_PERSONAL(value, value2, value3);
         }
 
         [HttpPost]
@@ -31,7 +32,7 @@ namespace WEBAPI_SICARO.Controllers
             return CAPACITACION_PERSONAL_DA.Accion.InsertCAPACITACION_PERSONAL(value);
         }
 
-        [HttpPut]        
+        [HttpPut]
         public int Put(int id, CAPACITACION_PERSONAL_EL value)
         {
             return CAPACITACION_PERSONAL_DA.Accion.UpdateCAPACITACION_PERSONAL(value);

@@ -49,21 +49,37 @@ namespace WEBAPI_SICARO.Persistencia
                             if (dataReader["Nombres"] != DBNull.Value) { obj.Nombres = (string)dataReader["Nombres"]; }
                             if (dataReader["Apellidos"] != DBNull.Value) { obj.Apellidos = (string)dataReader["Apellidos"]; }
                             if (dataReader["Cargo"] != DBNull.Value) { obj.Cargo = (string)dataReader["Cargo"]; }
-                            if (dataReader["Email"] != DBNull.Value) { obj.Email = (string)dataReader["Email"]; }
                             if (dataReader["Telefono"] != DBNull.Value) { obj.Telefono = (string)dataReader["Telefono"]; }
-                            if (dataReader["Estado"] != DBNull.Value) { obj.Estado = (byte)dataReader["Estado"]; }
                             if (dataReader["CambiarContrasenia"] != DBNull.Value) { obj.CambiarContrasenia = (bool)dataReader["CambiarContrasenia"]; }
                             if (dataReader["FechaVencimientoCta"] != DBNull.Value) { obj.FechaVencimientoCta = (DateTime)dataReader["FechaVencimientoCta"]; }
                             if (dataReader["FechaVencimiento"] != DBNull.Value) { obj.FechaVencimiento = (DateTime)dataReader["FechaVencimiento"]; }
                             if (dataReader["AuditoriaUC"] != DBNull.Value) { obj.AuditoriaUC = (int)dataReader["AuditoriaUC"]; }
                             if (dataReader["AuditoriaUM"] != DBNull.Value) { obj.AuditoriaUM = (int)dataReader["AuditoriaUM"]; }
-                            if (dataReader["AuditoriaFC"] != DBNull.Value) { obj.AuditoriaFC = (DateTime)dataReader["AuditoriaFC"]; }
                             if (dataReader["AuditoriaFM"] != DBNull.Value) { obj.AuditoriaFM = (DateTime)dataReader["AuditoriaFM"]; }
 
                             list.Add(obj);
                         }
                     }
                     return list;
+                }
+            }
+        }
+
+        public int InsertUSUARIO(USUARIO_EL C)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("spInsertUSUARIO", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@IdRol", SqlDbType.Int).Value = C.IdRol;
+                    com.Parameters.Add("@CtaUsuario", SqlDbType.VarChar).Value = C.CtaUsuario;
+                    com.Parameters.Add("@Contrasenia", SqlDbType.VarChar).Value = C.Contrasenia;
+                    com.Parameters.Add("@Nombres", SqlDbType.VarChar).Value = C.Nombres;
+                    com.Parameters.Add("@Apellidos", SqlDbType.VarChar).Value = C.Apellidos;
+                    com.Parameters.Add("@iIdPersonal", SqlDbType.Int).Value = Convert.ToInt32(C.Cargo);
+                    return com.ExecuteNonQuery();
                 }
             }
         }

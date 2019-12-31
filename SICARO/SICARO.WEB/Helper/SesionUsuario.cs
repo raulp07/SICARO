@@ -10,11 +10,11 @@ namespace SICARO.WEB.Models
     {
         #region "Propiedades"
 
-        //public static UsuarioEL Usuario
-        //{
-        //    get { return Obtener<UsuarioEL>("entrada"); }
-        //    set { Asignar("entrada", value); }
-        //}
+        public static USUARIO_EL Usuario
+        {
+            get { return Obtener<USUARIO_EL>("entrada"); }
+            set { Asignar("entrada", value); }
+        }
 
         public static List<OpcionXPerfil_EL> MenuRoot
         {
@@ -27,12 +27,12 @@ namespace SICARO.WEB.Models
             get { return ConfigurationManager.AppSettings["urlSite"].ToString(); }
         }
 
-        //public static AplicacionEL Aplicacion
-        //{
-        //    get { return Obtener<AplicacionEL>("aplicationWeb"); }
-        //    set { Asignar("aplicationWeb", value); }
-        //}
-        
+        public static AplicacionEL Aplicacion
+        {
+            get { return Obtener<AplicacionEL>("aplicationWeb"); }
+            set { Asignar("aplicationWeb", value); }
+        }
+
         private static void Asignar(string key, object value)
         {
             if (HttpContext.Current.Session[key] == null)

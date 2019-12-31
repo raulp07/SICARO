@@ -1,8 +1,10 @@
-﻿
+﻿@using SICARO.WEB.Models
 @{
     ViewBag.Title = "Index";
+    var usuario = SesionUsuario.Usuario;
 }
-
+@if (@usuario != null)
+{
 
 <div id="app">
 
@@ -10,7 +12,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="form-group">
-                    <h1 class="text-center">Menú Capacitaciones</h1>
+                    <h1 class="text-center">Menú de Capacitaciones</h1>
                 </div>
             </div>
         </div>
@@ -30,8 +32,8 @@
                             <th>Tema</th>
                             <th>Fecha</th>
                             <th>Estado</th>
-                            <th></th>
-                            <th></th>
+                            <th>Gestionar</th>
+                            <th>Editar</th>
                         </tr>
                     </thead>
                 </table>
@@ -48,14 +50,14 @@
             <h1 class="text-center">Gestión de Capacitación {{ vCodCapacitacion }}</h1>
         </div>
         <div class="row">
-            <h3 class="col-sm-6 control-label text-right">Tema</h3>
+            <h3 class="col-sm-6 control-label text-right">Tema:</h3>
             <h3 class="col-sm-6 control-label text-left">{{ vTemaCapacitacion }}</h3>
         </div>
         <br />
         <div class="row">
             <div class="col-sm-3">
                 <div class="form-group">
-                    <label for="fecha" class="control-label">Fecha</label>
+                    <label for="dfecha" class="control-label">Fecha</label>
                     <div class='input-group date' id='dfecha' data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
                         <input type='text' class="form-control" />
                         <span class="input-group-addon">
@@ -81,7 +83,7 @@
 
             <div class="col-sm-3">
                 <div class="form-group ">
-                    <label for="horartermino" class="control-label">Hora Termino</label>
+                    <label for="horartermino" class="control-label">Hora Fin</label>
                     <div class='input-group date' id='horartermino' data-date-format="hh:ii">
                         <input type='text' class="form-control" />
                         <span class="input-group-addon">
@@ -93,7 +95,7 @@
             </div>
             <div class="col-sm-3">
                 <div class="form-group ">
-                    <label for="tiempotest" class="control-label">Tiempo Test</label>
+                    <label for="tiempotest" class="control-label">Tiempo de duración(min)</label>
                     <input id="tiempotest" class="form-control" type="number" max="60" min="10" step="10" value="20" />
                 </div>
             </div>
@@ -153,6 +155,13 @@
                             </div>
                         </div>
                         <br /><br />
+                        <div class="form-group">
+                            <label for="ExpoDNI" class="col-sm-4 control-label">DNI</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" id="ExpoDNI" type="text" disabled>
+                            </div>
+                        </div>
+                        <br /><br />
                         <div class="form-group hide">
                             <label for="ExpoEmpresa" class="col-sm-4 control-label">Empresa</label>
                             <div class="col-sm-8">
@@ -168,7 +177,7 @@
                         <button type="button" class="form-control btn btn-primary " v-on:click="PrepararTest">Preparar Test</button>
                     </div>
                     <div class="form-group col-xs-3 col-sm-8 col-md-8 col-lg-8 col-xl-3 fa-pull-right">
-                        <button type="button" class="form-control btn btn-primary " v-on:click="VerTest">Ver Test</button>
+                        <button type="button" class="form-control btn btn-primary " v-on:click="MostrarTest">Ver Test</button>
                     </div>
                     <div class="form-group col-xs-3 col-sm-8 col-md-8 col-lg-8 col-xl-3 fa-pull-right">
                         <button type="button" class="form-control btn btn-primary " v-on:click="AgregarOperarios">Agregar Operarios</button>
@@ -187,15 +196,15 @@
         <br /><br />
         <div class="row text-center">
             <div class="col-sm-6">
-                <button type="button" class="btn btn-success col-sm-8 col-sm-offset-2" v-on:click="GrabarCapacitacion">Grabar Capacitación</button>
+                <button type="button" class="btn btn-success col-sm-8 col-sm-offset-2" v-on:click="GrabarCapacitacion">Guardar capacitación</button>
             </div>
             <div class="col-sm-6">
-                <button type="button" class="btn btn-warning col-sm-8 col-sm-offset-2" v-on:click="CancelarCapacitacion">Retroceder y Cancelar</button>
+                <button type="button" class="btn btn-warning col-sm-8 col-sm-offset-2" v-on:click="CancelarCapacitacion">Salir</button>
             </div>
         </div>
 
     </div>
-    <div class="modal fade" id="ModalPersonal">
+    <div class="modal fade" id="ModalPersonal" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -218,7 +227,7 @@
                                 <td class="vCodPersonal">{{lista.vCodPersonal}}</td>
                                 <td>{{ lista.vNombrePersonal }} {{lista.vApellidoPaternoPersonal}} {{lista.vApellidoMaternoPersonal}}</td>
                                 <td><label class="radio-inline"><input type="radio" v-on:click="ExpositorSeleccionado(lista.vCodPersonal,lista.iIdPersonal)" name="optExpositor" class="optExpositor"></label></td>
-                                <td class="hide idexpositor" >{{lista.iIdPersonal}}</td>
+                                <td class="hide idexpositor">{{lista.iIdPersonal}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -231,7 +240,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="ModalCapacitacion">
+    <div class="modal fade" id="ModalCapacitacion" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -291,7 +300,7 @@
     </div>
 
 
-    <div class="modal fade" id="ModalPersonal">
+    <div class="modal fade" id="ModalPersonal" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -325,7 +334,7 @@
         </div>
     </div>
     <!-- Test -->
-    <div id="ModalTest" class="modal fade" role="dialog">
+    <div id="ModalTest" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -349,14 +358,14 @@
                         </div>
                         <br />
                         <div class="row">
-                            <div class="col-md-12"><label class="">Tipo Respuesta</label></div>
+                            <div class="col-md-12"><label class="">Tipo de Respuesta</label></div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 text-right">
                                 <label class="radio-inline "><input type="radio" class="radio" v-on:click="TipoRespuestas" name="optRespuesta" value="1" checked>V/F</label>
                             </div>
                             <div class="col-md-4 text-center">
-                                <label class="radio-inline"><input type="radio" class="radio" v-on:click="TipoRespuestas" name="optRespuesta" value="2">Opción</label>
+                                <label class="radio-inline"><input type="radio" class="radio" v-on:click="TipoRespuestas" name="optRespuesta" value="2">Opciones</label>
                             </div>
                             <div class="col-md-4 text-left">
                                 <label class="radio-inline "><input type="radio" class="radio" v-on:click="TipoRespuestas" name="optRespuesta" value="3">Opción Multiple</label>
@@ -406,10 +415,11 @@
                                             </thead>
                                             <tbody>
                                                 <tr v-for="lista in tempOpcionesRespuesta">
-                                                    <td>{{ lista.Respuesta }}</td>
-                                                    <td>{{ lista.estado }}</td>
+                                                    <td>{{ lista.vEnunciadoOpcion }}</td>
+                                                    <td v-if="lista.iEstadoOpcion == 1">Correcto</td>
+                                                    <td v-else>Incorrecto</td>
                                                     <td>
-                                                        <input type="button" value="X" v-on:click="QuitarOpcion(lista.Respuesta,lista.codpregunta)" class="btn btn-default" />
+                                                        <input type="button" value="X" v-on:click="QuitarOpcion(lista.vEnunciadoOpcion,lista.iIdPregunta)" class="btn btn-default" />
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -450,10 +460,11 @@
                                             </thead>
                                             <tbody>
                                                 <tr v-for="lista in tempOpcionesRespuestaMultiple">
-                                                    <td>{{ lista.Respuesta }}</td>
-                                                    <td>{{ lista.estado }}</td>
+                                                    <td>{{ lista.vEnunciadoOpcion }}</td>
+                                                    <td v-if="lista.iEstadoOpcion == 1">Correcto</td>
+                                                    <td v-else>Incorrecto</td>
                                                     <td>
-                                                        <input type="button" value="X" v-on:click="QuitarOpcionMultiple(lista.Respuesta,lista.codpregunta)" class="btn btn-default" />
+                                                        <input type="button" value="X" v-on:click="QuitarOpcionMultiple(lista.vEnunciadoOpcion,lista.iIdPregunta)" class="btn btn-default" />
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -488,13 +499,13 @@
                                     </thead>
                                     <tbody>
                                         <tr v-for="lista in Lista_Preguntas" class="col-sm-12">
-                                            <td class="col-sm-5">{{ lista.Enunciadotest }}</td>
+                                            <td class="col-sm-5">{{ lista.vEnunciadoPregunta }}</td>
                                             <td class="col-sm-1">{{ lista.TipoRespuesta }}</td>
                                             <td class="col-sm-1">{{ lista.valortest }}</td>
                                             <td class="col-sm-1">{{ lista.valortestPorcentaje }}</td>
                                             <td class="col-sm-4">
-                                                <input type="button" value="Quitar" v-on:click="QuitarPregunta(lista.codpregunta)" class="btn btn-default" />
-                                                <input type="button" value="Editar" v-on:click="EditarPeqgunta(lista.codpregunta)" class="btn btn-default" />
+                                                <input type="button" value="Quitar" v-on:click="QuitarPregunta(lista.iIdPregunta)" class="btn btn-default" />
+                                                <input type="button" value="Editar" v-on:click="EditarPregunta(lista.iIdPregunta)" class="btn btn-default" />
                                             </td>
                                         </tr>
                                     </tbody>
@@ -518,7 +529,7 @@
     </div>
 
     <!-- Operarios -->
-    <div id="ModalOperario" class="modal fade" role="dialog">
+    <div id="ModalOperario" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -538,17 +549,17 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr class="col-sm-12">
-                                    <td class="col-sm-8">Personal</td>
-                                    <td class="col-sm-2">Area</td>
-                                    <td class="col-sm-2">Opcioón</td>
+                                    <td class="col-sm-5">Personal</td>
+                                    <td class="col-sm-5">Area</td>
+                                    <td class="col-sm-2">Selección</td>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="ListaPersonalCapacitacion">
                                 <tr v-for="lista in Lista_Operarios" class="col-sm-12">
-                                    <td class="col-sm-8">{{ lista.vNombrePersonal }} {{ lista.vApellidoPaternoPersonal }}</td>
-                                    <td class="col-sm-2">{{ lista.iIdArea }}</td>
+                                    <td class="col-sm-5">{{ lista.vNombrePersonal }} {{ lista.vApellidoPaternoPersonal }}</td>
+                                    <td class="col-sm-5">{{ lista.de_Area }}</td>
                                     <td class="col-sm-2">
-                                        <input type="checkbox" class="checkbox" /> @*disabled="disabled" />*@
+                                        <input type="checkbox" class="checkbox chkPersonalCapacitacion" v-bind:data-iIdPersonal="lista.iIdPersonal" v-bind:checked="lista.iEstadoPersonal == -1" /> @*disabled="disabled" />*@
                                     </td>
                                 </tr>
                             </tbody>
@@ -557,7 +568,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="col-sm-4 col-sm-offset-1">
-                        <button type="button" class="btn btn-default cancelaroperarios" v-on:click="CancelarOperarios()">Cancelar</button>
+                        <button type="button" class="btn btn-default cancelaroperarios" v-on:click="CancelarOperarios()">Salir</button>
                     </div>
                     <div class="col-sm-4 col-sm-offset-1">
                         <button type="button" class="btn btn-primary" v-on:click="GrabarOperarios()">Grabar</button>
@@ -570,7 +581,7 @@
     </div>
 
     <!-- Expositor Externo -->
-    <div id="ModalEmpresaExterna" class="modal fade" role="dialog">
+    <div id="ModalEmpresaExterna" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog ">
 
             <!-- Modal content-->
@@ -672,25 +683,25 @@
     </div>
 
     <!-- Mapa -->
-    <div id="ModalMapa" class="modal fade" role="dialog">
+    <div id="ModalMapa" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog modal-lg" style="width: 100%">
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Operarios</h4>
+                    <h4 class="modal-title">Mapa</h4>
                 </div>
 
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-sm-6">
-                            <label class="">Latitud</label>
-                            <label id="Latitud" class="label-danger"></label>
+                            <label class="">Latitud : </label>
+                            <label id="Latitud" class="">0</label>
                         </div>
                         <div class="col-sm-6">
-                            <label class="">Latitud</label>
-                            <label id="Longitud" class="label-danger"></label>
+                            <label class="">Latitud : </label>
+                            <label id="Longitud" class="">0</label>
                         </div>
                     </div>
                     <div class="row">
@@ -713,6 +724,35 @@
 
         </div>
     </div>
-</div>
 
+    <!-- Visualizar Test -->
+    <div id="ModalVisualizarTest" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog" >
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modelo del Test</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row" id="PContenido"></div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-sm-4 col-sm-offset-3">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+}
+else
+{
+    Html.RenderPartial("~/Views/Utilitarios/Desconeccion.cshtml");
+}
 <script src="~/Scripts/JsCapacitacion/Capacitacion.js"></script>

@@ -201,14 +201,19 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CapacitacionController.cs" />
+    <Compile Include="Controllers\CATEGORIAController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MateriaPrimaController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\PersonalController.cs" />
     <Compile Include="Controllers\PrediccionesController.cs" />
+    <Compile Include="Controllers\ProductoController.cs" />
     <Compile Include="Controllers\PronosticoController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
     <Compile Include="Controllers\ReporteController.cs" />
+    <Compile Include="Controllers\RolController.cs" />
     <Compile Include="Controllers\TestEvaluacionController.cs" />
     <Compile Include="Controllers\TestRespuestaController.cs" />
     <Compile Include="Controllers\TGeneralController.cs" />
@@ -219,8 +224,11 @@
     </Compile>
     <Compile Include="Helper\SesionUsuario.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AplicacionEL.cs" />
     <Compile Include="Models\CAPACITACION_EL.cs" />
     <Compile Include="Models\CAPACITACION_PERSONAL_EL.cs" />
+    <Compile Include="Models\CATEGORIA_EL.cs" />
+    <Compile Include="Models\Constantes.cs" />
     <Compile Include="Models\CONTROLPRODUCCION_EL.cs" />
     <Compile Include="Models\DETALLE_CAPACITACION_PERSONAL_EL.cs" />
     <Compile Include="Models\EVALUACIONPROVEEDORPREGUNTA_EL.cs" />
@@ -232,6 +240,16 @@
     <Compile Include="Models\Opcion_EL.cs" />
     <Compile Include="Models\OpcionXPerfil_EL.cs" />
     <Compile Include="Models\OPCION_PREGUNTA_EL.cs" />
+    <Compile Include="Models\ParametroEL.cs" />
+    <Compile Include="Models\PerfilEL.cs" />
+    <Compile Include="Models\Prediccion_EL.cs" />
+    <Compile Include="Models\PRODUCTO_EL.cs" />
+    <Compile Include="Models\PRODUCTO_MATERIAPRIMA_EL.cs" />
+    <Compile Include="Models\pronostico_arribo_insumo_EL.cs" />
+    <Compile Include="Models\pronostico_cantidad_producida_EL.cs" />
+    <Compile Include="Models\pronostico_duracion_insumo_EL.cs" />
+    <Compile Include="Models\pronostico_merma_insumo_EL.cs" />
+    <Compile Include="Models\PROVEEDOR_MATERIAPRIMA_EL.cs" />
     <Compile Include="Models\Rol_EL.cs" />
     <Compile Include="Models\PERSONAL_EL.cs" />
     <Compile Include="Models\PREGUNTA_EL.cs" />
@@ -310,6 +328,9 @@
     <Content Include="Scripts\JsPredicciones\Predicciones.js" />
     <Content Include="Scripts\JsPronostico\Pronostico.js" />
     <Content Include="Scripts\JSSICARO\MateriaPrima.js" />
+    <Content Include="Scripts\JSSICARO\Menu.js" />
+    <Content Include="Scripts\JSSICARO\Personal.js" />
+    <Content Include="Scripts\JSSICARO\Rol.js" />
     <Content Include="Scripts\JSSICARO\TGeneral.js" />
     <Content Include="Scripts\JsTestEvaluacion\TestEvaluacion.js" />
     <Content Include="Scripts\JsTestRespuesta\TestRespuesta.js" />
@@ -370,8 +391,16 @@
     <Content Include="Views\Utilitarios\Ubigeo.cshtml" />
     <Content Include="Views\TGeneral\Index.cshtml" />
     <Content Include="Views\MateriaPrima\Index.cshtml" />
+    <Content Include="Views\Utilitarios\Desconeccion.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="fonts\Logos\" />
+    <Folder Include="Views\CATEGORIA\" />
+    <Folder Include="Views\Menu\" />
+    <Folder Include="Views\Personal\" />
+    <Folder Include="Views\Producto\" />
+    <Folder Include="Views\Rol\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

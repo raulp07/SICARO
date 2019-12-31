@@ -22,12 +22,24 @@ namespace SICARO.WEB.Controllers
         }
 
         [HttpPost]
+        public JsonResult ListaProducto()
+        {
+            try
+            {
+                var ListaProducto = js.Deserialize<List<PRODUCTO_EL>>(Utilitario.Accion.Conect_WEBAPI("PRODUCTO", "GET", "", "0"));
+                return Json(new { ListaProducto = ListaProducto }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { ListaProducto = "" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public JsonResult ListaMateriaPrima(MATERIA_PRIMA_EL MP)
         {
             try
             {
-                //string postdata = js.Serialize(MP);
-
                 var ListaMATERIA_PRIMA = js.Deserialize<List<MATERIA_PRIMA_EL>>(Utilitario.Accion.Conect_WEBAPI("MATERIA_PRIMA", "GET", "", "0"));
                 return Json(new { ListaMATERIA_PRIMA = ListaMATERIA_PRIMA }, JsonRequestBehavior.AllowGet);
             }
@@ -38,14 +50,11 @@ namespace SICARO.WEB.Controllers
         }
 
         [HttpPost]
-        public JsonResult ListaMateriaPrimaProveedor(PROVEEDOR_EL MP)
+        public JsonResult ListaMateriaPrimaProveedor(MATERIA_PRIMA_EL MP)
         {
             try
             {
-                var ListaMATERIA_PRIMAProveedor = js.Deserialize<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", "0"));
-
-                //string postdata = JsonConvert.SerializeObject(MP);
-                //var data = JsonConvert.DeserializeObject<List<PROVEEDOR_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR", "GET", "", MP.iIdProveedor));
+                var ListaMATERIA_PRIMAProveedor = js.Deserialize<List<PROVEEDOR_MATERIAPRIMA_EL>>(Utilitario.Accion.Conect_WEBAPI("PROVEEDOR_MATERIAPRIMA", "GET", "", "0&value2=" + MP.iIdMateriaPrima));
 
                 return Json(new { ListaMATERIA_PRIMAProveedor = ListaMATERIA_PRIMAProveedor }, JsonRequestBehavior.AllowGet);
             }
@@ -56,32 +65,72 @@ namespace SICARO.WEB.Controllers
         }
 
         [HttpPost]
-        public JsonResult GuardarPronosticos(PRONOSTICO_EL P)
+        public JsonResult GuardarPronosticos(CONTROLPRODUCCION_EL P)
         {
             try
             {
-                HttpClient clientHttp = new HttpClient();
-                clientHttp.BaseAddress = new Uri("http://127.0.0.1:5000/");
+                var ListaPrediccionGrafica = new object();
+                string data = "";
+                string consulta = "";
+                string Llamada = "";
+                switch (P.tipoPronostico)
+                {
+                    case 1:
+                        data = P.idProducto + "&value2=" + P.idProveedor + "&value3=" + P.idUnidadMedida + "&value4=" + P.idIntervaloProduccion;
+                        consulta = "producto=" + P.idProducto + "&proveedor=" + P.idProveedor + "&unidadmedida=" + P.idUnidadMedida + "&peso=" + P.Peso + "&vecesutilizadoprod=" + P.idIntervaloProduccion;
+                        Llamada = "duracioninsumo";
+                        ListaPrediccionGrafica = js.Deserialize<List<pronostico_duracion_insumo_EL>>(Utilitario.Accion.Conect_WEBAPI("PREDICCION/pronostico_duracion_insumo", "GET", "", data));
+                        break;
+                    case 2:
+                        data = P.idProducto + "&value2=" + P.idProveedor + "&value3=" + P.idUnidadMedida;
+                        consulta = "producto=" + P.idProducto + "&proveedor=" + P.idProveedor + "&unidadmedida=" + P.idUnidadMedida + "&peso=" + P.Peso;
+                        Llamada = "arriboinsumo";
+                        ListaPrediccionGrafica = js.Deserialize<List<pronostico_arribo_insumo_EL>>(Utilitario.Accion.Conect_WEBAPI("PREDICCION/pronostico_arribo_insumo", "GET", "", data));
+                        break;
+                    case 3:
+                        data = P.idProducto + "&value2=" + P.idActividad;
+                        consulta = "producto=" + P.idProducto + "&actividad=" + P.idActividad + "&cantidad=" + P.cantidadProducida;
+                        Llamada = "cantidadproducida";
+                        ListaPrediccionGrafica = js.Deserialize<List<pronostico_cantidad_producida_EL>>(Utilitario.Accion.Conect_WEBAPI("PREDICCION/pronostico_cantidad_producida", "GET", "", data));
+                        break;
+                    case 4:
+                        data = P.idProducto + "&value2=" + P.idProveedor + "&value3=" + P.idUnidadMedida;
+                        consulta = "producto=" + P.idProducto + "&proveedor=" + P.idProveedor + "&unidadmedida=" + P.idUnidadMedida + "&peso=" + P.Peso;
+                        Llamada = "mermainsumo";
+                        ListaPrediccionGrafica = js.Deserialize<List<pronostico_merma_insumo_EL>>(Utilitario.Accion.Conect_WEBAPI("PREDICCION/pronostico_merma_insumo", "GET", "", data));
+                        break;
+                    default:
+                        break;
+                }
 
-                //byte[]  buffer = Encoding.UTF8.GetBytes("{}");
-                //ByteArrayContent byteContent = new ByteArrayContent(buffer);
-                //byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                //var request = clientHttp.PostAsync("api/MATERIA_PRIMA", byteContent).Result;
+                var respuesta = new Respuesta();
+                respuesta.prediccion = "12.23213";
+                respuesta.exactitud = "0.236543";
+                respuesta.mse = "16.21";
+
+                var resultado = respuesta;// js.Deserialize<object>(Utilitario.Accion.Conect_WEBPython(Llamada, "GET", "", consulta));
+
+                P.PRECISION = Convert.ToInt16(decimal.Round(Convert.ToDecimal(resultado.exactitud) * 100)) + "%";
+                P.ErrorMedioCuadratico = resultado.mse;
+                P.predicion = Convert.ToInt16(decimal.Round(Convert.ToDecimal(resultado.prediccion)));
+
+                string postdata = JsonConvert.SerializeObject(P);
+                var Res = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CONTROLPRODUCCION", "POST", postdata));
 
 
-                var request = clientHttp.GetAsync("escenario1?producto=1&proveedor=1&unidadmedida=1&peso=15").Result;
-                var resultado = request.Content.ReadAsStringAsync().Result;
-
-                //var resultado = clientHttp.PostAsync("api/MATERIA_PRIMA?value=1").Result;
-
-                //string postdata = js.Serialize(P);
-                //int resultado = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("IPRONOSTICO", "POST", postdata));
-                return Json("", JsonRequestBehavior.AllowGet);
+                return Json(new { resultado = resultado, ListaPrediccionGrafica = ListaPrediccionGrafica }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
                 return Json(new { resultado = "" }, JsonRequestBehavior.AllowGet);
             }
+        }
+        public class Respuesta
+        {
+            public string prediccion { get; set; }
+            public string exactitud { get; set; }
+            public string mse { get; set; }
+
         }
     }
 }

@@ -17,10 +17,11 @@ namespace WEBAPI_SICARO.Controllers
             return OpcionXPerfil_DA.Accion.ListMenu(value);
         }
 
-        //public int POST(OpcionXPerfil_EL value)
-        //{
-        //    return OpcionXPerfil_DA.Accion.InsertOpcionXPerfil(value);
-        //}
+        [HttpPost]
+        public int POST(Opcion_EL value)
+        {
+            return OpcionXPerfil_DA.Accion.InsertOpcionXPerfil(value);
+        }
 
         //// PUT api/values/5
         //public int Put(int id,OpcionXPerfil_EL value)

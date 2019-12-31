@@ -1,7 +1,9 @@
 ﻿@using SICARO.WEB.Models
 @*@using SICARO.WEB.*@
 
-
+@{
+    var usuario = SesionUsuario.Usuario;
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +11,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
-  
+
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
@@ -18,27 +20,32 @@
     <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Scripts/bootstrap-datetimepicker.es.js"></script>
 
-    
+
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIOg3VBuE6fYGfaWyPjU3Xa7N4I742-Rs"></script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    <script src="../Scripts/jquery.inputmask.bundle.min.js"></script>
+    <script src="~/Scripts/jquery.inputmask.bundle.min.js"></script>
     <link href="~/Content/font-awesome.css" rel="stylesheet" />
 
 
-    <link  href="~/Content/datatables.min.css" rel="stylesheet" />
+    <link href="~/Content/datatables.min.css" rel="stylesheet" />
     <link href="~/Content/dataTables.jqueryui.min.css" rel="stylesheet" />
 
     <script type="text/javascript" src="~/Scripts/datatables.min.js"></script>
 
-    
+
 
 
 </head>
 <body>
+
+
+
+
+
     <div id="throbber" style="display:none; min-height:120px;"></div>
     <div id="noty-holder"></div>
     <div id="wrapper">
@@ -53,24 +60,33 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="/Home">
-                    @*<img src="~/App_Data/Logos/logoDigesa.png" alt="LOGO" >*@
-                    <img src="~/App_Data/Logos/logoDigesa.jpg" />
+                    <img src="~/fonts/Logos/logoDigesa.jpg" alt="LOGO" style="width:150px;height:50px" />
                 </a>
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
-                <li>
-                    <a href="#" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Stats">
-                        <i class="fa fa-bar-chart-o"></i>
-                    </a>
-                </li>
+                @*<li>
+                        <a href="#" data-placement="bottom" data-toggle="tooltip" href="#" data-original-title="Stats">
+                            <i class="fa fa-bar-chart-o"></i>
+                        </a>
+                    </li>*@
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin User <b class="fa fa-angle-down"></b></a>
+
+                    @*@if (usuario == null)
+                        {*@
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        usuario.Nombres<b class="fa fa-angle-down"></b>
+
+                        @*}*@
+                    </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><i class="fa fa-fw fa-user"></i> Edit Profile</a></li>
-                        <li><a href="#"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/Login"><i class="fa fa-fw fa-power-off"></i> Logout</a></li>
+                        @*<li><a href="#"><i class="fa fa-fw fa-user"></i> Edit Profile</a></li>
+                            <li><a href="#"><i class="fa fa-fw fa-cog"></i> Change Password</a></li>*@
+                        @*<li class="divider"></li>*@
+                        <li>
+                            <a href="/Login/LogOut"><i class="fa fa-fw fa-power-off"></i> Salir</a>
+                            @*@Html.ActionLink("Salir", "LogOut", "Login", routeValues: null, htmlAttributes: new { id = "loginLink" })*@
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -127,7 +143,7 @@
                             else
                             {
                                 <li>
-                                    <a href='@string.Concat(SesionUsuario.UrlSite,menu.Opcion.Controlador, "/", menu.Opcion.Accion)'>
+                                    <a href='@string.Concat(SesionUsuario.UrlSite, menu.Opcion.Controlador, "/", menu.Opcion.Accion)'>
                                         <i class="fa fa-fw @menu.Opcion.Imagen"></i>
                                         @menu.Opcion.Nombre
                                     </a>
@@ -136,18 +152,28 @@
                         }
                     }
                 </ul>
+
+
+
             </div>
             <!-- /.navbar-collapse -->
         </nav>
     </div><!-- /#wrapper -->
-   
+    @*<div class="nav navbar-nav sideR-nav">
+        <div class="col-sm-10 col-sm-offset-1">
+            @RenderBody()
+        </div>
+    </div>*@
+
     <div id="renderBody" class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
-        </footer>
-    </div>
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            </footer>
+        </div>
+
+
     <script>
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
@@ -166,16 +192,18 @@
     @*@RenderSection("scripts", required: false)*@
 
     <script src="~/Scripts/ValidacionGeneral.js"></script>
-    <script>
-        $('.MenuPrincipal a').click(function () {
-            $.ajax({
-                type: "POST",
-                url: $(this).attr("href"),
-                succes: function (data) {
-                    $('#renderBody').html(data);
-                }
+    @*<script>
+            $('.MenuPrincipal a').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr("href"),
+                    succes: function (data) {
+                        $('#renderBody').html(data);
+                    }
+                });
             });
-        });
-    </script>
+
+        </script>*@
+
 </body>
 </html>

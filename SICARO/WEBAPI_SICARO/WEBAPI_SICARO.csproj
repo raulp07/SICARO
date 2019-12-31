@@ -186,6 +186,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\CAPACITACIONController.cs" />
     <Compile Include="Controllers\CAPACITACION_PERSONALController.cs" />
+    <Compile Include="Controllers\CATEGORIAController.cs" />
     <Compile Include="Controllers\CONTROLPRODUCCIONController.cs" />
     <Compile Include="Controllers\DETALLE_CAPACITACION_PERSONALController.cs" />
     <Compile Include="Controllers\EVALUACIONPROVEEDORPREGUNTAController.cs" />
@@ -197,10 +198,14 @@
     <Compile Include="Controllers\OpcionXPerfilController.cs" />
     <Compile Include="Controllers\OPCION_PREGUNTAController.cs" />
     <Compile Include="Controllers\PERSONALController.cs" />
+    <Compile Include="Controllers\PrediccionController.cs" />
     <Compile Include="Controllers\PREGUNTAController.cs" />
-    <Compile Include="Controllers\PRONOSTICOController.cs" />
+    <Compile Include="Controllers\PRODUCTOController.cs" />
+    <Compile Include="Controllers\PRODUCTO_MATERIAPRIMAController.cs" />
     <Compile Include="Controllers\PROVEEDORController.cs" />
+    <Compile Include="Controllers\PROVEEDOR_MATERIAPRIMAController.cs" />
     <Compile Include="Controllers\REPRESENTANTEController.cs" />
+    <Compile Include="Controllers\RolController.cs" />
     <Compile Include="Controllers\TESTController.cs" />
     <Compile Include="Controllers\TGeneralController.cs" />
     <Compile Include="Controllers\UBIGEOController.cs" />
@@ -211,6 +216,7 @@
     </Compile>
     <Compile Include="Models\CAPACITACION_EL.cs" />
     <Compile Include="Models\CAPACITACION_PERSONAL_EL.cs" />
+    <Compile Include="Models\CATEGORIA_EL.cs" />
     <Compile Include="Models\CONTROLPRODUCCION_EL.cs" />
     <Compile Include="Models\DETALLE_CAPACITACION_PERSONAL_EL.cs" />
     <Compile Include="Models\ElementosSaliente.cs" />
@@ -222,10 +228,18 @@
     <Compile Include="Models\Opcion_EL.cs" />
     <Compile Include="Models\OPCION_PREGUNTA_EL.cs" />
     <Compile Include="Models\PERSONAL_EL.cs" />
+    <Compile Include="Models\Prediccion_EL.cs" />
     <Compile Include="Models\PREGUNTAS_CORRECTAS.cs" />
     <Compile Include="Models\PREGUNTA_EL.cs" />
+    <Compile Include="Models\PRODUCTO_EL.cs" />
+    <Compile Include="Models\PRODUCTO_MATERIAPRIMA_EL.cs" />
+    <Compile Include="Models\pronostico_arribo_insumo_EL.cs" />
+    <Compile Include="Models\pronostico_cantidad_producida_EL.cs" />
+    <Compile Include="Models\pronostico_duracion_insumo_EL.cs" />
     <Compile Include="Models\PRONOSTICO_EL.cs" />
+    <Compile Include="Models\pronostico_merma_insumo_EL.cs" />
     <Compile Include="Models\PROVEEDOR_EL.cs" />
+    <Compile Include="Models\PROVEEDOR_MATERIAPRIMA_EL.cs" />
     <Compile Include="Models\question_less_success.cs" />
     <Compile Include="Models\question_more_success.cs" />
     <Compile Include="Models\REPRESENTANTE_EL.cs" />
@@ -237,6 +251,7 @@
     <Compile Include="Models\USUARIO_EL.cs" />
     <Compile Include="Persistencia\CAPACITACION_DA.cs" />
     <Compile Include="Persistencia\CAPACITACION_PERSONAL_DA.cs" />
+    <Compile Include="Persistencia\CATEGORIA_DA.cs" />
     <Compile Include="Persistencia\ConexionUtil.cs" />
     <Compile Include="Persistencia\CONTROLPRODUCCION_DA.cs" />
     <Compile Include="Persistencia\DETALLE_CAPACITACION_PERSONAL_DA.cs" />
@@ -248,10 +263,15 @@
     <Compile Include="Persistencia\OPCION_DA.cs" />
     <Compile Include="Persistencia\OPCION_PREGUNTA_DA.cs" />
     <Compile Include="Persistencia\PERSONAL_DA.cs" />
+    <Compile Include="Persistencia\Prediccion_DA.cs" />
     <Compile Include="Persistencia\PREGUNTA_DA.cs" />
+    <Compile Include="Persistencia\PRODUCTO_DA.cs" />
+    <Compile Include="Persistencia\PRODUCTO_MATERIAPRIMA_DA.cs" />
     <Compile Include="Persistencia\PRONOSTICO_DA.cs" />
     <Compile Include="Persistencia\PROVEEDOR_DA.cs" />
+    <Compile Include="Persistencia\PROVEEDOR_MATERIAPRIMA_DA.cs" />
     <Compile Include="Persistencia\REPRESENTANTE_DA.cs" />
+    <Compile Include="Persistencia\Rol_DA.cs" />
     <Compile Include="Persistencia\TEST_DA.cs" />
     <Compile Include="Persistencia\TGeneral_DA.cs" />
     <Compile Include="Persistencia\UBIGEO_DA.cs" />
@@ -299,7 +319,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

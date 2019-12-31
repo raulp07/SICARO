@@ -24,7 +24,7 @@ new Vue({
             }
 
             var jsonData = { Ususario: ValidacionUsuario };
-            axios.post("/Login/ValidarUsuario/", jsonData).then(function (response) {
+            axios.post("/Login/Usuario/", jsonData).then(function (response) {
 
                 var data = response.data;
                 if (data.length > 0) {

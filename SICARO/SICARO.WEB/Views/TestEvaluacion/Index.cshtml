@@ -1,8 +1,10 @@
-﻿
+﻿@using SICARO.WEB.Models
 @{
     ViewBag.Title = "Index";
+    var usuario = SesionUsuario.Usuario;
 }
-
+@if (@usuario != null)
+{
 <div id="app">
     <div id="PMuestra">
         <div class="row text-center">
@@ -57,3 +59,9 @@
 
 </div>
 <script src="~/Scripts/JsTestEvaluacion/TestEvaluacion.js"></script>
+
+}
+else
+{
+    Html.RenderPartial("~/Views/Utilitarios/Desconeccion.cshtml");
+}

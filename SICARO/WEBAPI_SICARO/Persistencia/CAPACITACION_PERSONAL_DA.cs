@@ -29,7 +29,7 @@ namespace WEBAPI_SICARO.Persistencia
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
                 con.Open();
-                using (SqlCommand com = new SqlCommand("spGet_CAPACITACION_PERSONAL", con))
+                using (SqlCommand com = new SqlCommand("spGetAll_CAPACITACION_PERSONAL", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
                     List<CAPACITACION_PERSONAL_EL> list = new List<CAPACITACION_PERSONAL_EL>();
@@ -64,7 +64,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<CAPACITACION_PERSONAL_EL> GetAllCAPACITACION_PERSONAL(int iIdCapacitacionPersonal)
+        public List<CAPACITACION_PERSONAL_EL> GetAllCAPACITACION_PERSONAL(int iIdCapacitacionPersonal, int iIdPersonal, int iIdCapacitacion)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -73,6 +73,8 @@ namespace WEBAPI_SICARO.Persistencia
                 {
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.Add("@iIdCapacitacionPersonal", SqlDbType.Int).Value = iIdCapacitacionPersonal;
+                    com.Parameters.Add("@iIdPersonal", SqlDbType.Int).Value = iIdPersonal;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
 
                     List<CAPACITACION_PERSONAL_EL> list = new List<CAPACITACION_PERSONAL_EL>();
 

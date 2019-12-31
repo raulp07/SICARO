@@ -18,10 +18,12 @@ namespace WEBAPI_SICARO.Controllers
             return USUARIO_DA.Accion.GetAllUSUARIO(value);
         }
 
-        //public int POST(USUARIO_EL value)
-        //{
-        //    return USUARIO_DA.Accion.InsertUSUARIO(value);
-        //}
+        [HttpPost]
+        [Route("GestionarUsuario")]
+        public int GestionarUsuario(USUARIO_EL value)
+        {
+            return USUARIO_DA.Accion.InsertUSUARIO(value);
+        }
 
         //// PUT api/values/5
         //public int Put(int id,USUARIO_EL value)

@@ -18,10 +18,17 @@ namespace WEBAPI_SICARO.Controllers
             return OPCION_DA.Opcion.GetOpcionByID(value);
         }
 
-        //public int POST(OPCION_EL value)
-        //{
-        //    return OPCION_DA.Accion.InsertOPCION(value);
-        //}
+        [HttpGet]
+        [Route("GETOPCION")]
+        public IEnumerable<Opcion_EL> GETOPCION(int value)
+        {
+            return OPCION_DA.Opcion.GETOPCION(value);
+        }
+
+        public int POST(Opcion_EL value)
+        {
+            return OPCION_DA.Opcion.InsertOpcion(value);
+        }
 
         //// PUT api/values/5
         //public int Put(int id,OPCION_EL value)

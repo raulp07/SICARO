@@ -67,73 +67,35 @@ namespace SICARO.WEB.Controllers
 
 
         [HttpPost]
-        public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion, List<PREGUNTA_EL> _Preguntas, List<OPCION_PREGUNTA_EL> _Respuestas)
+        public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion, List<PREGUNTA_EL> _Preguntas, List<CAPACITACION_PERSONAL_EL> _CapacitacionPersonal)
         {
             string perosnalizaicon = "1";
+            var xmlPreguntas = Utilitario.Serialize(_Preguntas).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
+            var xmlCapacitacionPersonal = Utilitario.Serialize(_CapacitacionPersonal).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
+            GestionCapacitacion.XMLPreguntas = xmlPreguntas;
+            GestionCapacitacion.XMLCapacitacionPersonal = xmlCapacitacionPersonal;
             string postdata = JsonConvert.SerializeObject(GestionCapacitacion);
-            var xmlString = Serialize(_Preguntas).Replace("<?xml version=\"1.0\" encoding=\"utf - 16\"?>", "");
-
-            return Json("",JsonRequestBehavior.AllowGet);
             int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "POST", postdata));
-
-
-            
-
-            foreach (PREGUNTA_EL item in _Preguntas)
-            {
-                string postdataP = JsonConvert.SerializeObject(item);
-                int respuestaP = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA", "POST", postdataP));
-                foreach (OPCION_PREGUNTA_EL itemR in _Respuestas)
-                {
-                    if (item.iIdPregunta == itemR.iIdPregunta)
-                    {
-                        string postdataR = JsonConvert.SerializeObject(itemR);
-                        int respuestaR = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA", "POST", postdataR));
-                    }
-                }
-            }
 
             return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
         }
 
-        public static string Serialize<T>(List<T> value)
-        {
-            if (value == null)
-            {
-                return string.Empty;
-            }
-            try
-            {
-                var xmlserializer = new XmlSerializer(typeof(List<T>));
-                var stringWriter = new StringWriter();
-                using (var writer = XmlWriter.Create(stringWriter))
-                {
-                    xmlserializer.Serialize(writer, value);
-                    return stringWriter.ToString().Replace("<?xml version="""+"1.0" + "encoding="utf-16"?>', "");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred", ex);
-            }
-        }
+        
 
         [HttpPost]
         public JsonResult ListarGestionCapacitacion(string value)
         {
-            List<PREGUNTA_EL> preguntas = new List<PREGUNTA_EL>();
-            List<OPCION_PREGUNTA_EL> Opciones = new List<OPCION_PREGUNTA_EL>();
+            //List<PREGUNTA_EL> preguntas = new List<PREGUNTA_EL>();
+            //List<OPCION_PREGUNTA_EL> Opciones = new List<OPCION_PREGUNTA_EL>();
             var Capacitacion = JsonConvert.DeserializeObject<IEnumerable<GESTION_CAPACITACION_EL>>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "GET", "", value));
 
-            preguntas = JsonConvert.DeserializeObject<List<PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA/TESTPREGUNTA", "GET", "", value));
-            if (preguntas.Count>0)
-            {
-                Opciones = JsonConvert.DeserializeObject<List<OPCION_PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA", "GET", "", preguntas[0].iIdPregunta.ToString()));
-            }
+            var preguntas = JsonConvert.DeserializeObject<List<PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA/TESTPREGUNTA", "GET", "", value));
 
-            
+            var Opciones = JsonConvert.DeserializeObject<List<OPCION_PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA/TESTPREGUNTAOPCION", "GET", "", value));
 
-            return Json(new { Capacitacion = Capacitacion, preguntas = preguntas, Opciones = Opciones }, JsonRequestBehavior.AllowGet);
+            var Capacitacion_Personal = JsonConvert.DeserializeObject<List<CAPACITACION_PERSONAL_EL>>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION_PERSONAL/GETCAPACITACION_PERSONAL", "GET", "", "0&value2=0&value3=" + value));
+
+            return Json(new { Capacitacion = Capacitacion, preguntas = preguntas, Opciones = Opciones, Capacitacion_Personal = Capacitacion_Personal }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Capacitacion/Details/5

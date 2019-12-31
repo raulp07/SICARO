@@ -53,8 +53,8 @@ namespace WEBAPI_SICARO.Persistencia
                             if (dataReader["dFechaCrea"] != DBNull.Value) { obj.dFechaCrea = (DateTime)dataReader["dFechaCrea"]; }
                             if (dataReader["iUsuarioMod"] != DBNull.Value) { obj.iUsuarioMod = (int)dataReader["iUsuarioMod"]; }
                             if (dataReader["dFechaMod"] != DBNull.Value) { obj.dFechaMod = (DateTime)dataReader["dFechaMod"]; }
-                            if (dataReader["Latitud"] != DBNull.Value) { obj.dLatitud = (decimal)dataReader["Latitud"]; }
-                            if (dataReader["Longitud"] != DBNull.Value) { obj.dLongitud = (decimal)dataReader["Longitud"]; }
+                            if (dataReader["Latitud"] != DBNull.Value) { obj.dLatitud = Convert.ToString(dataReader["Latitud"]); }
+                            if (dataReader["Longitud"] != DBNull.Value) { obj.dLongitud = Convert.ToString(dataReader["Longitud"]); }
                             list.Add(obj);
 
                         }
@@ -138,8 +138,8 @@ namespace WEBAPI_SICARO.Persistencia
                             if (dataReader["dFechaCrea"] != DBNull.Value) { obj.dFechaCrea = (DateTime)dataReader["dFechaCrea"]; }
                             if (dataReader["iUsuarioMod"] != DBNull.Value) { obj.iUsuarioMod = (int)dataReader["iUsuarioMod"]; }
                             if (dataReader["dFechaMod"] != DBNull.Value) { obj.dFechaMod = (DateTime)dataReader["dFechaMod"]; }
-                            if (dataReader["Latitud"] != DBNull.Value) { obj.dLatitud = (decimal)dataReader["Latitud"]; }
-                            if (dataReader["Longitud"] != DBNull.Value) { obj.dLongitud = (decimal)dataReader["Longitud"]; }
+                            if (dataReader["Latitud"] != DBNull.Value) { obj.dLatitud = (string)dataReader["Latitud"]; }
+                            if (dataReader["Longitud"] != DBNull.Value) { obj.dLongitud = (string)dataReader["Longitud"]; }
                             //list.Add(obj);
 
                         }
@@ -162,7 +162,7 @@ namespace WEBAPI_SICARO.Persistencia
                 {
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.Add("@vTemaCapacitacion", SqlDbType.VarChar).Value = C.vTemaCapacitacion;
-                    com.Parameters.Add("@dFechaPropuestaCapacitacion", SqlDbType.DateTime).Value =  C.dFechaPropuestaCapacitacion;
+                    com.Parameters.Add("@dFechaPropuestaCapacitacion", SqlDbType.DateTime).Value = C.dFechaPropuestaCapacitacion;
                     com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = C.iUsuarioCrea;
                     return com.ExecuteNonQuery();
                 }
