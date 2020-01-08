@@ -39,7 +39,13 @@
                 </table>
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-10">
+                <div class="form-group">
+                    <a href="/home/index/" class="btn btn-danger col-sm-12" role="button">Salir</a>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -186,7 +192,7 @@
                         <button type="button" class="form-control btn btn-primary " v-on:click="VerOperarios">Ver Operarios</button>
                     </div>
                     <div class="form-group col-xs-3 col-sm-8 col-md-8 col-lg-8 col-xl-3 fa-pull-right">
-                        <button type="button" class="form-control btn btn-primary " v-on:click="SeleccionarMapa">Seleccionar Mapa</button>
+                        <button type="button" class="form-control btn btn-primary " v-on:click="SeleccionarMapa">Agregar Ubicación</button>
                     </div>
                 </div>
             </div>
@@ -594,74 +600,56 @@
                 <div class="modal-body">
                     <h3>Empresa</h3>
                     <div class="row">
-                        <label for="" class="col-sm-4 control-label">Empresa :</label>
-                        <div class="col-sm-8">
-                            <div class="col-sm-12">
-                                <input class="form-control" id="txtEmpresa" type="text" value="" v-model="EmpresaE">
-                            </div>
+                        <div class="col-sm-12">
+                            <label for="" class="control-label">Empresa :</label>
+                            <input class="form-control" id="txtEmpresa" type="text" value="" v-model="EmpresaE">
                         </div>
                     </div>
-                    <br />
                     <div class="row">
-                        <label for="" class="col-sm-4 control-label">RUC :</label>
-                        <div class="col-sm-8">
-                            <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="txtRUC" class="control-label">RUC :</label>
                                 <input class="form-control" id="txtRUC" type="text" value="" v-model="RUCE">
                             </div>
                         </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <label for="" class="col-sm-4 control-label">Telefono :</label>
-                        <div class="col-sm-8">
-                            <div class="col-sm-12">
+                        
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="txtTelefono" class="control-label">Telefono :</label>
                                 <input class="form-control" id="txtTelefono" type="text" value="" v-model="TelefonoE">
                             </div>
                         </div>
+                        
                     </div>
-                    <br />
                     <br />
                     <h3>Expositor</h3>
                     <div class="row">
-                        <label for="" class="col-sm-4 control-label">Nombre :</label>
-                        <div class="col-sm-8">
-                            <div class="col-sm-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="txtExpositorE" class="control-label">Nombre :</label>
                                 <input class="form-control" id="txtExpositorE" type="text" value="" v-model="NombreE">
-                            </div>
+                            </div>                            
                         </div>
                     </div>
-                    <br />
                     <div class="row">
-                        <label for="" class="col-sm-4 control-label">Apellido Paterno :</label>
-                        <div class="col-sm-8">
-                            <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="txtApellidoPE" class="control-label">Apellido Paterno :</label>
                                 <input class="form-control" id="txtApellidoPE" type="text" value="" v-model="ApellidoPE">
                             </div>
                         </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <label for="" class="col-sm-4 control-label">Apellido Materno :</label>
-                        <div class="col-sm-8">
-                            <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="txtApellidoME" class="control-label">Apellido Materno :</label>
                                 <input class="form-control" id="txtApellidoME" type="text" value="" v-model="ApellidoME">
                             </div>
                         </div>
                     </div>
-                    <br />
+                    @{Html.RenderPartial("~/Views/Utilitarios/Documentos.cshtml");}
                     <div class="row">
-                        <label for="" class="col-sm-4 control-label">DNI/RUC :</label>
-                        <div class="col-sm-8">
-                            <div class="col-sm-12">
-                                <input class="form-control" id="txtDniRuc" type="text" value="" v-model="DNIE">
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <label for="" class="col-sm-4 control-label">Celular :</label>
-                        <div class="col-sm-8">
-                            <div class="col-sm-12">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="txtCelular" class="control-label">Celular :</label>
                                 <input class="form-control" id="txtCelular" type="text" value="" v-model="CelularE">
                             </div>
                         </div>
@@ -675,7 +663,6 @@
                     <div class="col-sm-4 col-sm-offset-1">
                         <button type="button" class="btn btn-primary" v-on:click="GrabarExpositorExterno()">Grabar</button>
                     </div>
-
                 </div>
             </div>
 

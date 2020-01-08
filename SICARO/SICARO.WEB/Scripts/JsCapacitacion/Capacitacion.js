@@ -12,6 +12,7 @@ var Capacitacion = new Vue({
         tempOpcionesRespuestaMultiple: [],
         dEstadoCapacitacion: [],
         Capacitacion_Personal: [],
+        dTipoDocumento: [],
         vCodCapacitacion: "",
         vTemaCapacitacion: "",
         vCodPersonal: "",
@@ -32,8 +33,20 @@ var Capacitacion = new Vue({
         ApellidoME: '',
         DNIE: '',
         CelularE: '',
+        selectedDocumento: '0',
     },
     methods: {
+        ListaTipoDocumento: function () {
+            var data = {
+                co_tabla: 1
+            };
+            axios.post('/TGeneral/CargaTGeneral', data).then(response => {
+                this.dTipoDocumento = response.data;
+            }).catch(error => {
+                console.log(error);
+                this.errored = true;
+            });
+        },
         ListaCapacitacion: function () {
 
             axios.post("/Capacitacion/ListaCapacitacion/").then(function (response) {
@@ -94,11 +107,37 @@ var Capacitacion = new Vue({
         },
         ListaEstadoCapacitacion: function () {
             var data = {
-                co_tabla: 5
+                co_tabla: 4
             };
             axios.post('/TGeneral/CargaTGeneral', data).then(response => {
                 this.dEstadoCapacitacion = response.data;
                 this.ListaCapacitacion();
+            }).catch(error => {
+                console.log(error);
+                this.errored = true;
+            });
+        },
+        ListaExpositorExterno: function (Codigo) {
+            var data = {
+                val: Codigo
+            };
+            axios.post('/Capacitacion/ListaExpositorExterno', data).then(response => {
+                var ListaEE = response.data.ListaEE;
+                $('#txtEmpresa').val(ListaEE[0]["NombreEmpresa"]);
+                $('#txtRUC').val(ListaEE[0]["RUC"]);
+                $('#txtTelefono').val(ListaEE[0]["Telefono"]);
+                $('#txtExpositorE').val(ListaEE[0]["NombreExpositor"]);
+                $('#txtApellidoPE').val(ListaEE[0]["ApellidoPaternoExpositor"]);
+                $('#txtApellidoME').val(ListaEE[0]["ApellidoMaternoExpositor"]);
+                $('#cboTipoDocumentoModal').val(ListaEE[0]["TipoDocumentoExpositor"]);
+                $('#txtNroDocumentoModal').val(ListaEE[0]["NroDocumentoExpositor"]);
+                $('#txtCelular').val(ListaEE[0]["TelefonoExpositor"]);
+
+                $('#ExpNombre').val(ListaEE[0]["NombreExpositor"]);
+                $('#ExpoApePat').val(ListaEE[0]["ApellidoPaternoExpositor"]);
+                $('#ExpoApeMat').val(ListaEE[0]["ApellidoMaternoExpositor"]);
+                $('#ExpoDNI').val(ListaEE[0]["NroDocumentoExpositor"]);
+
             }).catch(error => {
                 console.log(error);
                 this.errored = true;
@@ -140,7 +179,7 @@ var Capacitacion = new Vue({
                     $('#ExpNombre').val(data[0]['vNombrePersonal']);
                     $('#ExpoApePat').val(data[0]['vApellidoPaternoPersonal']);
                     $('#ExpoApeMat').val(data[0]['vApellidoMaternoPersonal']);
-                    $('#ExpoDNI').val(data[0]['cDNI']);
+                    $('#ExpoDNI').val(data[0]['NroDocumento']);
                 }
 
             }.bind(this)).catch(function (error) {
@@ -184,8 +223,13 @@ var Capacitacion = new Vue({
                     this.Lista_Preguntas = _Preguntas;
                     this.OpcionesRespuesta = response.data.Opciones;
                     this.Capacitacion_Personal = response.data.Capacitacion_Personal;
-                    var representante = Data[0]['iIdRepresentante'];
-                    this.ListarPersonal(representante);
+                    
+                    if (Data[0]['iTipoExpositor'] == "1") {
+                        this.ListaExpositorExterno(Data[0]['iIdRepresentante']);
+                    } else {
+                        var representante = Data[0]['iIdRepresentante'];
+                        this.ListarPersonal(representante);
+                    }
                 }
             }.bind(this)).catch(function (error) {
             });
@@ -212,20 +256,22 @@ var Capacitacion = new Vue({
 
             $('#GESTIONCAPACITACION').removeClass('hide');
             $('#CAPACITACION').addClass('hide');
-
-            this.Lista_Preguntas = [];
-            this.OpcionesRespuesta = [];
-            this.Capacitacion_Personal = [];
-            $('#ExpNombre').val('');
-            $('#ExpoApePat').val('');
-            $('#ExpoApeMat').val('');
-            $('#ExpoDNI').val('');
             this.ListarPersonal(0);
         },
         MostrarPersonal: function () {
+            $('#txtEmpresa').val("");
+            $('#txtRUC').val("");
+            $('#txtTelefono').val("");
+            $('#txtExpositorE').val("");
+            $('#txtApellidoPE').val("");
+            $('#txtApellidoME').val("");
+            $('#cboTipoDocumentoModal').val("0");
+            $('#txtNroDocumentoModal').val("");
+            $('#txtCelular').val("");
             $("#ModalPersonal").modal('show');
         },
         MostrarPersonalExterno: function () {
+            this.vCodPersonal = "";
             $("#ModalEmpresaExterna").modal('show');
         },
         MostrarCapacitacion: function () {
@@ -246,7 +292,7 @@ var Capacitacion = new Vue({
             $('#ExpNombre').val(_lista.vNombrePersonal);
             $('#ExpoApePat').val(_lista.vApellidoPaternoPersonal);
             $('#ExpoApeMat').val(_lista.vApellidoMaternoPersonal);
-            $('#ExpoDNI').val(_lista.cDNI);
+            $('#ExpoDNI').val(_lista.NroDocumento);
             $("#ModalPersonal").modal('hide');
         },
         PrepararTest: function () {
@@ -309,8 +355,7 @@ var Capacitacion = new Vue({
         },
         SeleccionarMapa: function () {
             $("#ModalMapa").modal('show');
-
-            var uluru = { lat: parseFloat(Capacitacion.Latitud), lng: parseFloat(Capacitacion.Longitud) };
+            var uluru = { lat: Capacitacion.Latitud, lng: Capacitacion.Longitud };
             var map = new google.maps.Map(document.getElementById('googleMap'), {
                 zoom: 15,
                 center: uluru
@@ -771,9 +816,12 @@ var Capacitacion = new Vue({
 
             if (!this.ValidarCantidadPreguntas())
                 return;
-
-            var nLatitud = ($('#Latitud').text() == "0" ? "-76.96249462061785" : $('#Latitud').text());
-            var nLongitud = ($('#Longitud').text() == "0" ? "-12.130453115407523" : $('#Longitud').text());
+            //debugger;
+            //if ($('input[name="optRespuesta"]:checked').val() == 1) {
+            //    this.iIdCapacitacion = 1;
+            //}
+            var nLatitud = (parseFloat($('#Latitud').text()) == 0 ? parseFloat("-76.96249462061785") : parseFloat($('#Latitud').text()));
+            var nLongitud = (parseFloat($('#Longitud').text()) == 0 ? parseFloat("-12.130453115407523") : parseFloat($('#Longitud').text()));
             var GestionCapacitacion = {
                 'iIdCapacitacion': this.iIdCapacitacion,
                 'iIdRepresentante': this.iIdPersonal,
@@ -801,16 +849,29 @@ var Capacitacion = new Vue({
 
             var _CapacitacionPersonal = this.Capacitacion_Personal;
 
+            var _ExpositorExterno = [];
+            var ExpositorExterno = {
+                "NombreEmpresa": $('#txtEmpresa').val(),
+                "RUC": $('#txtRUC').val(),
+                "Telefono": $('#txtTelefono').val(),
+                "NombreExpositor": $('#txtExpositorE').val(),
+                "ApellidoPaternoExpositor": $('#txtApellidoPE').val(),
+                "ApellidoMaternoExpositor": $('#txtApellidoME').val(),
+                "TipoDocumentoExpositor": $('#cboTipoDocumentoModal').val(),
+                "NroDocumentoExpositor": $('#txtNroDocumentoModal').val(),
+                "TelefonoExpositor": $('#txtCelular').val(),
+            }
+            _ExpositorExterno.push(ExpositorExterno);
 
-            var jsonData = { GestionCapacitacion: GestionCapacitacion, _Preguntas: _Preguntas, _CapacitacionPersonal: _CapacitacionPersonal };
+            var jsonData = { GestionCapacitacion: GestionCapacitacion, _Preguntas: _Preguntas, _CapacitacionPersonal: _CapacitacionPersonal, _ExpositorExterno: _ExpositorExterno };
             axios.post("/Capacitacion/RegistrarCapacitacion/", jsonData).then(function (response) {
                 if (response.data.perosnalizaicon == 1) {
                     Mensaje('La Capacitacion se programo correctamente', 0);
-
+                    //alert('La Capacitacion se programo correctamente');
+                    //this.Estado_Almacenamiento_Preguntas = 0;
+                    //this.Estado_Almacenamiento_Operarios = 0;
                     $('#GESTIONCAPACITACION').addClass('hide');
                     $('#CAPACITACION').removeClass('hide');
-                    this.ListaCapacitacion();
-
                 } else {
                     Mensaje('Ocurrio un error', 2);
                     //alert('Ocurrio un error');
@@ -853,9 +914,12 @@ var Capacitacion = new Vue({
         },
         GrabarExpositorExterno: function () {
 
-            $('#ExpNombre').val(this.NombreE);
-            $('#ExpoApePat').val(this.ApellidoPE);
-            $('#ExpoApeMat').val(this.ApellidoME);
+            $('#ExpNombre').val($('#txtExpositorE').val());
+            $('#ExpoApePat').val($('#txtApellidoPE').val());
+            $('#ExpoApeMat').val($('#txtApellidoME').val());
+            $('#ExpoDNI').val($('#txtNroDocumentoModal').val());
+            this.iIdPersonal = 0;
+
             $("#ModalEmpresaExterna").modal('hide');
         },
         GenerarXML: function (dato) {
@@ -883,63 +947,71 @@ var Capacitacion = new Vue({
             var _Lista_Preguntas = [];
             var _Lista_Opciones = [];
             var _html = "";
-
-            _Lista_Preguntas = this.Lista_Preguntas;
-            _Lista_Opciones = this.OpcionesRespuesta;
-
-            $.each(_Lista_Preguntas, function (key, val) {
-                _html = _html +
-                    '<div class="col-sm-12 text-center">' +
-                    "<h3>" + (key + 1) + ".- " + val.vEnunciadoPregunta + "</h3></div>";
-                switch (parseInt(val.iTipoRespuestaPregunta)) {
-                    case 1:
-                        $.each(_Lista_Opciones, function (keyR, valR) {
-
-                            if (val.iIdPregunta == valR.iIdPregunta) {
-                                _html = _html + '<div class="col-sm-12 text-center _Examen">';
-                                if (valR.iEstadoOpcion == 1) {
-                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" checked disabled>Verdadero</label>';
-                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" disabled>Falso</label>';
-                                } else {
-                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" disabled>Verdadero</label>';
-                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" checked disabled>Falso</label>';
-                                }
-                                _html = _html + '</div>';
-                            }
-                        });
-                        break;
-                    case 2:
-                        _html = _html + '<div class="col-sm-12 text-center _Examen">';
-                        var bEstado = "checked";
-                        $.each(_Lista_Opciones, function (k, v) {
-                            if (val.iIdPregunta == v.iIdPregunta) {
-                                bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
-                                _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled >' + v.vEnunciadoOpcion + '</label>';
-                            }
-                        });
-                        _html = _html + '</div>'; break;
-                    case 3:
-                        _html = _html + '<div class="col-sm-12 text-center _Examen">';
-                        var bEstado = "checked";
-                        $.each(_Lista_Opciones, function (k, v) {
-                            if (val.iIdPregunta == v.iIdPregunta) {
-                                bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
-                                _html = _html + '<label class="checkbox-inline"><input type="checkbox" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled>' + v.vEnunciadoOpcion + '</label>';
-                            }
-                        });
-                        _html = _html + '</div>'; break;
-                    default: _html += ''; break;
+            axios.post("/TestEvaluacion/GenerarCamposCapacitacion/").then(function (response) {
+                if (response.data.ListaOpciones.length > 0) {
+                    this.Lista_Preguntas = response.data.ListaPregunta;
+                    this.OpcionesRespuesta = response.data.ListaOpciones;
                 }
 
-            });
-            $('#ModalVisualizarTest').modal('show');
-            $('#PContenido').html(_html);
+                _Lista_Preguntas = this.Lista_Preguntas;
+                _Lista_Opciones = this.OpcionesRespuesta;
 
+                $.each(_Lista_Preguntas, function (key, val) {
+                    _html = _html +
+                        '<div class="col-sm-12 text-center">' +
+                        "<h3>" + (key + 1) + ".- " + val.vEnunciadoPregunta + "</h3></div>";
+                    switch (parseInt(val.iTipoRespuestaPregunta)) {
+                        case 1:
+                            $.each(_Lista_Opciones, function (keyR, valR) {
+
+                                if (val.iIdPregunta == valR.iIdPregunta) {
+                                    _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                                    if (valR.iEstadoOpcion == 1) {
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" checked disabled>Verdadero</label>';
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" disabled>Falso</label>';
+                                    } else {
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" disabled>Verdadero</label>';
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" checked disabled>Falso</label>';
+                                    }
+                                    _html = _html + '</div>';
+                                }
+                            });
+                            break;
+                        case 2:
+                            _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                            var bEstado = "checked";
+                            $.each(_Lista_Opciones, function (k, v) {
+                                if (val.iIdPregunta == v.iIdPregunta) {
+                                    bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
+                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled >' + v.vEnunciadoOpcion + '</label>';
+                                }
+                            });
+                            _html = _html + '</div>'; break;
+                        case 3:
+                            _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                            var bEstado = "checked";
+                            $.each(_Lista_Opciones, function (k, v) {
+                                if (val.iIdPregunta == v.iIdPregunta) {
+                                    bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
+                                    _html = _html + '<label class="checkbox-inline"><input type="checkbox" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled>' + v.vEnunciadoOpcion + '</label>';
+                                }
+                            });
+                            _html = _html + '</div>'; break;
+                        default: _html += ''; break;
+                    }
+
+                });
+                $('#ModalVisualizarTest').modal('show');
+                $('#PContenido').html(_html);
+
+            }.bind(this)).catch(function (error) {
+            });
         },
     },
     computed: {},
     created: function () {
         this.ListaEstadoCapacitacion();
+        this.ListaTipoDocumento();
         //this.ListaCapacitacion();
 
     },
@@ -970,7 +1042,6 @@ $("#tbCapacitacion").on("click", "button.Editar", function () {
     $('#txtTema').val(data["vTemaCapacitacion"]);
     $('#txtCodigo').val(data["vCodCapacitacion"]);
     $("#txtFechaCapacitacion").datetimepicker("setDate", new Date(data["dFechaPropuestaCapacitacion"]));
-    $('#cboEstadoCapacitacion').val(data["iEstadoCapactiacion"]);
     $("#ModalCapacitacion").modal('show');
 
 });

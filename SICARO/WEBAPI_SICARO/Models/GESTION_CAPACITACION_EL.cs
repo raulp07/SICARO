@@ -142,20 +142,20 @@ namespace WEBAPI_SICARO.Modles
         private DateTime _dFechaMod;
 
         [DataMember]
-        public string nLatitud
+        public float nLatitud
         {
             get { return _nLatitud; }
             set { _nLatitud = value; }
         }
-        private string _nLatitud;
+        private float _nLatitud;
 
         [DataMember]
-        public string nLongitud
+        public float nLongitud
         {
             get { return _nLongitud; }
             set { _nLongitud = value; }
         }
-        private string _nLongitud;
+        private float _nLongitud;
 
         public int iTipoExpositor
         {
@@ -166,6 +166,6 @@ namespace WEBAPI_SICARO.Modles
 
         public string XMLPreguntas { get; set; }
         public string XMLCapacitacionPersonal { get; set; }
-
+        public string xmlExpositorExterno { get; set; }
     }
 }

@@ -46,6 +46,13 @@ namespace SICARO.WEB.Controllers
         }
 
         [HttpPost]
+        public JsonResult ListaExpositorExterno(string val)
+        {
+            var ListaEE = JsonConvert.DeserializeObject<List<ExpositorExterno_EL>>(Utilitario.Accion.Conect_WEBAPI("ExpositorExterno", "GET", "", val));
+            return Json(new { ListaEE = ListaEE, JsonRequestBehavior.AllowGet });
+        }
+
+        [HttpPost]
         public JsonResult RegistrarCapacitacionCabecera(CAPACITACION_EL GestionCapacitacion)
         {
             string perosnalizaicon = "1";
@@ -67,13 +74,16 @@ namespace SICARO.WEB.Controllers
 
 
         [HttpPost]
-        public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion, List<PREGUNTA_EL> _Preguntas, List<CAPACITACION_PERSONAL_EL> _CapacitacionPersonal)
+        public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion, List<PREGUNTA_EL> _Preguntas, List<CAPACITACION_PERSONAL_EL> _CapacitacionPersonal ,List<ExpositorExterno_EL> _ExpositorExterno)
         {
             string perosnalizaicon = "1";
             var xmlPreguntas = Utilitario.Serialize(_Preguntas).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
             var xmlCapacitacionPersonal = Utilitario.Serialize(_CapacitacionPersonal).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
+            var xmlExpositorExterno = Utilitario.Serialize(_ExpositorExterno).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
             GestionCapacitacion.XMLPreguntas = xmlPreguntas;
             GestionCapacitacion.XMLCapacitacionPersonal = xmlCapacitacionPersonal;
+            GestionCapacitacion.xmlExpositorExterno = xmlExpositorExterno;
+
             string postdata = JsonConvert.SerializeObject(GestionCapacitacion);
             int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "POST", postdata));
 

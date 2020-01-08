@@ -108,7 +108,7 @@ namespace SICARO.WEB.Controllers
                 respuesta.exactitud = "0.236543";
                 respuesta.mse = "16.21";
 
-                var resultado = respuesta;// js.Deserialize<object>(Utilitario.Accion.Conect_WEBPython(Llamada, "GET", "", consulta));
+                var resultado = js.Deserialize<Respuesta>(Utilitario.Accion.Conect_WEBPython(Llamada, "GET", "", consulta));
 
                 P.PRECISION = Convert.ToInt16(decimal.Round(Convert.ToDecimal(resultado.exactitud) * 100)) + "%";
                 P.ErrorMedioCuadratico = resultado.mse;

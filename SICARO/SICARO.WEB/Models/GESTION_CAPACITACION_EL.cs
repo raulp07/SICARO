@@ -129,19 +129,19 @@ namespace SICARO.WEB.Models
         }
         private DateTime _dFechaMod;
         
-        public string nLatitud
+        public decimal nLatitud
         {
             get { return _nLatitud; }
             set { _nLatitud = value; }
         }
-        private string _nLatitud;
+        private decimal _nLatitud;
         
-        public string nLongitud
+        public decimal nLongitud
         {
             get { return _nLongitud; }
             set { _nLongitud = value; }
         }
-        private string _nLongitud;
+        private decimal _nLongitud;
 
         public int iTipoExpositor
         {
@@ -152,5 +152,6 @@ namespace SICARO.WEB.Models
 
         public string XMLPreguntas { get; set; }
         public string XMLCapacitacionPersonal { get; set; }
+        public string xmlExpositorExterno { get; set; }
     }
 }

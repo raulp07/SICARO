@@ -147,6 +147,7 @@
                             ErrorMedioCuadratico: $('#ErrorMedioCuadratico').val(),
                             predicion: $('#NroPrediccion').text(),
                         };
+                        $('#txttipoprediccion').text('Días');
                         break;
                     case "2":
                         param = {
@@ -162,6 +163,7 @@
                             ErrorMedioCuadratico: $('#ErrorMedioCuadratico').val(),
                             predicion: $('#NroPrediccion').text(),
                         };
+                        $('#txttipoprediccion').text('Días');
                         break;
                     case "3":
                         param = {
@@ -176,6 +178,7 @@
                             ErrorMedioCuadratico: $('#ErrorMedioCuadratico').val(),
                             predicion: $('#NroPrediccion').text(),
                         };
+                        $('#txttipoprediccion').text('Minutos');
                         break;
                     case "4":
                         param = {
@@ -191,6 +194,7 @@
                             ErrorMedioCuadratico: $('#ErrorMedioCuadratico').val(),
                             predicion: $('#NroPrediccion').text(),
                         };
+                        $('#txttipoprediccion').text('Minutos');
                         break;
                     default:
 

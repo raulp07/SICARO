@@ -69,6 +69,8 @@ namespace SICARO.WEB.Controllers
 
         public static string urlSite = ConfigurationManager.AppSettings["urlWS"];
         public static string urlSiteWEBAPI = ConfigurationManager.AppSettings["urlWEBAPI"];
+        public static string urlWEBPYTHON = ConfigurationManager.AppSettings["urlWEBPYTHON"];
+        
         public string ConectREST(string url, string method, string postdata = "")
         {
             try
@@ -171,7 +173,7 @@ namespace SICARO.WEB.Controllers
             try
             {
                 HttpClient clientHttp = new HttpClient();
-                clientHttp.BaseAddress = new Uri(urlSiteWEBAPI);
+                clientHttp.BaseAddress = new Uri(urlWEBPYTHON);
                 byte[] buffer;
                 ByteArrayContent byteContent;
                 HttpResponseMessage request;
@@ -185,7 +187,7 @@ namespace SICARO.WEB.Controllers
                         }
                         else
                         {
-                            request = clientHttp.GetAsync(url + "?value=" + id).Result; break;
+                            request = clientHttp.GetAsync(url + "?" + id).Result; break;
                         }
 
                     case "POST":
