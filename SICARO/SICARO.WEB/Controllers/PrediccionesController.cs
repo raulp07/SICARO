@@ -102,17 +102,30 @@ namespace SICARO.WEB.Controllers
                     default:
                         break;
                 }
+                
+                var resultado = new Respuesta();
+                //respuesta.prediccion = "12.23213";
+                //respuesta.exactitud = "0.236543";
+                //respuesta.mse = "16.21";
 
-                var respuesta = new Respuesta();
-                respuesta.prediccion = "12.23213";
-                respuesta.exactitud = "0.236543";
-                respuesta.mse = "16.21";
+                resultado = js.Deserialize<Respuesta>(Utilitario.Accion.Conect_WEBPython(Llamada, "GET", "", consulta));
+                if (resultado == null)
+                {
+                    resultado = new Respuesta();
+                    resultado.prediccion = "0";
+                    resultado.exactitud = "0";
+                    resultado.mse = "0";
+                }
+                else{
+                    resultado.mse = Math.Round(Convert.ToDecimal(resultado.mse), 2).ToString();
+                }
 
-                var resultado = js.Deserialize<Respuesta>(Utilitario.Accion.Conect_WEBPython(Llamada, "GET", "", consulta));
 
                 P.PRECISION = Convert.ToInt16(decimal.Round(Convert.ToDecimal(resultado.exactitud) * 100)) + "%";
-                P.ErrorMedioCuadratico = resultado.mse;
+                P.ErrorMedioCuadratico = Math.Round(Convert.ToDecimal(resultado.mse), 2).ToString();
                 P.predicion = Convert.ToInt16(decimal.Round(Convert.ToDecimal(resultado.prediccion)));
+
+                
 
                 string postdata = JsonConvert.SerializeObject(P);
                 var Res = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CONTROLPRODUCCION", "POST", postdata));

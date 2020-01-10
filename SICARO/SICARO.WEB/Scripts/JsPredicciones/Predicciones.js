@@ -221,20 +221,58 @@
                     var ListaPrediccionGrafica = response.data.ListaPrediccionGrafica;
 
                     $('.GestionarIndicador').attr('disabled', false);
+                    var _ddlPronostico = $('#ddlPronostico').val();
+                    var Columna1 = '';
+                    var Columna2 = '';
+
 
                     var Grafica = []
                     $.each(ListaPrediccionGrafica, function (k, v) {
-                        var Columnas = [
-                            v.Peso,
-                            v.Tiempo
-                        ];
+                        var Columnas = [];
+                       
+                        switch (_ddlPronostico) {
+                            case "1":
+                                Columnas = [
+                                v.peso,
+                                v.tiempo
+                                ];
+                                Columna1 = 'Peso';
+                                Columna2 = 'Tiempo';
+                                break;
+                            case "2":
+                                Columnas = [
+                                v.peso,
+                                v.tiempo
+                                ];
+                                Columna1 = 'Peso';
+                                Columna2 = 'Tiempo';
+                                break;
+                            case "3":
+                                Columnas = [
+                                v.cantidad,
+                                v.tiempo
+                                ];
+                                Columna1 = 'Cantidad';
+                                Columna2 = 'Tiempo';
+                                break;
+                            case "4":
+                                Columnas = [
+                                v.peso,
+                                v.merma
+                                ];
+                                Columna1 = 'Peso';
+                                Columna2 = 'Merma';
+                                break;
+                            default:
+                        }
+
                         Grafica.push(Columnas);
                     });
 
                     var data = new google.visualization.DataTable();
                     //data.addColumn('number', 'Producto');
-                    data.addColumn('number', 'Peso');
-                    data.addColumn('number', 'Tiempo');
+                    data.addColumn('number', Columna1);
+                    data.addColumn('number', Columna2);
                     //data.addColumn('number', 'Final1');
                     //data.addColumn('number', 'Final2');
 
