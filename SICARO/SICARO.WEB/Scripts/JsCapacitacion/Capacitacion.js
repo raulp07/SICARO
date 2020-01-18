@@ -107,7 +107,7 @@ var Capacitacion = new Vue({
         },
         ListaEstadoCapacitacion: function () {
             var data = {
-                co_tabla: 4
+                co_tabla: 5
             };
             axios.post('/TGeneral/CargaTGeneral', data).then(response => {
                 this.dEstadoCapacitacion = response.data;
