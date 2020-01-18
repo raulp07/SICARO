@@ -62,6 +62,9 @@ var Capacitacion = new Vue({
                 });
                 $('#tbCapacitacion').DataTable().destroy();
 
+                var d = new Date();
+                var strDate = d.getDate() + "/" + (d.getMonth() < 10 ? "0" + (d.getMonth() + 1) : d.getMonth() + 1) + "/" + d.getFullYear();
+
                 $('#tbCapacitacion').DataTable({
                     "data": datos,
                     "columns": [
@@ -81,7 +84,7 @@ var Capacitacion = new Vue({
                         },
                         {
                             render: function (j, k, r) {
-                                if (r['iEstadoCapactiacion'] == '3') {
+                                if (r['iEstadoCapactiacion'] == '3' || r['dFechaPropuestaCapacitacion'] < strDate) {
                                     return '';
                                 } else {
                                     return '<button type="button" id="ButtonGestionar" class="Gestionar edit-modal btn btn-succes botonGestionar"><span class="glyphicon glyphicon-wrench"></span></button>';
@@ -188,6 +191,7 @@ var Capacitacion = new Vue({
         ListarGestionCapacitacion: function () {
 
             axios.post("/Capacitacion/ListarGestionCapacitacion/", { value: this.iIdCapacitacion }).then(function (response) {
+
                 if (response.data.Capacitacion.length > 0) {
                     var Data = response.data.Capacitacion;
                     $('#dfecha').datetimepicker('setDate', new Date(parseInt(Data[0]['dFechaRealizacionCapacitacion'].substr(6))));
@@ -223,13 +227,28 @@ var Capacitacion = new Vue({
                     this.Lista_Preguntas = _Preguntas;
                     this.OpcionesRespuesta = response.data.Opciones;
                     this.Capacitacion_Personal = response.data.Capacitacion_Personal;
-                    
+
                     if (Data[0]['iTipoExpositor'] == "1") {
                         this.ListaExpositorExterno(Data[0]['iIdRepresentante']);
                     } else {
                         var representante = Data[0]['iIdRepresentante'];
                         this.ListarPersonal(representante);
                     }
+                } else {
+                    $('#dfecha').datetimepicker('setDate', new Date());
+                    $('#horarinicio').datetimepicker('setDate', new Date());
+                    $('#horartermino').datetimepicker('setDate', new Date());
+                    $('input:radio[name=optradio][value=0]').prop('checked', false);
+                    $('input:radio[name=optradio][value=1]').prop('checked', false);
+
+                    this.iIdPersonal = 0;
+                    $('#ExpNombre').val('');
+                    $('#ExpoApePat').val('');
+                    $('#ExpoApeMat').val('');
+                    $('#ExpoDNI').val('');
+
+                    this.Lista_Preguntas = [];
+                    this.Lista_Operarios = [];
                 }
             }.bind(this)).catch(function (error) {
             });
@@ -357,9 +376,16 @@ var Capacitacion = new Vue({
             $("#ModalMapa").modal('show');
             var uluru = { lat: Capacitacion.Latitud, lng: Capacitacion.Longitud };
             var map = new google.maps.Map(document.getElementById('googleMap'), {
-                zoom: 15,
+                zoom: 10,
                 center: uluru
             });
+
+
+            var mapCanvas = document.getElementById("map");
+            var mapOptions = {
+                center: new google.maps.LatLng(51.5, -0.2), zoom: 10
+            };
+            var map = new google.maps.Map(mapCanvas, mapOptions);
 
             var marker = new google.maps.Marker({
                 position: map.getCenter(),
@@ -948,7 +974,7 @@ var Capacitacion = new Vue({
             var _Lista_Opciones = [];
             var _html = "";
             axios.post("/TestEvaluacion/GenerarCamposCapacitacion/").then(function (response) {
-                if (response.data.ListaOpciones.length > 0) {
+                if (response.data.ListaPregunta.length > 0) {
                     this.Lista_Preguntas = response.data.ListaPregunta;
                     this.OpcionesRespuesta = response.data.ListaOpciones;
                 }
@@ -1039,9 +1065,13 @@ $("#tbCapacitacion").on("click", "button.Editar", function () {
     data = table.row($(this).parents("tr")).data();
     $('.txtCodigo').removeClass('hide');
     Capacitacion.iIdCapacitacion = data["iIdCapacitacion"];
+    $('#cboEstadoCapacitacion').val(data['iEstadoCapactiacion']);
     $('#txtTema').val(data["vTemaCapacitacion"]);
     $('#txtCodigo').val(data["vCodCapacitacion"]);
-    $("#txtFechaCapacitacion").datetimepicker("setDate", new Date(data["dFechaPropuestaCapacitacion"]));
+
+    var fecha = data["dFechaPropuestaCapacitacion"].substring(3, 5) + "/" + data["dFechaPropuestaCapacitacion"].substring(0, 2) + "/" + data["dFechaPropuestaCapacitacion"].substring(6, 10)
+
+    $("#txtFechaCapacitacion").datetimepicker("setDate", new Date(fecha));
     $("#ModalCapacitacion").modal('show');
 
 });
