@@ -23,8 +23,8 @@ var Capacitacion = new Vue({
         Estado_Almacenamiento_Preguntas: 0,
         Estado_Almacenamiento_Operarios: 0,
         Estado_Ver_Test: 0,
-        Latitud: -9.563234298135303,
-        Longitud: -71.63956062343755,
+        Latitud: -12.116283123011357,
+        Longitud: -77.02498571422734,
         EmpresaE: '',
         RUCE: '',
         TelefonoE: '',
@@ -374,18 +374,20 @@ var Capacitacion = new Vue({
         },
         SeleccionarMapa: function () {
             $("#ModalMapa").modal('show');
+            if (Capacitacion.Latitud == null) {
+                Capacitacion.Latitud = -12.116283123011357;
+                $('#Latitud').text(-12.116283123011357);
+            }
+            if (Capacitacion.Longitud == null) {
+                Capacitacion.Longitud = -77.02498571422734;
+                $('#Longitud').text(-77.02498571422734);
+            }
+            
             var uluru = { lat: Capacitacion.Latitud, lng: Capacitacion.Longitud };
             var map = new google.maps.Map(document.getElementById('googleMap'), {
-                zoom: 10,
+                zoom: 15,
                 center: uluru
             });
-
-
-            var mapCanvas = document.getElementById("map");
-            var mapOptions = {
-                center: new google.maps.LatLng(51.5, -0.2), zoom: 10
-            };
-            var map = new google.maps.Map(mapCanvas, mapOptions);
 
             var marker = new google.maps.Marker({
                 position: map.getCenter(),
@@ -829,12 +831,12 @@ var Capacitacion = new Vue({
             var _horarinicio = $('#horarinicio').data('date');
             var _horartermino = $('#horartermino').data('date');
             if (_horartermino <= _horarinicio) {
-                Mensaje("La hora final es mayor a la hora de inicio", 0);
+                Mensaje("La hora final es mayor a la hora de inicio", 2);
                 //alert("La hora final es mayor a la hora de inicio");
                 return;
             }
             if ($('#ExpNombre').val().trim() == '') {
-                Mensaje("Ingrese un expositor", 0);
+                Mensaje("Ingrese un expositor", 2);
                 //alert("Ingrese un expositor");
                 return;
             }
