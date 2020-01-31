@@ -850,10 +850,14 @@ var Capacitacion = new Vue({
             //}
             var nLatitud = (parseFloat($('#Latitud').text()) == 0 ? parseFloat("-76.96249462061785") : parseFloat($('#Latitud').text()));
             var nLongitud = (parseFloat($('#Longitud').text()) == 0 ? parseFloat("-12.130453115407523") : parseFloat($('#Longitud').text()));
+
+            var fechaCapacitacion = $('#dfecha').data('date');
+            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+
             var GestionCapacitacion = {
                 'iIdCapacitacion': this.iIdCapacitacion,
                 'iIdRepresentante': this.iIdPersonal,
-                'dFechaRealizacionCapacitacion': $('#dfecha').data('date'),
+                'dFechaRealizacionCapacitacion': fechaCapacitacion,
                 'tHoraInicio': $('#horarinicio').data('date'),// $('#horarinicio').val(),
                 'tHoraFin': $('#horartermino').data('date'),//$('#horartermino').val(),
                 'iTiempoTest': $('#tiempotest').val(),

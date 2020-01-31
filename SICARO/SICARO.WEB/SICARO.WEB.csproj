@@ -302,7 +302,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="BACKUP\BDICARO20200109.bak" />
     <None Include="Properties\PublishProfiles\ICAROWEB - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ICAROWEB - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\WEB.pubxml" />
@@ -400,6 +399,7 @@
     <Content Include="Views\Utilitarios\Desconeccion.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="BACKUP\" />
     <Folder Include="fonts\Logos\" />
     <Folder Include="Views\CATEGORIA\" />
     <Folder Include="Views\Menu\" />
