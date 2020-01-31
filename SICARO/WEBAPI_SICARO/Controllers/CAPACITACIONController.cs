@@ -35,6 +35,13 @@ namespace WEBAPI_SICARO.Controllers
         {
             return CAPACITACION_DA.Accion.UpdateCAPACITACION(value);
         }
-        
+
+        [HttpGet]
+        [Route("CapacitacionTest")]
+        public IEnumerable<CAPACITACION_EL> GETCapacitacionTest(int value)
+        {
+            return CAPACITACION_DA.Accion.GetAllCAPACITACION_TEST(value);
+        }
+
     }
 }

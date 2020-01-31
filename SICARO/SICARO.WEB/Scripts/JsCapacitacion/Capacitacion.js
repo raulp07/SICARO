@@ -84,7 +84,7 @@ var Capacitacion = new Vue({
                         },
                         {
                             render: function (j, k, r) {
-                                if (r['iEstadoCapactiacion'] == '3' || r['dFechaPropuestaCapacitacion'] < strDate) {
+                                if (r['iEstadoCapactiacion'] == '3' /*|| r['dFechaPropuestaCapacitacion'] < strDate*/) {
                                     return '';
                                 } else {
                                     return '<button type="button" id="ButtonGestionar" class="Gestionar edit-modal btn btn-succes botonGestionar"><span class="glyphicon glyphicon-wrench"></span></button>';

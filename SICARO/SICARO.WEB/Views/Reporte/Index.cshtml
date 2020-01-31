@@ -4,11 +4,93 @@
 }
 
 @*@Html.Partial("ReporteActa")*@
-
+<style>
+    tr.group,
+    tr.group:hover {
+        background-color: #ddd !important;
+    }
+</style>
 
 <div id="app">
 
-    <div id="CAPACITACION">
+    <div class="row">
+        <div class="form-group text-center">
+            <h1>REPORTE DE INSPECCIÓN SANITARIA</h1>
+            @*<label class="form-control">REPORTE DE INSPECCIÓN SANITARIA</label>*@
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group text-center">
+            <label class="">Procedimientos:</label>
+            <select id="chkveg" multiple="multiple" class="form-control">
+                <option value="cheese">Cheese</option>
+                <option value="tomatoes">Tomatoes</option>
+                <option value="mozarella">Mozzarella</option>
+                <option value="mushrooms">Mushrooms</option>
+                <option value="pepperoni">Pepperoni</option>
+                <option value="onions">Onions</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-4">
+                <label>Rango de Tiempo:</label>
+            </div>
+            <div class="col-sm-4">
+                <div class='input-group date' id='dfechaIni' data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class='input-group date' id='dfechaFin' data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <br />
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-4 text-center">
+                <input type="button" value="Generar" class="btn btn-success " />
+            </div>
+            <div class="col-sm-4 text-center">
+                <input type="button" value="Descargar PDF" onclick="printData()" class="btn btn-primary" />
+            </div>
+            <div class="col-sm-4 text-center">
+                <input type="button" value="Salir" class="btn btn-warning" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <table id="tbReporte">
+            <thead>
+                <tr>
+                    <th>Grupo</th>
+                    <th>N°</th>
+                    <th>ASPECTOS A EVALUAR</th>
+                    <th>SI</th>
+                    <th>NO</th>
+                    <th>OBSERVACIONES Y COMENTARIOS</th>
+                </tr>
+            </thead>
+
+        </table>
+
+    </div>
+
+    @*<div id="CAPACITACION">
         <div class="col-sm-12">
             <h1 class="text-center">Reporte Acta Inspección Sanitaria </h1>
 
@@ -120,7 +202,7 @@
         <div class="col-lg-12 text-center">
             <input id="Guardar" type="button" class="btn" value="Guardar"  v-on:click="GuardarReporte()" />
         </div>
-        </div>
+        </div>*@
 </div>
 
 
@@ -131,16 +213,115 @@
     new Vue({
         el: "#app",
         data: {
-            listAP:[],
+            listAP: [],
             listrm: [],
             listM: [],
             listP: [],
         },
         methods: {
+            GenerarReporte: function () {
+                var grupos = [
+                    { "Grupo": 1,"NroRomano":"I", "Descripcion": "DEL ÁREA DE ALMACENAMIENTO DE MATERIA PRIMA E INSUMOS" },
+                    { "Grupo": 2, "NroRomano": "II", "Descripcion": "DEL ÁREA DE PROCESO" },
+                    { "Grupo": 3, "NroRomano": "III", "Descripcion": "DEL ÁREA DE ENVASADO DEL PRODUCTO FINAL" },
+                    { "Grupo": 4, "NroRomano": "IV", "Descripcion": "DEL ÁREA DE ALMACENAMIENTO DEL PRODUCTO FINAL" },
+                    { "Grupo": 5, "NroRomano": "V", "Descripcion": "DE OTROS ALMACENES" },
+                    { "Grupo": 6, "NroRomano": "VI", "Descripcion": "DE LOS VESTUARIOS Y SERVICIOS HIGIÉNICOS" },
+                    { "Grupo": 7, "NroRomano": "VII", "Descripcion": "DE LAS CONDICIONES SANITARIAS GENERALES DEL ESTABLECIMIENTO" },
+                    { "Grupo": 8, "NroRomano": "VIII", "Descripcion": "DE LOS REQUISITOS PREVIOS AL PLAN HACCP" },
+                ];
+
+                var data = [
+                    { "Grupo": 1, "orden": 1.1, "AspectoEvaluar": "El almacén es de uso exclusivo, apropiado para mantener la calidad sanitaria e inocuidad de los alimentos y se encuentra libre de materiales, productos o sustancias que puedan contaminar el producto almacenado. Las materias primas y los productos terminados se almacenan en ambientes separados. Art. 70 del D.S. N° 007-98-SA. Art. 9 de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.2, "AspectoEvaluar": "Las instalaciones (pisos, paredes, extructuras auxiliares) se encuentran limpios. Se toman las precauciones necesarias para impedir que el alimento sea contaminado cuando se realiza la limpieza y desinfección. Los implementos de limpieza son de uso exclusivo del área. Art. 56 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.3, "AspectoEvaluar": "La estructura y acabado son construidos con materiales impermeables y resistentes a la acción de roedores. Art. 33, del D.S. 007-98-SA. Art. 9 de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.4, "AspectoEvaluar": "La intensidad, calidad y distribución  de la iluminación natural o artificial (en caso necesario), es adecuada al tipo de trabajo, evita que se genere sombras, reflejo o encandilamiento y considera los niveles mínimos de iluminación siguientes: 540 LUX en zonas para examen detallado del producto220 LUX en las salas de producción110 LUX en otras zonas.Art. 34 del D.S. N° 007-98-SA. Art. 9 de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.5, "AspectoEvaluar": "La ventilación es adecuada para evitar el calor excesivo, asi como, la condensación de vapor de agua, y permitir la eliminación del aire contaminado. Las aberturas de ventilación están provistas de rejillas u otras protecciones de material anticorrosivo, facilmente desmontables para su limpieza. Art. 35 del D.S. N° 007-98-SA. Art. 9 de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.6, "AspectoEvaluar": "Las aberturas que comunican con el exterior (ventanas, puertas, tragaluces, drenajes, ductos de ventilación) están construidas de manera que impiden la acumulación de suciedad, son fáciles de limpiar y están protegidas (con mallas, flejes en bordes de puertas, tapas metálicas en sumideros, trampas en drenajes), para evitar el acceso de insectos u otros animales . Art. 33.e, 57 de D. S. 007-98-SA. Art. 9 de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.7, "AspectoEvaluar": "Los residuos sólidos están contenidos en recipientes de plástico o metálicos adecuadamente cubiertos o tapados y diseñados de tal manera que permitan su fácil y completa limpieza. Art. 38, 43 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.8, "AspectoEvaluar": "Se identifica la fecha de ingreso de las materias primas e insumos y los registros (kardex) evidencian la adecuada rotación  en base al principio PEPS (lo primero que entra es lo primero que sale). Art. 60 del D.S. N° 007-98-SA. Art. 10.g, de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.9, "AspectoEvaluar": "Los productos almacenados se encuentran identificados y presentan fecha de vencimiento y registro sanitario vigente. Los aditivos y coadyuvantes están permitidos por el Codex Alimentarius y la legislación vigente.  Art. 62, 63, 102, 103, 116 del D.S. N° 007-98-SA. Art. 10.d de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.10, "AspectoEvaluar": "Los productos no perecibles (organizados y rotulados) son almacenados  en tarimas (parihuelas) o estántes, cuyo nivel inferior está a no menos de 0.20 metros del piso, el nivel superior a 0.60 metros o más del techo, y el espacio libre libre entre filas  de rumas, y entre estas y la pared es de 0.50 metros cuando menos. Art. 72 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.11, "AspectoEvaluar": "Los productos perecibles se almacenan en cámaras de Refrigeración (   ) o congelación (   ), dotadas de dispositivos de medición y registro de temperatura en buenas condiciones de conservación y funcionamiento,  colocados en lugar visible. En la misma cámara no se almacena simultáneamente alimentos de distinta naturaleza que puedan provocar contaminación cruzada, salvo que estén envasados, acondicionados y cerrados debidamente. Art. 39, 45, 71, del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 1, "orden": 1.12, "AspectoEvaluar": "Los productos almacenados en cámaras de enfriamiento (organizados y rotulados) son estibados en estántes, pilas o rumas que guardan distancias mínimas de 0.10 metros respecto del piso; 0.15 metros respecto de las paredes, y  0.50 metros respecto del techo.El espesor de las rumas permite un adecuado enfriamiento del producto.Los pasillos o espacios libres entre estántes o rumas permiten la inspección de las cargas.Art. 73 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+
+                    { "Grupo": 2, "orden": 2.1, "AspectoEvaluar": "La distribución del ambiente permite el flujo de operaciones, desplazamiento de personal, materiales y equipos, de manera ordenada y separada de otros ambientes y no se comunica directamente con los servicios higiénicos, para evitar la contaminación cruzada. Art. 36, 44 del D.S. N° 007-98-SA. Art. 9 de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.2, "AspectoEvaluar": "Los ambientes se encuentran libres de productos, artículos, implementos o materiales extraños o ajenos a los que se elaboran. Art. 48 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.3, "AspectoEvaluar": "Las instalaciones (pisos, paredes, extructuras auxiliares) se encuentran limpias. Se toman las precauciones necesarias para impedir que el alimento sea contaminado cuando se realiza la limpieza y desinfección. Los implementos de limpieza son de uso exclusivo del área. Art. 56 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.4, "AspectoEvaluar": "Las uniones entre las paredes y el piso son a media caña (curvo/cóncavo), lo que facilita la limpieza de los ambientes y evita la acumulación de elementos extraños. Literal a del Art. 33 del D.S. 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.5, "AspectoEvaluar": "Los pisos tienen declive hacia canaletas o sumideros convenientemente dispuestos para facilitar el lavado y el escurrimiento de líquidos. Literal b del Art. 33 del D.S. 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.6, "AspectoEvaluar": "Las paredes son de material impermeable, de superficie lisa, sin grietas y están recubiertas con pintura lavable de color claro. Literal c del Art. 33 del D.S. 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.7, "AspectoEvaluar": "El techo tiene acabado liso e impermeable, que facilita la limpieza y se encuentra libre de condensaciónes y mohos. Literal d del Art. 33 del D.S. 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.8, "AspectoEvaluar": "Las aberturas que comunican con el exterior (ventanas, puertas, tragaluces, drenajes, ductos de ventilación) están construidas de manera que impiden la acumulación de suciedad, son fáciles de limpiar y están protegidas (con mallas, flejes en bordes de puertas, tapas metálicas en sumideros, trampas en drenajes) para evitar el acceso de insectos u otros animales . Literal e del Art. 33 y 57 del D.S. 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.9, "AspectoEvaluar": "La intensidad, calidad y distribución  de la iluminación natural o artificial (en caso necesario), es adecuada al tipo de trabajo, evita que se genere sombras, reflejo o encandilamiento y considera los niveles mínimos de iluminación siguientes:  540 LUX en zonas para examen detallado del producto 220 LUX en las salas de producción 110 LUX en otras zonas. Art. 34 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.10, "AspectoEvaluar": "La ventilación es adecuada para evitar el calor excesivo, asi como, la condensación de vapor de agua y permitir la eliminación del aire contaminado. Las aberturas de ventilación están provistas de rejillas u otras protecciones de material anticorrosivo, facilmente desmontables para su limpieza.Art. 35 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.11, "AspectoEvaluar": "Los residuos sólidos están contenidos en recipientes de plástico o metálicos adecuadamente cubiertos o tapados y diseñados de tal manera que permitan su fácil y completa limpieza. Art. 38, 43 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.12, "AspectoEvaluar": "Los alimentos y bebidas, asi como, la materia prima se depositan en tarimas (parihuelas) o estántes cuyo nivel inferior está a no menos de 0.20 metros del piso, el nivel superior a 0.60 metros o más del techo y el espacio libre libre entre filas  de rumas, y entre estas y la pared es de 0.50 metros cuando menos. Art. 72 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.13, "AspectoEvaluar": "Los equipos (fijos o móviles) y utensilios están diseñados de manera que permiten su fácil y completa limpieza y desinfección. Están fabricados de materiales que no producen ni emiten sustancias tóxicas ni impregnan olores o sabores desagradables; son no absorbentes,  resistentes a la corrosión y capaces de soportar repetidas operaciones de limpieza y desinfección. Sus superficies son lisas y están exentas de orificios y grietas. Art. 37, 38 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.14, "AspectoEvaluar": "Los operarios se lavan y desinfectan las manos, antes de iniciar el trabajo, después de utilizar los servicios higiénicos y manipular material sucio o contaminado, y todas las veces que sea necesario. Se colocan avisos que indiquen la obligación de lavarse las manos. Existe un control adecuado que garantiza el cumplimiento de este requisito. Art. 55 del D.S. N° 007-98-SA. ", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.15, "AspectoEvaluar": "Los operarios se encuentran aseados; con manos limpias,  sin cortes, ulceraciones ni otras afecciones a la piel, sin sortijas, pulseras o cualquier otro adorno; uñas cortas y sin esmalte. El uniforme es de color claro, en buen estado de aseo y conservación, exclusivo para la labor que desempeña (incluyendo personal de limpieza, mantenimiento y servicio de terceros). La indumentaria consta de: gorra, zapatos, overol o chaqueta y pantalón. Cuando las operaciones de procesamiento y envasado del producto se realicen en forma manual, sin posterior tratamiento que garantice la eliminación de cualquier posible contaminación proveniente del manipulador, el personal que interviene en éstas debe estar dotado de mascarilla y guantes. El personal que realiza lavado de equipo y envases cuenta, además, con botas y delantal impermeable. Art. 50, 51 del D.S. N° 007-98-SA. ", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                    { "Grupo": 2, "orden": 2.16, "AspectoEvaluar": "Se observó durante la inspección la aplicación de Buenas Prácticas de Manipulación por parte del personal. Art. 49, 50, 52 del D.S. N° 007-98-SA.", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+
+                    //{ "Grupo": 2, "orden": 2.16, "AspectoEvaluar": "dictamen", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
+                ];
+
+
+                var groupColumn = 0;
+                var table = $('#tbReporte').DataTable({
+                    "data": data,
+                    "columns": [
+                        { data: "Grupo" },
+                        { data: "orden", "width": "10%" },
+                        { data: "AspectoEvaluar", "width": "50%" },
+                        { data: "SI", "width": "5%" },
+                        { data: "NO", "width": "5%" },
+                        { data: "OBSERVACION", "width": "30%" },
+                    ],
+                    "columnDefs": [
+                        { "visible": false, "targets": groupColumn }
+                    ],
+                    "order": [[groupColumn, 'asc']],
+                    "displayLength": 25,
+                    "drawCallback": function (settings) {
+                        var api = this.api();
+                        var rows = api.rows({ page: 'current' }).nodes();
+                        var last = null;
+
+                        api.column(groupColumn, { page: 'current' }).data().each(function (group, i) {
+                            if (last !== group) {
+                                var Cabecera = grupos.find(x=> x.Grupo == group);
+                                $(rows).eq(i).before(
+                                    '<tr class="group"><td>' + group + '</td><td colspan="4">' + Cabecera.Descripcion + '</td></tr>'
+                                );
+
+                                last = group;
+                            }
+                        });
+                    },
+                    //dom: 'Bfrtip',
+                    //buttons: [
+                    //    {
+                    //        extend: 'print',
+                    //        customize: function (win) {
+                    //            $(win.document.body)
+                    //                .css('font-size', '10pt')
+                    //                .prepend(
+                    //                    '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
+                    //                );
+
+                    //            $(win.document.body).find('table')
+                    //                .addClass('compact')
+                    //                .css('font-size', 'inherit');
+                    //        }
+                    //    }
+                    //]
+                });
+
+            },
             CargarReporte: function () {
 
                 axios.post("/Reporte/GenerarReporte/").then(function (response) {
-                    
+
 
                     this.listAP = response.data.listAP;
                     this.listrm = response.data.listrm;
@@ -156,41 +337,58 @@
         },
         computed: {},
         created: function () {
-            this.CargarReporte();
+            this.GenerarReporte();
         },
         mounted: function () {
         }
-    })
+    });
+
+    $('#chkveg').multiselect({
+        includeSelectAllOption: true
+    });
+
+    $('#btnget').click(function () {
+        alert($('#chkveg').val());
+    });
+
+    function printData() {
+        var divToPrint = document.getElementById("tbReporte");
+        newWin = window.open("");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.print();
+        newWin.close();
+    }
+
 </script>
 
 
 
 
 @*<script>
-    //$(document).ready(function () {
+        //$(document).ready(function () {
 
-    //});
+        //});
 
-    function ReportValidationCheck() {
-        //debugger;
-        url = "../Reporte/ReporteActa.aspx";
-        var myframe = document.getElementById("iframeReport");
-        if (myframe !== null) {
-            if (myframe.src) {
-                myframe.src = url;
-            }
-            else if (myframe.contentWindow !== null && myframe.contentWindow.location !== null) {
-                myframe.contentWindow.location = url;
-            }
-            else {
-                myframe.setAttribute('src', url);
+        function ReportValidationCheck() {
+            //debugger;
+            url = "../Reporte/ReporteActa.aspx";
+            var myframe = document.getElementById("iframeReport");
+            if (myframe !== null) {
+                if (myframe.src) {
+                    myframe.src = url;
+                }
+                else if (myframe.contentWindow !== null && myframe.contentWindow.location !== null) {
+                    myframe.contentWindow.location = url;
+                }
+                else {
+                    myframe.setAttribute('src', url);
+                }
             }
         }
-    }
 
-    ReportValidationCheck();
+        ReportValidationCheck();
 
-</script>*@
+    </script>*@
 
 
 

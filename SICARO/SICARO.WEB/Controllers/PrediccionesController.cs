@@ -125,7 +125,7 @@ namespace SICARO.WEB.Controllers
                 P.ErrorMedioCuadratico = Math.Round(Convert.ToDecimal(resultado.mse), 2).ToString();
                 P.predicion = Convert.ToInt16(decimal.Round(Convert.ToDecimal(resultado.prediccion)));
 
-                
+                 
 
                 string postdata = JsonConvert.SerializeObject(P);
                 var Res = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CONTROLPRODUCCION", "POST", postdata));
