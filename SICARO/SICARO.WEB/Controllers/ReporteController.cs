@@ -26,6 +26,9 @@ namespace SICARO.WEB.Controllers
         public JsonResult GenerarReporte()
         {
 
+            var Lista = new List<reporteMateriaPrima>();
+            return Json(new { listrm = Lista,  }, JsonRequestBehavior.AllowGet);
+
             TrazabilidadSample MP = new TrazabilidadSample();
             MP.producto = 1;
             MP.proveedor = 10;

@@ -335,6 +335,7 @@
     <Content Include="Scripts\JSSICARO\MateriaPrima.js" />
     <Content Include="Scripts\JSSICARO\Menu.js" />
     <Content Include="Scripts\JSSICARO\Personal.js" />
+    <Content Include="Scripts\JSSICARO\Reporte.js" />
     <Content Include="Scripts\JSSICARO\Rol.js" />
     <Content Include="Scripts\JSSICARO\TGeneral.js" />
     <Content Include="Scripts\JsTestEvaluacion\TestEvaluacion.js" />
