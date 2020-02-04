@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SICARO.WEB.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -23,112 +25,132 @@ namespace SICARO.WEB.Controllers
 
         [HttpPost]
 
-        public JsonResult GenerarReporte()
+        public JsonResult GenerarReporte(Reporte_EL R)
         {
+            string postdata = JsonConvert.SerializeObject(R);
+            var Lis = JsonConvert.DeserializeObject<List<Reporte_EL>>(Utilitario.Accion.Conect_WEBAPI("Reporte/ListarReporte", "POST", postdata));
 
-            var Lista = new List<reporteMateriaPrima>();
-            return Json(new { listrm = Lista,  }, JsonRequestBehavior.AllowGet);
+            return Json(new { listrm = Lis, }, JsonRequestBehavior.AllowGet);
 
-            TrazabilidadSample MP = new TrazabilidadSample();
-            MP.producto = 1;
-            MP.proveedor = 10;
-            MP.peso = 1;
-            MP.duracion = 0;
-            float longitud = 0;
-            string postdata = js.Serialize(MP);
-            Prediccion ListaMATERIA_PRIMA = new Prediccion();
 
-            try
-            {
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://localhost:56225/Service1.svc/PREDICCION");
-                HttpWebResponse res = null;
-                StreamReader reader = null;
-                        byte[] data = Encoding.UTF8.GetBytes(postdata);
-                        req.Method = "POST";
-                        req.ContentLength = data.Length;
-                        req.ContentType = "application/json";
-                        var reqStream = req.GetRequestStream();
-                        reqStream.Write(data, 0, data.Length);
-                        res = (HttpWebResponse)req.GetResponse();
-                        reader = new StreamReader(res.GetResponseStream());
-                        //return reader.ReadToEnd();
-                ListaMATERIA_PRIMA = js.Deserialize<Prediccion>(reader.ReadToEnd());
-                longitud = ListaMATERIA_PRIMA.prediccion;
-            }
-            catch (Exception e)
-            {
-                throw new ArgumentNullException(e.Message);
-            }
-
-            
-
-            DataSet ds = new DataSet();
-            using (SqlConnection con = new SqlConnection("Data Source='BDICAROV1.mssql.somee.com';Initial Catalog=BDICAROV1;user=sefiroth_SQLLogin_1;password=2llanx2cd9;"))
-            {
-                con.Open();
-                using (SqlCommand com = new SqlCommand("sp_reporte", con))
-                {
-                    com.CommandType = CommandType.Text;
-                    SqlDataAdapter da = new SqlDataAdapter(com);
-
-                    da.Fill(ds);
-                    //dtReporte = ds.Tables[0];
-                }
-            }
-            List<reporteACTIVIDADCONTROLPRODUCCION> listAP = new List<reporteACTIVIDADCONTROLPRODUCCION>();
-            foreach (DataRow item in ds.Tables[0].Rows)
-            {
-                reporteACTIVIDADCONTROLPRODUCCION r = new reporteACTIVIDADCONTROLPRODUCCION();
-                r.Tiempoinicial = item["Tiempoinicial"].ToString();
-                r.TiempoFinal = item["TiempoFinal"].ToString();
-                r.tiempototalmezclado = item["tiempototalmezclado"].ToString();
-                r.tiempototalreposo = item["tiempototalreposo"].ToString();
-                r.tiempototalfiltrado = item["tiempototalfiltrado"].ToString();
-                r.tiempototalllenado = item["tiempototalllenado"].ToString();
-                r.tiempototalencajonado = item["tiempototalencajonado"].ToString();
-                listAP.Add(r);
-            }
-
-            List<reporteMateriaPrima> listrm = new List<reporteMateriaPrima>();
-            foreach (DataRow item in ds.Tables[1].Rows)
-            {
-                reporteMateriaPrima r = new reporteMateriaPrima();
-                r.vnombremateriaprima = item["vnombremateriaprima"].ToString();
-                r.tipopronostico = item["tipopronostico"].ToString();
-                r.indicador = item["indicador"].ToString();
-                listrm.Add(r);
-            }
+            //List<Reporte_EL> Lista = new List<Reporte_EL>();
+            //decimal val = Convert.ToDecimal(1.01);
+            //int est = 0;
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    val = val + Convert.ToDecimal(0.01);
+            //    est = (i % 2 == 0 ? 1 : 0);
+            //    Reporte_EL list = new Reporte_EL()
+            //    {
+            //        indice = val,
+            //        estado = Convert.ToInt16(est),
+            //        descripcion = ""
+            //    };
+            //    Lista.Add(list);
+            //}
 
 
 
-            List<reporteCAPACITACION> listM = new List<reporteCAPACITACION>();
-            foreach (DataRow item in ds.Tables[2].Rows)
-            {
-                reporteCAPACITACION r = new reporteCAPACITACION();
-                r.vcodcapacitacion = item["vcodcapacitacion"].ToString();
-                r.vtemacapacitacion = item["vtemacapacitacion"].ToString();
-                r.dfechapropuestacapacitacion = item["dfechapropuestacapacitacion"].ToString();
-                r.cantidadcapacitados = item["cantidadcapacitados"].ToString();
-                r.cantidad = item["cantidad"].ToString();
-                listM.Add(r);
-            }
+            //TrazabilidadSample MP = new TrazabilidadSample();
+            //MP.producto = 1;
+            //MP.proveedor = 10;
+            //MP.peso = 1;
+            //MP.duracion = 0;
+            //float longitud = 0;
+            //string postdata = js.Serialize(MP);
+            //Prediccion ListaMATERIA_PRIMA = new Prediccion();
 
-            List<reportePROVEEDOR> listP = new List<reportePROVEEDOR>();
-            foreach (DataRow item in ds.Tables[3].Rows)
-            {
-                reportePROVEEDOR r = new reportePROVEEDOR();
-                r.vnombreproveedor = item["vnombreproveedor"].ToString();
-                r.vnombremateriaprima = item["vnombremateriaprima"].ToString();
-                r.icondiciones = item["icondiciones"].ToString();
-                r.puntaje = item["puntaje"].ToString();
+            //try
+            //{
+            //    HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://localhost:56225/Service1.svc/PREDICCION");
+            //    HttpWebResponse res = null;
+            //    StreamReader reader = null;
+            //    byte[] data = Encoding.UTF8.GetBytes(postdata);
+            //    req.Method = "POST";
+            //    req.ContentLength = data.Length;
+            //    req.ContentType = "application/json";
+            //    var reqStream = req.GetRequestStream();
+            //    reqStream.Write(data, 0, data.Length);
+            //    res = (HttpWebResponse)req.GetResponse();
+            //    reader = new StreamReader(res.GetResponseStream());
+            //    //return reader.ReadToEnd();
+            //    ListaMATERIA_PRIMA = js.Deserialize<Prediccion>(reader.ReadToEnd());
+            //    longitud = ListaMATERIA_PRIMA.prediccion;
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new ArgumentNullException(e.Message);
+            //}
 
-                listP.Add(r);
-            }
+
+
+            //DataSet ds = new DataSet();
+            //using (SqlConnection con = new SqlConnection("Data Source='BDICAROV1.mssql.somee.com';Initial Catalog=BDICAROV1;user=sefiroth_SQLLogin_1;password=2llanx2cd9;"))
+            //{
+            //    con.Open();
+            //    using (SqlCommand com = new SqlCommand("sp_reporte", con))
+            //    {
+            //        com.CommandType = CommandType.Text;
+            //        SqlDataAdapter da = new SqlDataAdapter(com);
+
+            //        da.Fill(ds);
+            //        //dtReporte = ds.Tables[0];
+            //    }
+            //}
+            //List<reporteACTIVIDADCONTROLPRODUCCION> listAP = new List<reporteACTIVIDADCONTROLPRODUCCION>();
+            //foreach (DataRow item in ds.Tables[0].Rows)
+            //{
+            //    reporteACTIVIDADCONTROLPRODUCCION r = new reporteACTIVIDADCONTROLPRODUCCION();
+            //    r.Tiempoinicial = item["Tiempoinicial"].ToString();
+            //    r.TiempoFinal = item["TiempoFinal"].ToString();
+            //    r.tiempototalmezclado = item["tiempototalmezclado"].ToString();
+            //    r.tiempototalreposo = item["tiempototalreposo"].ToString();
+            //    r.tiempototalfiltrado = item["tiempototalfiltrado"].ToString();
+            //    r.tiempototalllenado = item["tiempototalllenado"].ToString();
+            //    r.tiempototalencajonado = item["tiempototalencajonado"].ToString();
+            //    listAP.Add(r);
+            //}
+
+            //List<reporteMateriaPrima> listrm = new List<reporteMateriaPrima>();
+            //foreach (DataRow item in ds.Tables[1].Rows)
+            //{
+            //    reporteMateriaPrima r = new reporteMateriaPrima();
+            //    r.vnombremateriaprima = item["vnombremateriaprima"].ToString();
+            //    r.tipopronostico = item["tipopronostico"].ToString();
+            //    r.indicador = item["indicador"].ToString();
+            //    listrm.Add(r);
+            //}
+
+
+
+            //List<reporteCAPACITACION> listM = new List<reporteCAPACITACION>();
+            //foreach (DataRow item in ds.Tables[2].Rows)
+            //{
+            //    reporteCAPACITACION r = new reporteCAPACITACION();
+            //    r.vcodcapacitacion = item["vcodcapacitacion"].ToString();
+            //    r.vtemacapacitacion = item["vtemacapacitacion"].ToString();
+            //    r.dfechapropuestacapacitacion = item["dfechapropuestacapacitacion"].ToString();
+            //    r.cantidadcapacitados = item["cantidadcapacitados"].ToString();
+            //    r.cantidad = item["cantidad"].ToString();
+            //    listM.Add(r);
+            //}
+
+            //List<reportePROVEEDOR> listP = new List<reportePROVEEDOR>();
+            //foreach (DataRow item in ds.Tables[3].Rows)
+            //{
+            //    reportePROVEEDOR r = new reportePROVEEDOR();
+            //    r.vnombreproveedor = item["vnombreproveedor"].ToString();
+            //    r.vnombremateriaprima = item["vnombremateriaprima"].ToString();
+            //    r.icondiciones = item["icondiciones"].ToString();
+            //    r.puntaje = item["puntaje"].ToString();
+
+            //    listP.Add(r);
+            //}
 
 
 
 
-            return Json(new { listrm = listrm, listAP = listAP, listM = listM, listP = listP, longitud = longitud }, JsonRequestBehavior.AllowGet);
+            //return Json(new { listrm = listrm, listAP = listAP, listM = listM, listP = listP, longitud = longitud }, JsonRequestBehavior.AllowGet);
         }
 
 

@@ -138,19 +138,69 @@
                     { "Grupo": 8, "orden": 8.25, "AspectoEvaluar": "Los controles aplicados a los procesos específicos se encuentran debidamente registrados, los mismos que permiten realizar la rastreabilidad de los productos elaborados (hasta conocer los lotes de materia prima e insumos utilizados en la producción). Art. 60 del D.S. N° 007-98-SA. Art. 10.g, 14, 28 de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "", "OBSERVACION": "" },
                     { "Grupo": 8, "orden": 8.26, "AspectoEvaluar": "Existe un  profesional y/o técnico calificado y capacitado para dirigir y supervisar el control de las operaciones en todas las etapas de proceso. Art. 61 del D.S. N° 007-98-SA. Art. 10.f de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "", "OBSERVACION": "" },
 
-            ]
+            ],
+            ListaFiltrada:[],
         },
         methods: {
+            BuscarProcedimiento: function () {
+                var pIni = $('#procedimientoInicio').val();
+                var pFin = $('#procedimientoFin').val();
+
+                if (pIni > pFin) {
+                    Mensaje('El procedimiento inicial no puede ser mayor al procedimiento final', 2);
+                    return;
+                }
+
+                var ListaProcedimientos = this.ListaProcedimiento.filter(x=> x.orden >= pIni);
+                var ListaProcedimientos = ListaProcedimientos.filter(x=> x.orden <= pFin);
+                this.ListaFiltrada = ListaProcedimientos;
+                this.GenerarReporte();
+                
+            },
+            ListarGrupos:function(){
+
+            },
             GenerarReporte: function () {
                 
                 //{ "Grupo": 2, "orden": 2.16, "AspectoEvaluar": "dictamen", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
                 //];
 
+                var fechainicial = $('#dfechaIni').data('date');
+                var fechafinal = $('#dfechaFin').data('date');
 
-                axios.post('/Reporte/GenerarReporte', data).then(response => {
+                if (fechainicial > fechafinal) {
+                    Mensaje('La fecha inicial no puede ser mayor a la fecha final', 2);
+                    return;
+                }
+
+
+                //fechainicial = fechainicial.substr(3, 2) + "/" + fechainicial.substr(0, 2) + "/" + fechainicial.substr(6, 10);                
+                //fechafinal = fechafinal.substr(3, 2) + "/" + fechafinal.substr(0, 2) + "/" + fechafinal.substr(6, 10);
+
+                var R = {
+                    fechainicial:fechainicial,
+                    fechafinal: fechafinal
+                };
+
+                axios.post('/Reporte/GenerarReporte', R).then(response => {
                     var groupColumn = 0;
+
+                    var _ListaProcedimiento = this.ListaFiltrada;
+
+                    $.each(_ListaProcedimiento, function (k, v) {
+                        var Row = response.data.listrm.find(x=> x.indice == v.orden);
+                        if (Row != undefined) {
+                            if (Row.estado == 0) {
+                                v.NO = "X";
+                            } else {
+                                v.SI = "X";
+                            }
+                            v.OBSERVACION = Row.descripcion;
+                        }
+                    });
+                    $('#tbReporte').DataTable().destroy();
                     var table = $('#tbReporte').DataTable({
-                        "data": Reportes.ListaProcedimiento,
+                        "data": _ListaProcedimiento,
                         "columns": [
                             { data: "Grupo" },
                             { data: "orden", "width": "10%" },
@@ -173,7 +223,7 @@
                                 if (last !== group) {
                                     var Cabecera = Reportes.grupos.find(x=> x.Grupo == group);
                                     $(rows).eq(i).before(
-                                        '<tr class="group"><td>' + group + '</td><td colspan="4">' + Cabecera.Descripcion + '</td></tr>'
+                                        '<tr style="background-color: #ddd!important;"><td>' + group + '</td><td colspan="4">' + Cabecera.Descripcion + '</td></tr>'
                                     );
 
                                     last = group;
@@ -205,7 +255,7 @@
         },
         computed: {},
         created: function () {
-            this.GenerarReporte();
+            //this.GenerarReporte();
         },
         mounted: function () {
         }
@@ -219,11 +269,38 @@
         alert($('#chkveg').val());
     });
 
-    function printData() {
-        var divToPrint = document.getElementById("tbReporte");
-        newWin = window.open("");
-        newWin.document.write(divToPrint.outerHTML);
-        newWin.print();
-        newWin.close();
-    }
+
+    $('#dfechaIni').datetimepicker({
+        language: 'es',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+
+    });
+
+    $('#dfechaFin').datetimepicker({
+        language: 'es',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+
+    });
+    
 });
+
+function printData() {
+    var divToPrint = document.getElementById("RegionReporte");
+    newWin = window.open("");
+    newWin.document.write(divToPrint.outerHTML);
+    newWin.print();
+    newWin.close();
+}
+

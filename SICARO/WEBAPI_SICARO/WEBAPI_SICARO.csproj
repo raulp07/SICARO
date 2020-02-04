@@ -205,6 +205,7 @@
     <Compile Include="Controllers\PRODUCTO_MATERIAPRIMAController.cs" />
     <Compile Include="Controllers\PROVEEDORController.cs" />
     <Compile Include="Controllers\PROVEEDOR_MATERIAPRIMAController.cs" />
+    <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\REPRESENTANTEController.cs" />
     <Compile Include="Controllers\RolController.cs" />
     <Compile Include="Controllers\TESTController.cs" />
@@ -244,6 +245,7 @@
     <Compile Include="Models\PROVEEDOR_MATERIAPRIMA_EL.cs" />
     <Compile Include="Models\question_less_success.cs" />
     <Compile Include="Models\question_more_success.cs" />
+    <Compile Include="Models\Reporte_EL.cs" />
     <Compile Include="Models\REPRESENTANTE_EL.cs" />
     <Compile Include="Models\Rol_EL.cs" />
     <Compile Include="Models\stats.cs" />
@@ -273,6 +275,7 @@
     <Compile Include="Persistencia\PRONOSTICO_DA.cs" />
     <Compile Include="Persistencia\PROVEEDOR_DA.cs" />
     <Compile Include="Persistencia\PROVEEDOR_MATERIAPRIMA_DA.cs" />
+    <Compile Include="Persistencia\Reporte_DA.cs" />
     <Compile Include="Persistencia\REPRESENTANTE_DA.cs" />
     <Compile Include="Persistencia\Rol_DA.cs" />
     <Compile Include="Persistencia\TEST_DA.cs" />

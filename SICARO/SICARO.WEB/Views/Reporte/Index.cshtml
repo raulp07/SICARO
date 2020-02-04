@@ -2,7 +2,6 @@
 @{
     ViewBag.Title = "Index";
 }
-
 @*@Html.Partial("ReporteActa")*@
 @*<style>
         tr.group,
@@ -11,58 +10,76 @@
         }
     </style>*@
 
-
 <script src="~/Scripts/JSSICARO/Reporte.js"></script>
 <div id="reporte">
-
     <div class="row">
         <div class="form-group text-center">
             <h1>REPORTE DE INSPECCIÓN SANITARIA</h1>
             @*<label class="form-control">REPORTE DE INSPECCIÓN SANITARIA</label>*@
         </div>
     </div>
-
     @*<div class="row">
         <div class="form-group text-center">
             <label class="">Procedimientos:</label>
             <select id="chkveg" multiple="multiple" class="form-control">
-                <option value="cheese">Cheese</option>
-                <option value="tomatoes">Tomatoes</option>
-                <option value="mozarella">Mozzarella</option>
-                <option value="mushrooms">Mushrooms</option>
-                <option value="pepperoni">Pepperoni</option>
-                <option value="onions">Onions</option>
+                <option v-for="item in grupos" v-bind:value="item.Grupo">{{item.Descripcion}}</option>
             </select>
         </div>
     </div>*@
     <div class="row">
-        <div class="form-group">
-            <div class="col-sm-4">
-                <label>Rango de Tiempo:</label>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label>Procedimiento</label>
             </div>
-            <div class="col-sm-4">
-                <div class='input-group date' id='dfechaIni' data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="procedimientoInicio">Procedimiento inicio :</label>
+                <select id="procedimientoInicio" class="form-control">
+                    <option v-for="item in ListaProcedimiento" v-bind:value="item.orden">{{item.orden}}</option>
+                </select>
             </div>
-            <div class="col-sm-4">
-                <div class='input-group date' id='dfechaFin' data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="procedimientoFin">Procedimiento Final :</label>
+                <select id="procedimientoFin" class="form-control">
+                    <option v-for="item in ListaProcedimiento" v-bind:value="item.orden">{{item.orden}}</option>
+                </select>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <label>Rango de Tiempo:</label>
+                </div>
+                <div class="col-sm-4">
+                    <div class='input-group date' id='dfechaIni' data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class='input-group date' id='dfechaFin' data-date-format="dd/mm/yyyy" data-link-format="yyyy-mm-dd">
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
     <br />
-    @*<div class="row">
+    <div class="row">
         <div class="form-group">
             <div class="col-sm-4 text-center">
-                <input type="button" value="Generar" class="btn btn-success " />
+                <input type="button" value="Generar" class="btn btn-success " v-on:click="BuscarProcedimiento" />
             </div>
             <div class="col-sm-4 text-center">
                 <input type="button" value="Descargar PDF" onclick="printData()" class="btn btn-primary" />
@@ -71,25 +88,25 @@
                 <input type="button" value="Salir" class="btn btn-warning" />
             </div>
         </div>
-    </div>*@
+    </div>
     <br />
     <div class="row">
         <div class="col-sm-12">
+            <div id="RegionReporte">
+                <table id="tbReporte" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Grupo</th>
+                            <th>N°</th>
+                            <th>ASPECTOS A EVALUAR</th>
+                            <th>SI</th>
+                            <th>NO</th>
+                            <th>OBSERVACIONES Y COMENTARIOS</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
 
-            <table id="tbReporte">
-                <thead>
-                    <tr>
-                        <th>Grupo</th>
-                        <th>N°</th>
-                        <th>ASPECTOS A EVALUAR</th>
-                        <th>SI</th>
-                        <th>NO</th>
-                        <th>OBSERVACIONES Y COMENTARIOS</th>
-                    </tr>
-                </thead>
-
-            </table>
         </div>
     </div>
-
 </div>
