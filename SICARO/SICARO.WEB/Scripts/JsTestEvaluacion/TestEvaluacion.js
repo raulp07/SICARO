@@ -99,8 +99,12 @@ new Vue({
 
             var _puntaje = 0;
             var _Detalle = [];
+
+
+            var _SubDetalle = {};
+
             $.each(_Lista_Preguntas, function (key, val) {
-                var _SubDetalle = {};
+                
                 switch (val.iTipoRespuestaPregunta) {
                     case 1:
                         var _VF = _Lista_Opciones.find(function (valI) {
@@ -141,6 +145,8 @@ new Vue({
                         ; break;
                     default:
                 }
+
+
                 _Detalle.push(_SubDetalle);
                 //$.each(_Lista_Opciones, function (keyR, valR) {
                 //    if (val.iIdPregunta == valR.iIdPregunta) {

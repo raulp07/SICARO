@@ -31,6 +31,7 @@ namespace SICARO.WEB.Controllers
         [HttpPost]
         public JsonResult RegistrarTest(CAPACITACION_PERSONAL_EL parametros, List<DETALLE_CAPACITACION_PERSONAL_EL> Detalle_Capacitacion)
         {
+            parametros.iIdPersonal = SesionUsuario.Usuario.Id;
             string postdata = JsonConvert.SerializeObject(parametros);
             int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION_PERSONAL", "POST", postdata));
             //foreach (DETALLE_CAPACITACION_PERSONAL_EL item in Detalle_Capacitacion)
