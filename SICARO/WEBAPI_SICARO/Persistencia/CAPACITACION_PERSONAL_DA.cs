@@ -150,5 +150,36 @@ namespace WEBAPI_SICARO.Persistencia
 
         }
 
+
+        public int RegistrarAsistencia(List<CAPACITACION_PERSONAL_EL> ListaCP)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                try
+                {
+                    con.Open();
+                    foreach (CAPACITACION_PERSONAL_EL CP in ListaCP)
+                    {                        
+                        using (SqlCommand com = new SqlCommand("sp_RegistrarAsistencia", con))
+                        {
+                            com.CommandType = CommandType.StoredProcedure;
+                            com.Parameters.Add("@iIdPersonal", SqlDbType.Int).Value = CP.iIdPersonal;
+                            com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = CP.iIdCapacitacion;
+                            com.Parameters.Add("@vObservacionPersonal", SqlDbType.VarChar).Value = CP.vObservacionPersonal;
+                            com.Parameters.Add("@iAsistenciaPersonal", SqlDbType.Int).Value = CP.iAsistenciaPersonal;
+                            com.Parameters.Add("@iUsuarioMod", SqlDbType.Int).Value = CP.iUsuarioMod;
+
+                            com.ExecuteNonQuery();
+                        }
+                    }
+                    return 0;
+                }
+                catch (Exception)
+                {
+                    return -1;
+                }
+            }
+        }
+
     }
 }

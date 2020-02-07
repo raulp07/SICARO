@@ -33,12 +33,19 @@ namespace SICARO.WEB.Controllers
         {
             parametros.iIdPersonal = SesionUsuario.Usuario.Id;
             string postdata = JsonConvert.SerializeObject(parametros);
+
+            foreach (DETALLE_CAPACITACION_PERSONAL_EL item in Detalle_Capacitacion)
+            {
+                item.iIdDetalleCapacitacionPersonal = 1;
+                item.iIdCapacitacionPersonal = SesionUsuario.Usuario.Id;
+            }
+
+            string postdataDetalleCapacitacion = JsonConvert.SerializeObject(Detalle_Capacitacion);
+
             int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION_PERSONAL", "POST", postdata));
-            //foreach (DETALLE_CAPACITACION_PERSONAL_EL item in Detalle_Capacitacion)
-            //{
-            //    string postdataP = JsonConvert.SerializeObject(item);
-            //    int respuestaP = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("DETALLE_CAPACITACION_PERSONAL", "POST", postdataP));
-            //}
+
+            int respuestaP = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("DETALLE_CAPACITACION_PERSONAL", "POST", postdataDetalleCapacitacion));
+            
 
             return Json(new { respuesta = respuesta }, JsonRequestBehavior.AllowGet);
         }

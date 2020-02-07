@@ -38,5 +38,12 @@ namespace WEBAPI_SICARO.Controllers
             return CAPACITACION_PERSONAL_DA.Accion.UpdateCAPACITACION_PERSONAL(value);
         }
 
+        [HttpPost]
+        [Route("RegistrarAsistencia")]
+        public int RegistrarAsistencia(List<CAPACITACION_PERSONAL_EL> value)
+        {
+            return CAPACITACION_PERSONAL_DA.Accion.RegistrarAsistencia(value);
+        }
+
     }
 }

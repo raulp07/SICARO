@@ -41,7 +41,7 @@ namespace WEBAPI_SICARO.Persistencia
                         while (dataReader.Read())
                         {
                             DETALLE_CAPACITACION_PERSONAL_EL obj = new DETALLE_CAPACITACION_PERSONAL_EL();
-                            
+
                             if (dataReader["iIdDetalleCapacitacionPersonal"] != DBNull.Value) { obj.iIdDetalleCapacitacionPersonal = (int)dataReader["iIdDetalleCapacitacionPersonal"]; }
                             if (dataReader["iIdCapacitacionPersonal"] != DBNull.Value) { obj.iIdCapacitacionPersonal = (int)dataReader["iIdCapacitacionPersonal"]; }
                             if (dataReader["iIdPregunta"] != DBNull.Value) { obj.iIdPregunta = (int)dataReader["iIdPregunta"]; }
@@ -60,23 +60,39 @@ namespace WEBAPI_SICARO.Persistencia
 
             }
         }
-        public int InsertDETALLE_CAPACITACION_PERSONAL(DETALLE_CAPACITACION_PERSONAL_EL CP)
+        public int InsertDETALLE_CAPACITACION_PERSONAL(IEnumerable<DETALLE_CAPACITACION_PERSONAL_EL> ListaCP)
         {
-            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            try
             {
-                con.Open();
-                using (SqlCommand com = new SqlCommand("spInsertDETALLE_CAPACITACION_PERSONAL", con))
+                using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
                 {
-                    com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdCapacitacionPersonal", SqlDbType.Int).Value = CP.iIdCapacitacionPersonal;
-                    com.Parameters.Add("@iIdPregunta", SqlDbType.Int).Value = CP.iIdPregunta;
-                    com.Parameters.Add("@iIdOpcion", SqlDbType.Int).Value = CP.iIdOpcion;
-                    com.Parameters.Add("@iEstadoRespuesta", SqlDbType.Int).Value = CP.iEstadoRespuesta;
-                    com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = CP.iUsuarioCrea;
-                    
-                    return com.ExecuteNonQuery();
+                    con.Open();
+
+                    foreach (DETALLE_CAPACITACION_PERSONAL_EL CP in ListaCP)
+                    {
+                        using (SqlCommand com = new SqlCommand("spInsertDETALLE_CAPACITACION_PERSONAL", con))
+                        {
+                            com.CommandType = CommandType.StoredProcedure;
+                            com.Parameters.Add("@iIdDetalleCapacitacionPersonal", SqlDbType.Int).Value = CP.iIdDetalleCapacitacionPersonal;
+                            com.Parameters.Add("@iIdCapacitacionPersonal", SqlDbType.Int).Value = CP.iIdCapacitacionPersonal;
+                            com.Parameters.Add("@iIdPregunta", SqlDbType.Int).Value = CP.iIdPregunta;
+                            com.Parameters.Add("@iIdOpcion", SqlDbType.Int).Value = CP.iIdOpcion;
+                            com.Parameters.Add("@iEstadoRespuesta", SqlDbType.Int).Value = CP.iEstadoRespuesta;
+                            com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = CP.iUsuarioCrea;
+
+                            com.ExecuteNonQuery();
+                        }
+                    }
+
+                    return 0;
                 }
             }
+            catch (Exception e)
+            {
+
+                return -1;
+            }
+            
 
         }
         public int UpdateDETALLE_CAPACITACION_PERSONAL(DETALLE_CAPACITACION_PERSONAL_EL CP)
@@ -129,10 +145,10 @@ namespace WEBAPI_SICARO.Persistencia
                                     q1.question = (string)dataReader["titulo"];
                                     q1.evaluated = Convert.ToString((int)dataReader["Aciertos"]); break;
                                 case 4:
-                                    q2.question = (string)dataReader["titulo"]; 
+                                    q2.question = (string)dataReader["titulo"];
                                     q2.evaluated = Convert.ToString((int)dataReader["Aciertos"]); break;
-                                    
-                            }                   
+
+                            }
                         }
                         obj.stats = s;
                         obj.question_more_success = q1;

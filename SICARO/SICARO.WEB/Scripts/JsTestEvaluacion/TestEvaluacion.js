@@ -100,11 +100,10 @@ new Vue({
             var _puntaje = 0;
             var _Detalle = [];
 
-
-            var _SubDetalle = {};
-
+            
             $.each(_Lista_Preguntas, function (key, val) {
-                
+                var _SubDetalle = {};
+                var estadorespuesta = 0;
                 switch (val.iTipoRespuestaPregunta) {
                     case 1:
                         var _VF = _Lista_Opciones.find(function (valI) {
@@ -113,19 +112,32 @@ new Vue({
                         var _optradio = $('input:radio[name=pregunta' + val.iIdPregunta + ']:checked').val();
                         _optradio = _optradio == undefined ? -1 : _optradio;
                         if (_VF.iEstadoOpcion == _optradio) {
-                            _puntaje +=  val.iPuntajePregunta;
+                            _puntaje += val.iPuntajePregunta;
+                            estadorespuesta = 1;
                         }
-
+                        _SubDetalle = {
+                            'iIdPregunta': val.iIdPregunta,
+                            'iIdOpcion': _VF.iIdOpcion,
+                            'iEstadoRespuesta': estadorespuesta,
+                        };
+                        _Detalle.push(_SubDetalle);
                         ; break;
                     case 2:
                         var _Respuestas = _Lista_Opciones.find(x => x.iIdPregunta == val.iIdPregunta && x.iEstadoOpcion == 1);
                         var _iIdOpcion = $('input:radio[name="pregunta' + val.iIdPregunta + '"]:checked').val();
                         if (_Respuestas.iIdOpcion == _iIdOpcion) {
-                            _puntaje +=  val.iPuntajePregunta;
+                            _puntaje += val.iPuntajePregunta;
+                            estadorespuesta = 1;
                         }
+                        _SubDetalle = {
+                            'iIdPregunta': val.iIdPregunta,
+                            'iIdOpcion': _Respuestas.iIdOpcion,
+                            'iEstadoRespuesta': estadorespuesta,
+                        };
+                        _Detalle.push(_SubDetalle);
                         ; break;
                     case 3:
-                        var _RespuestasMultiple = $.grep(_Lista_Opciones,function (valI) {
+                        var _RespuestasMultiple = $.grep(_Lista_Opciones, function (valI) {
                             return (valI.iIdPregunta == val.iIdPregunta && valI.iEstadoOpcion == 1);
                         });
                         var CantidadRespuestas = 0;
@@ -134,44 +146,25 @@ new Vue({
                         $.each(_RespuestasMultiple, function (KeyM, ValM) {
                             $('input:checkbox[name="pregunta' + val.iIdPregunta + '"]:checked').each(function (KeyMR, ValMR) {
                                 if (ValM.iIdOpcion == ValMR.value) {
-                                    CantidadRespuestas++;
-                                }
+                                    CantidadRespuestas++;                                    
+                                }                                
                             });
                         });
-
                         if (_RespuestasMultiple.length == CantidadRespuestas && CantidadRespuestasMarcadas == CantidadRespuestas) {
                             _puntaje += val.iPuntajePregunta;
+                            estadorespuesta = 1;
                         }
+                        _SubDetalle = {
+                            'iIdPregunta': val.iIdPregunta,
+                            'iIdOpcion': 0,
+                            'iEstadoRespuesta': estadorespuesta,
+                        };
+                        _Detalle.push(_SubDetalle);
+
                         ; break;
                     default:
                 }
 
-
-                _Detalle.push(_SubDetalle);
-                //$.each(_Lista_Opciones, function (keyR, valR) {
-                //    if (val.iIdPregunta == valR.iIdPregunta) {
-
-
-                // Evaluar para la insercion del detalle personal capacitacion
-                //var _optradio = $('input:radio[name=pregunta' + val.iIdPregunta + ']:checked').val();
-                //_optradio = _optradio == undefined ? -1 : _optradio;
-
-                //if (valR.iEstadoOpcion == _optradio) {
-                //    _puntaje = _puntaje + val.iPuntabjePregunta;
-                //    _SubDetalle = {
-                //        "iIdPregunta": valR.iIdPregunta,
-                //        "iIdOpcion": valR.iIdOpcion,
-                //        "iEstadoRespuesta": 1,
-                //    }
-                //} else {
-                //    _SubDetalle = {
-                //        "iIdPregunta": valR.iIdPregunta,
-                //        "iIdOpcion": valR.iIdOpcion,
-                //        "iEstadoRespuesta": 0,
-                //    }
-                //}
-                //    }
-                //});
             });
             var parametros = {
                 iPuntajePersonal: _puntaje

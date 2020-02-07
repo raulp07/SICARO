@@ -20,7 +20,7 @@ namespace WEBAPI_SICARO.Controllers
         }
 
         [HttpPost]
-        public int POST(DETALLE_CAPACITACION_PERSONAL_EL value)
+        public int POST(IEnumerable<DETALLE_CAPACITACION_PERSONAL_EL> value)
         {
             return DETALLE_CAPACITACION_PERSONAL_DA.Accion.InsertDETALLE_CAPACITACION_PERSONAL(value);
         }
