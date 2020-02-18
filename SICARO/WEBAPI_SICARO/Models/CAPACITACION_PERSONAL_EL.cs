@@ -128,5 +128,13 @@ namespace WEBAPI_SICARO.Modles
             set { _dFechaMod = value; }
         }
         private DateTime _dFechaMod;
+
+
+        public string nombre { get; set; }
+        public string apellido { get; set; }
+        public string dni { get; set; }
+
+
+
     }
 }

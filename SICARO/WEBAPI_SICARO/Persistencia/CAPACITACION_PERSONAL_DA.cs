@@ -96,6 +96,9 @@ namespace WEBAPI_SICARO.Persistencia
                             if (dataReader["dFechaCrea"] != DBNull.Value) { obj.dFechaCrea = (DateTime)dataReader["dFechaCrea"]; }
                             if (dataReader["iUsuarioMod"] != DBNull.Value) { obj.iUsuarioMod = (int)dataReader["iUsuarioMod"]; }
                             if (dataReader["dFechaMod"] != DBNull.Value) { obj.dFechaMod = (DateTime)dataReader["dFechaMod"]; }
+                            if (dataReader["nombre"] != DBNull.Value) { obj.nombre = (string)dataReader["nombre"]; }
+                            if (dataReader["apellido"] != DBNull.Value) { obj.apellido = (string)dataReader["apellido"]; }
+                            if (dataReader["dni"] != DBNull.Value) { obj.dni = (string)dataReader["dni"]; }
 
                             list.Add(obj);
 
