@@ -229,7 +229,22 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-
+        public int FinalizarCapacitacion(int idcapacitacion)
+        {
+            return 1;
+            //using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            //{
+            //    con.Open();
+            //    using (SqlCommand com = new SqlCommand("spInsertCAPACITACION", con))
+            //    {
+            //        com.CommandType = CommandType.StoredProcedure;
+            //        com.Parameters.Add("@vTemaCapacitacion", SqlDbType.VarChar).Value = C.vTemaCapacitacion;
+            //        com.Parameters.Add("@dFechaPropuestaCapacitacion", SqlDbType.DateTime).Value = C.dFechaPropuestaCapacitacion;
+            //        com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = C.iUsuarioCrea;
+            //        return com.ExecuteNonQuery();
+            //    }
+            //}
+        }
 
     }
 }

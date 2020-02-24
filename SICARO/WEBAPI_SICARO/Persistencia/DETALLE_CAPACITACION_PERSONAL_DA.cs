@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using WEBAPI_SICARO.Models;
 using WEBAPI_SICARO.Modles;
 
 namespace WEBAPI_SICARO.Persistencia
@@ -92,7 +93,7 @@ namespace WEBAPI_SICARO.Persistencia
 
                 return -1;
             }
-            
+
 
         }
         public int UpdateDETALLE_CAPACITACION_PERSONAL(DETALLE_CAPACITACION_PERSONAL_EL CP)
@@ -116,14 +117,15 @@ namespace WEBAPI_SICARO.Persistencia
 
         }
 
-        public List<ElementosSaliente> GetAllDETALLECAPACITACIONPERSONALSERVICIO()
+        public List<ElementosSaliente> GetAllDETALLECAPACITACIONPERSONALSERVICIO(int iIdCapacitacion)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
                 con.Open();
-                using (SqlCommand com = new SqlCommand("ListaServicioCircular", con))
+                using (SqlCommand com = new SqlCommand("graficoAlumnosAprobados", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
                     List<ElementosSaliente> list = new List<ElementosSaliente>();
                     using (IDataReader dataReader = com.ExecuteReader())
                     {
@@ -147,7 +149,6 @@ namespace WEBAPI_SICARO.Persistencia
                                 case 4:
                                     q2.question = (string)dataReader["titulo"];
                                     q2.evaluated = Convert.ToString((int)dataReader["Aciertos"]); break;
-
                             }
                         }
                         obj.stats = s;
@@ -162,21 +163,78 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<PREGUNTAS_CORRECTAS> GetPREGUNTAS_CORRECTAS()
+        public List<PREGUNTAS_CORRECTAS> GetPREGUNTAS_CORRECTAS(int iIdCapacitacion)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
                 con.Open();
-                using (SqlCommand com = new SqlCommand("List_Pregunta_Correctas", con))
+                using (SqlCommand com = new SqlCommand("NumeroAciertosPorPregunta", con))
                 {
                     com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
+
+                    int nro = 1;
                     List<PREGUNTAS_CORRECTAS> list = new List<PREGUNTAS_CORRECTAS>();
                     using (IDataReader dataReader = com.ExecuteReader())
                     {
                         while (dataReader.Read())
                         {
                             PREGUNTAS_CORRECTAS obj = new PREGUNTAS_CORRECTAS();
-                            if (dataReader["Total"] != DBNull.Value) { obj.Value = Convert.ToString((int)dataReader["Total"]); }
+                            if (dataReader["idPregunta"] != DBNull.Value) { obj.titulo = "Pregunta " + nro; }
+                            if (dataReader["numaciertos"] != DBNull.Value) { obj.Value = Convert.ToString((int)dataReader["numaciertos"]); }
+                            list.Add(obj); nro++;
+                        }
+                    }
+                    return list;
+                }
+
+            }
+        }
+
+        public ReporteGrafico_EL graficoAlumnosAprobados(int iIdCapacitacion)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("graficoAlumnosAprobados", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
+                    ReporteGrafico_EL obj = new ReporteGrafico_EL();
+                    using (IDataReader dataReader = com.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+
+                            if (dataReader["totalparticipantes"] != DBNull.Value) { obj.totalparticipantes = (int)dataReader["totalparticipantes"]; }
+                            if (dataReader["aprobados"] != DBNull.Value) { obj.aprobados = (int)dataReader["aprobados"]; }
+                            if (dataReader["desaprobados"] != DBNull.Value) { obj.desaprobados = (int)dataReader["desaprobados"]; }
+                        }
+                    }
+                    return obj;
+                }
+
+            }
+        }
+
+        public IEnumerable<ReporteGrafico_EL> preguntaMayorMenorAcierto(int iIdCapacitacion)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("preguntaMayorMenorAcierto", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
+                    List<ReporteGrafico_EL> list = new List<ReporteGrafico_EL>();
+                    using (IDataReader dataReader = com.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            ReporteGrafico_EL obj = new ReporteGrafico_EL();
+                            //if (dataReader["nombrePregunta"] != DBNull.Value) { obj.totalparticipantes = (int)dataReader["nombrePregunta"]; }
+                            if (dataReader["idPregunta"] != DBNull.Value) { obj.idPregunta = (int)dataReader["idPregunta"]; }
+                            if (dataReader["numaciertos"] != DBNull.Value) { obj.numaciertos = (int)dataReader["numaciertos"]; }
                             list.Add(obj);
                         }
                     }
@@ -185,6 +243,36 @@ namespace WEBAPI_SICARO.Persistencia
 
             }
         }
+
+        public IEnumerable<ReporteGrafico_EL> NumeroAciertosPorPregunta(int iIdCapacitacion)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("NumeroAciertosPorPregunta", con))
+                {
+                    int nro = 1;
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
+                    List<ReporteGrafico_EL> list = new List<ReporteGrafico_EL>();
+                    using (IDataReader dataReader = com.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            ReporteGrafico_EL obj = new ReporteGrafico_EL();
+                            if (dataReader["idPregunta"] != DBNull.Value) { obj.nombrePregunta = "Pregunta " + nro; }
+                            if (dataReader["idPregunta"] != DBNull.Value) { obj.idPregunta = (int)dataReader["idPregunta"]; }
+                            if (dataReader["numaciertos"] != DBNull.Value) { obj.numaciertos = (int)dataReader["numaciertos"]; }
+                            list.Add(obj);
+                            nro++;
+                        }
+                    }
+                    return list;
+                }
+
+            }
+        }
+
 
     }
 }

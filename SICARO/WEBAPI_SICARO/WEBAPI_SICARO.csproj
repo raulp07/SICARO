@@ -245,6 +245,7 @@
     <Compile Include="Models\PROVEEDOR_MATERIAPRIMA_EL.cs" />
     <Compile Include="Models\question_less_success.cs" />
     <Compile Include="Models\question_more_success.cs" />
+    <Compile Include="Models\ReporteGrafico_EL.cs" />
     <Compile Include="Models\Reporte_EL.cs" />
     <Compile Include="Models\REPRESENTANTE_EL.cs" />
     <Compile Include="Models\Rol_EL.cs" />

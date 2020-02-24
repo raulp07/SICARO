@@ -10,6 +10,7 @@ namespace WEBAPI_SICARO.Modles
     {
 
         [DataMember]
+        public string titulo { get; set; }
         public string Value { get; set; }
 
     }

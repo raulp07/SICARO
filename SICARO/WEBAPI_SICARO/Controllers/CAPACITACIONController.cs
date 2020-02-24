@@ -42,6 +42,11 @@ namespace WEBAPI_SICARO.Controllers
         {
             return CAPACITACION_DA.Accion.GetAllCAPACITACION_TEST(value);
         }
-
+        [HttpGet]
+        [Route("FinalizarCapacitacion")]
+        public int FinalizarCapacitacion(int value)
+        {
+            return CAPACITACION_DA.Accion.FinalizarCapacitacion(value);
+        }
     }
 }
