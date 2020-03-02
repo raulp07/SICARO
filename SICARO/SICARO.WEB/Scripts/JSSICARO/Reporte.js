@@ -4,7 +4,7 @@
     var Reportes = new Vue({
         el: "#reporte",
         data: {
-            grupos : [
+            grupos: [
                     { "Grupo": 1, "NroRomano": "I", "Descripcion": "DEL ÁREA DE ALMACENAMIENTO DE MATERIA PRIMA E INSUMOS" },
                     { "Grupo": 2, "NroRomano": "II", "Descripcion": "DEL ÁREA DE PROCESO" },
                     { "Grupo": 3, "NroRomano": "III", "Descripcion": "DEL ÁREA DE ENVASADO DEL PRODUCTO FINAL" },
@@ -14,7 +14,7 @@
                     { "Grupo": 7, "NroRomano": "VII", "Descripcion": "DE LAS CONDICIONES SANITARIAS GENERALES DEL ESTABLECIMIENTO" },
                     { "Grupo": 8, "NroRomano": "VIII", "Descripcion": "DE LOS REQUISITOS PREVIOS AL PLAN HACCP" },
             ],
-            ListaProcedimiento : [
+            ListaProcedimiento: [
 
                     { "Grupo": 1, "orden": 1.01, "AspectoEvaluar": "El almacén es de uso exclusivo, apropiado para mantener la calidad sanitaria e inocuidad de los alimentos y se encuentra libre de materiales, productos o sustancias que puedan contaminar el producto almacenado. Las materias primas y los productos terminados se almacenan en ambientes separados. Art. 70 del D.S. N° 007-98-SA. Art. 9 de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "", "OBSERVACION": "" },
                     { "Grupo": 1, "orden": 1.02, "AspectoEvaluar": "Las instalaciones (pisos, paredes, extructuras auxiliares) se encuentran limpios. Se toman las precauciones necesarias para impedir que el alimento sea contaminado cuando se realiza la limpieza y desinfección. Los implementos de limpieza son de uso exclusivo del área. Art. 56 del D.S. N° 007-98-SA.", "SI": "", "NO": "", "OBSERVACION": "" },
@@ -139,7 +139,7 @@
                     { "Grupo": 8, "orden": 8.26, "AspectoEvaluar": "Existe un  profesional y/o técnico calificado y capacitado para dirigir y supervisar el control de las operaciones en todas las etapas de proceso. Art. 61 del D.S. N° 007-98-SA. Art. 10.f de la R.M. N° 449-2006/MINSA.", "SI": "", "NO": "", "OBSERVACION": "" },
 
             ],
-            ListaFiltrada:[],
+            ListaFiltrada: [],
         },
         methods: {
             BuscarProcedimiento: function () {
@@ -150,35 +150,50 @@
                     Mensaje('El procedimiento inicial no puede ser mayor al procedimiento final', 2);
                     return;
                 }
+                var _ListaFiltrada = [];
+                var ListaRegistrada = {};
+                $.each($("input[type=checkbox]:checked"), function () {
+                    ListaRegistrada = Reportes.ListaProcedimiento.filter(x=> x.Grupo == $(this).val());
+                    $.each(ListaRegistrada, function (k, v) {
+                        var datos = {
+                            "Grupo": v["Grupo"],
+                            "orden": v["orden"],
+                            "AspectoEvaluar": v["AspectoEvaluar"],
+                            "SI": v["SI"],
+                            "NO": v["NO"],
+                            "OBSERVACION": v["OBSERVACION"]
+                        };
+                        _ListaFiltrada.push(datos);
+                    })
+                });
 
-                var ListaProcedimientos = this.ListaProcedimiento.filter(x=> x.orden >= pIni);
-                var ListaProcedimientos = ListaProcedimientos.filter(x=> x.orden <= pFin);
-                this.ListaFiltrada = ListaProcedimientos;
+                //var ListaProcedimientos = this.ListaProcedimiento.filter(x=> x.orden >= pIni);
+                //var ListaProcedimientos = ListaProcedimientos.filter(x=> x.orden <= pFin);
+                this.ListaFiltrada = _ListaFiltrada;
                 this.GenerarReporte();
-                
+
             },
-            ListarGrupos:function(){
+            ListarGrupos: function () {
 
             },
             GenerarReporte: function () {
-                
+
                 //{ "Grupo": 2, "orden": 2.16, "AspectoEvaluar": "dictamen", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
                 //];
 
                 var fechainicial = $('#dfechaIni').data('date');
                 var fechafinal = $('#dfechaFin').data('date');
 
-                if (fechainicial > fechafinal) {
-                    Mensaje('La fecha inicial no puede ser mayor a la fecha final', 2);
-                    return;
-                }
-
+                //if (fechainicial > fechafinal) {
+                //    Mensaje('La fecha inicial no puede ser mayor a la fecha final', 2);
+                //    return;
+                //}
 
                 fechainicial = fechainicial.substr(3, 2) + "/" + fechainicial.substr(0, 2) + "/" + fechainicial.substr(6, 10);                
                 fechafinal = fechafinal.substr(3, 2) + "/" + fechafinal.substr(0, 2) + "/" + fechafinal.substr(6, 10);
 
                 var R = {
-                    fechainicial:fechainicial,
+                    fechainicial: fechainicial,
                     fechafinal: fechafinal
                 };
 
@@ -186,19 +201,21 @@
                     var groupColumn = 0;
 
                     var _ListaProcedimiento = this.ListaFiltrada;
-
-                    $.each(_ListaProcedimiento, function (k, v) {
-                        var Row = response.data.listrm.find(x=> x.indice == v.orden);
-                        if (Row != undefined) {
-                            if (Row.estado == 0) {
-                                v.NO = "X";
-                            } else {
-                                v.SI = "X";
+                    if (response.data.listrm != null) {
+                        $.each(_ListaProcedimiento, function (k, v) {
+                            var Row = response.data.listrm.find(x=> x.indice == v.orden);
+                            if (Row != undefined) {
+                                if (Row.estado == 0) {
+                                    v.NO = "X";
+                                } else {
+                                    v.SI = "X";
+                                }
+                                v.OBSERVACION = Row.descripcion;
                             }
-                            v.OBSERVACION = Row.descripcion;
-                        }
-                    });
+                        });
+                    }
                     $('#tbReporte').DataTable().destroy();
+
                     var table = $('#tbReporte').DataTable({
                         "data": _ListaProcedimiento,
                         "columns": [
@@ -230,23 +247,41 @@
                                 }
                             });
                         },
-                        //buttons: [
-                        //    {
-                        //        extend: 'print',
-                        //        customize: function (win) {
-                        //            $(win.document.body)
-                        //                .css('font-size', '10pt')
-                        //                .prepend(
-                        //                    '<img src="http://datatables.net/media/images/logo-fade.png" style="position:absolute; top:0; left:0;" />'
-                        //                );
-
-                        //            $(win.document.body).find('table')
-                        //                .addClass('compact')
-                        //                .css('font-size', 'inherit');
-                        //        }
-                        //    }
-                        //]
                     });
+
+                    var html = '<table ><thead>' +
+                                        '<tr>' +
+                                            //'<th style="border: solid black">Grupo</th>' +
+                                            '<th style="border: solid black">N°</th>' +
+                                            '<th style="border: solid black">ASPECTOS A EVALUAR</th>' +
+                                            '<th style="border: solid black">SI</th>' +
+                                            '<th style="border: solid black">NO</th>' +
+                                            '<th style="border: solid black">OBSERVACIONES</th>' +
+                               '<thead><tbody>';
+                    var gr = 0;
+
+                    $.each(_ListaProcedimiento, function (i, e) {
+                        if (gr != e["Grupo"]) {
+                            var Cabecera = Reportes.grupos.find(x=> x.Grupo == e["Grupo"]);
+                            html += '<tr style="background-color: #ddd;">' +
+                                        '<td style="border: 1px solid black">' + e["Grupo"] + '</td>' +
+                                        '<td colspan="4" style="border: 1px solid black">' + Cabecera.Descripcion + '</td>' +
+                                    '</tr>';
+                            gr = e["Grupo"];
+                        }
+                        html += '<tr >' +
+                                //'<td style="border: 1px solid black">' + e["Grupo"] + '</td>' +
+                                '<td style="border: 1px solid black">' + e["orden"] + '</td>' +
+                                '<td style="border: 1px solid black">' + e["AspectoEvaluar"] + '</td>' +
+                                '<td style="border: 1px solid black">' + e["SI"] + '</td>' +
+                                '<td style="border: 1px solid black">' + e["NO"] + '</td>' +
+                                '<td style="border: 1px solid black">' + e["OBSERVACION"] + '</td>' +
+                                '</tr>';
+                    });
+
+                    html += '</tbody></table>';
+                    htmltemporal = html;
+                    //$('#tbtemporal').html(html);
                 }).catch(error => {
                     console.log(error);
                     this.errored = true;
@@ -293,13 +328,17 @@
         forceParse: 0
 
     });
-    
+
 });
+
+var htmltemporal = '';
 
 function printData() {
     var divToPrint = document.getElementById("RegionReporte");
     newWin = window.open("");
-    newWin.document.write(divToPrint.outerHTML);
+    //var htmlReporte = divToPrint.outerHTML.replace('<div class="row"><div class="col-sm-6"><div class="dataTables_length" id="tbReporte_length"><label>Show <select name="tbReporte_length" aria-controls="tbReporte" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-6"><div id="tbReporte_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="tbReporte"></label></div></div></div>', '');
+    //htmlReporte.replace('<div class="row"><div class="col-sm-5"><div class="dataTables_info" id="tbReporte_info" role="status" aria-live="polite">Showing 21 to 30 of 60 entries</div></div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers" id="tbReporte_paginate"><ul class="pagination"><li class="paginate_button previous" id="tbReporte_previous"><a href="#" aria-controls="tbReporte" data-dt-idx="0" tabindex="0">Previous</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="2" tabindex="0">2</a></li><li class="paginate_button active"><a href="#" aria-controls="tbReporte" data-dt-idx="3" tabindex="0">3</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="4" tabindex="0">4</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="5" tabindex="0">5</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="6" tabindex="0">6</a></li><li class="paginate_button next" id="tbReporte_next"><a href="#" aria-controls="tbReporte" data-dt-idx="7" tabindex="0">Next</a></li></ul></div></div></div>', '');
+    newWin.document.write(htmltemporal);
     newWin.print();
     newWin.close();
 }

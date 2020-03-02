@@ -14,31 +14,17 @@ namespace SICARO.WEB.Controllers
         // GET: TestRespuesta
         public ActionResult Index()
         {
+            ViewBag.Capacitacion = Request.QueryString["value"] == null ? "0" : Request.QueryString["value"];
             return View();
         }
 
         [HttpPost]
-
-        public JsonResult GenerarCamposCapacitacion()
+        public JsonResult VisualizarTest(string idCapacitacion)
         {
-            var ListaPregunta = js.Deserialize<List<PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA", "GET", "","0"));
+            var ListaPregunta = js.Deserialize<List<PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("PREGUNTA/TESTPREGUNTA", "GET", "", idCapacitacion));
+            var ListaOpciones = js.Deserialize<List<OPCION_PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("opcion_pregunta/TESTPREGUNTAOPCION", "GET", "", idCapacitacion));
 
-            List<OPCION_PREGUNTA_EL> ListaOpciones = new List<OPCION_PREGUNTA_EL>();
-            ListaOpciones = js.Deserialize<List<OPCION_PREGUNTA_EL>>(Utilitario.Accion.Conect_WEBAPI("OPCION_PREGUNTA", "POST", "","0"));
             return Json(new { ListaPregunta = ListaPregunta, ListaOpciones = ListaOpciones }, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult RegistrarTest(CAPACITACION_PERSONAL_EL parametros, List<DETALLE_CAPACITACION_PERSONAL_EL> Detalle_Capacitacion)
-        {
-            string postdata = js.Serialize(parametros);
-            int respuesta = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION_PERSONAL", "POST", postdata));
-            foreach (DETALLE_CAPACITACION_PERSONAL_EL item in Detalle_Capacitacion)
-            {
-                string postdataP = js.Serialize(item);
-                int respuestaP = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("DETALLE_CAPACITACION_PERSONAL", "POST", postdataP));
-            }
-
-            return Json(new { respuesta = respuesta }, JsonRequestBehavior.AllowGet);
         }
 
     }

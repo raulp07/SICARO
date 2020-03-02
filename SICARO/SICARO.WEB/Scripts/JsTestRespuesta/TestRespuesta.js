@@ -13,6 +13,68 @@ new Vue({
         horas: 0,
     },
     methods: {
+
+        VisualizarTest: function () {
+            var _Lista_Preguntas = [];
+            var _Lista_Opciones = [];
+            var _html = "";
+            var idCapacitacion = $('#iIdCapacitacion').val();
+            axios.post("/TestRespuesta/VisualizarTest/", { idCapacitacion: idCapacitacion }).then(function (response) {
+               
+                _Lista_Preguntas =response.data.ListaPregunta;
+                _Lista_Opciones = response.data.ListaOpciones;
+
+                $.each(_Lista_Preguntas, function (key, val) {
+                    _html = _html +
+                        '<div class="col-sm-12 text-center">' +
+                        "<h3>" + (key + 1) + ".- " + val.vEnunciadoPregunta + "</h3></div>";
+                    switch (parseInt(val.iTipoRespuestaPregunta)) {
+                        case 1:
+                            $.each(_Lista_Opciones, function (keyR, valR) {
+
+                                if (val.iIdPregunta == valR.iIdPregunta) {
+                                    _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                                    if (valR.iEstadoOpcion == 1) {
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" checked disabled>Verdadero</label>';
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" disabled>Falso</label>';
+                                    } else {
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="1" disabled>Verdadero</label>';
+                                        _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="0" checked disabled>Falso</label>';
+                                    }
+                                    _html = _html + '</div>';
+                                }
+                            });
+                            break;
+                        case 2:
+                            _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                            var bEstado = "checked";
+                            $.each(_Lista_Opciones, function (k, v) {
+                                if (val.iIdPregunta == v.iIdPregunta) {
+                                    bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
+                                    _html = _html + '<label class="radio-inline"><input type="radio" class="radio" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled >' + v.vEnunciadoOpcion + '</label>';
+                                }
+                            });
+                            _html = _html + '</div>'; break;
+                        case 3:
+                            _html = _html + '<div class="col-sm-12 text-center _Examen">';
+                            var bEstado = "checked";
+                            $.each(_Lista_Opciones, function (k, v) {
+                                if (val.iIdPregunta == v.iIdPregunta) {
+                                    bEstado = v.iEstadoOpcion == 1 ? "checked" : "";
+                                    _html = _html + '<label class="checkbox-inline"><input type="checkbox" name="pregunta' + val.iIdPregunta + '" value="' + v.iIdOpcion + '" ' + bEstado + ' disabled>' + v.vEnunciadoOpcion + '</label>';
+                                }
+                            });
+                            _html = _html + '</div>'; break;
+                        default: _html += ''; break;
+                    }
+
+                });
+                
+                $('#VisualizarTest').html(_html);
+
+            }.bind(this)).catch(function (error) {
+            });
+        },
         EmpezarEvaluacion: function () {
 
             axios.post("/TestEvaluacion/GenerarCamposCapacitacion/").then(function (response) {
@@ -159,6 +221,7 @@ new Vue({
     },
     computed: {},
     created: function () {
+        this.VisualizarTest();
     },
     mounted: function () {
     }

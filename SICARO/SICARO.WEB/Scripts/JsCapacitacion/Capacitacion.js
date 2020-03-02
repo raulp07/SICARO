@@ -148,11 +148,14 @@ var Capacitacion = new Vue({
         },
         CRUDCapacitacion: function () {
 
+            var fechaCapacitacion = $('#txtFechaCapacitacion').data('date');
+            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+
             var URL = '';
             var jsonData = {
                 iIdCapacitacion: this.iIdCapacitacion,
                 vTemaCapacitacion: $('#txtTema').val(),
-                dFechaPropuestaCapacitacion: $('#txtFechaCapacitacion').data('date')
+                dFechaPropuestaCapacitacion: fechaCapacitacion
             };
             if (this.iIdCapacitacion == 0) {
                 URL = '/Capacitacion/RegistrarCapacitacionCabecera/';
@@ -374,31 +377,62 @@ var Capacitacion = new Vue({
         },
         SeleccionarMapa: function () {
             $("#ModalMapa").modal('show');
-            if (Capacitacion.Latitud == null) {
-                Capacitacion.Latitud = -12.116283123011357;
-                $('#Latitud').text(-12.116283123011357);
-            }
-            if (Capacitacion.Longitud == null) {
-                Capacitacion.Longitud = -77.02498571422734;
-                $('#Longitud').text(-77.02498571422734);
-            }
+            //if (Capacitacion.Latitud == null) {
+            //    Capacitacion.Latitud = -12.116283123011357;
+            //    $('#Latitud').text(-12.116283123011357);
+            //}
+            //if (Capacitacion.Longitud == null) {
+            //    Capacitacion.Longitud = -77.02498571422734;
+            //    $('#Longitud').text(-77.02498571422734);
+            //}
             
-            var uluru = { lat: Capacitacion.Latitud, lng: Capacitacion.Longitud };
-            var map = new google.maps.Map(document.getElementById('googleMap'), {
-                zoom: 15,
-                center: uluru
-            });
+            //var uluru = { lat: Capacitacion.Latitud, lng: Capacitacion.Longitud };
+            //var map = new google.maps.Map(document.getElementById('googleMap'), {
+            //    zoom: 5,
+            //    center: uluru
+            //});
 
-            var marker = new google.maps.Marker({
-                position: map.getCenter(),
-                map: map,
-                draggable: true
-            });
-            google.maps.event.addListener(marker, 'dragend', function (event) {
-                $('#Latitud').text(marker.getPosition().lat());
-                $('#Longitud').text(marker.getPosition().lng());
-                console.log(this.getPosition().toString());
-            });
+            //var marker = new google.maps.Marker({
+            //    position: map.getCenter(),
+            //    map: map,
+            //    draggable: true
+            //});
+            //google.maps.event.addListener(marker, 'dragend', function (event) {
+            //    $('#Latitud').text(marker.getPosition().lat());
+            //    $('#Longitud').text(marker.getPosition().lng());
+            //    console.log(this.getPosition().toString());
+            //});
+
+
+            var mymap = L.map('googleMap').setView([-12.116283123011357, -77.02498571422734], 18);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(mymap);
+
+            //L.marker([-12.116283123011357, -77.02498571422734]).addTo(mymap)
+            //    .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+            //    .openPopup();
+
+            
+            var popup = L.popup();
+
+            function onMapClick(e) {
+
+                //L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap)
+                //.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+
+                $('#Latitud').text(e.latlng.lat);
+                $('#Longitud').text(e.latlng.lng);
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .openOn(mymap);
+            }
+
+            mymap.on('click', onMapClick);
+
+
         },
         GrabarOpcionVF: function () {
             var datos = this.OpcionesRespuesta;

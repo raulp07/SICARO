@@ -399,15 +399,15 @@
     <Content Include="Views\TGeneral\Index.cshtml" />
     <Content Include="Views\MateriaPrima\Index.cshtml" />
     <Content Include="Views\Utilitarios\Desconeccion.cshtml" />
+    <Content Include="Views\Menu\Index.cshtml" />
+    <Content Include="Views\Personal\Index.cshtml" />
+    <Content Include="Views\Rol\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BACKUP\" />
     <Folder Include="fonts\Logos\" />
     <Folder Include="Views\CATEGORIA\" />
-    <Folder Include="Views\Menu\" />
-    <Folder Include="Views\Personal\" />
     <Folder Include="Views\Producto\" />
-    <Folder Include="Views\Rol\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
