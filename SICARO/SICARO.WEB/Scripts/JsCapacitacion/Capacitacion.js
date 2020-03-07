@@ -376,63 +376,67 @@ var Capacitacion = new Vue({
 
         },
         SeleccionarMapa: function () {
-            $("#ModalMapa").modal('show');
-            //if (Capacitacion.Latitud == null) {
-            //    Capacitacion.Latitud = -12.116283123011357;
-            //    $('#Latitud').text(-12.116283123011357);
-            //}
-            //if (Capacitacion.Longitud == null) {
-            //    Capacitacion.Longitud = -77.02498571422734;
-            //    $('#Longitud').text(-77.02498571422734);
-            //}
-            
-            //var uluru = { lat: Capacitacion.Latitud, lng: Capacitacion.Longitud };
-            //var map = new google.maps.Map(document.getElementById('googleMap'), {
-            //    zoom: 5,
-            //    center: uluru
-            //});
+            //$("#ModalMapa").modal('show');
+            $('#Mapav2').removeClass('hide');
+            $('#GESTIONCAPACITACION').addClass('hide');
+            var popup = L.popup();
+            if (Capacitacion.Latitud == null) {
+                Capacitacion.Latitud = -12.116283123011357;
+                $('#Latitud').text(-12.116283123011357);
+            }
+            if (Capacitacion.Longitud == null) {
+                Capacitacion.Longitud = -77.02498571422734;
+                $('#Longitud').text(-77.02498571422734);
+            }
 
-            //var marker = new google.maps.Marker({
-            //    position: map.getCenter(),
-            //    map: map,
-            //    draggable: true
-            //});
-            //google.maps.event.addListener(marker, 'dragend', function (event) {
-            //    $('#Latitud').text(marker.getPosition().lat());
-            //    $('#Longitud').text(marker.getPosition().lng());
-            //    console.log(this.getPosition().toString());
-            //});
+            if (mymap) {
+                mymap.remove();
+                mymap = L.map('googleMap');
+            } else {
+                mymap = L.map('googleMap');
+            }
 
-
-            var mymap = L.map('googleMap').setView([-12.116283123011357, -77.02498571422734], 18);
+            mymap.setView([parseFloat(Capacitacion.Latitud), parseFloat(Capacitacion.Longitud)], 18);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(mymap);
 
-            //L.marker([-12.116283123011357, -77.02498571422734]).addTo(mymap)
-            //    .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-            //    .openPopup();
-
-            
             var popup = L.popup();
+            var LatLong = {
+                "lat": parseFloat(Capacitacion.Latitud),
+                "lng": parseFloat(Capacitacion.Longitud)
+            }
+
+            popup
+                    .setLatLng(LatLong)
+                    .setContent("Punto de Capacitación.")
+                    .openOn(mymap);
 
             function onMapClick(e) {
-
-                //L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap)
+                //$(".leaflet-marker-icon").remove(); $(".leaflet-popup").remove(); $(".leaflet-interactive").remove();
+                //var mark = L.marker([e.latlng.lat, e.latlng.lng]).addTo(mymap);
+                //if (!map.hasLayer(mark)) {
+                //    map.removeLayer(mark);
+                //}
+                //mymap.clearLayers();
                 //.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
 
                 $('#Latitud').text(e.latlng.lat);
                 $('#Longitud').text(e.latlng.lng);
                 popup
                     .setLatLng(e.latlng)
-                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .setContent("La ubicación seleccionada esta entre estos puntos :" + e.latlng.toString())
                     .openOn(mymap);
             }
 
             mymap.on('click', onMapClick);
 
 
+        },
+        CerrarMapa: function () {
+            $('#GESTIONCAPACITACION').removeClass('hide');
+            $('#Mapav2').addClass('hide');
         },
         GrabarOpcionVF: function () {
             var datos = this.OpcionesRespuesta;
@@ -938,6 +942,7 @@ var Capacitacion = new Vue({
                     //this.Estado_Almacenamiento_Operarios = 0;
                     $('#GESTIONCAPACITACION').addClass('hide');
                     $('#CAPACITACION').removeClass('hide');
+                    this.ListaCapacitacion();
                 } else {
                     Mensaje('Ocurrio un error', 2);
                     //alert('Ocurrio un error');
@@ -1163,3 +1168,5 @@ $('#txtFechaCapacitacion').datetimepicker({
     forceParse: 0
 
 });
+
+var mymap;
