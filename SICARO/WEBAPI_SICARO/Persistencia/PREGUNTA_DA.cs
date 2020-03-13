@@ -107,7 +107,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<PREGUNTA_EL> GetTestPREGUNTA(int iIdCapacitacion)
+        public List<PREGUNTA_EL> GetTestPREGUNTA(int iIdCapacitacion, int idUsuario)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -116,6 +116,7 @@ namespace WEBAPI_SICARO.Persistencia
                 {
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
+                    com.Parameters.Add("@idUsuario", SqlDbType.Int).Value = idUsuario;
 
                     List<PREGUNTA_EL> list = new List<PREGUNTA_EL>();
 

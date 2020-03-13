@@ -25,15 +25,21 @@ namespace WEBAPI_SICARO.Controllers
         }
 
         [HttpPost]
-        public int POST(PERSONAL_EL value)
+        public Respuesta POST(PERSONAL_EL value)
         {
             return PERSONAL_DA.Accion.InsertPERSONAL(value);
         }
 
         [HttpPut]
-        public int Put(int id,PERSONAL_EL value)
+        public Respuesta Put(int id,PERSONAL_EL value)
         {
             return PERSONAL_DA.Accion.UpdatePERSONAL(value);
+        }
+
+        [HttpDelete]
+        public Respuesta Delete(int value)
+        {
+            return PERSONAL_DA.Accion.DeletePERSONAL(value);
         }
     }
 }

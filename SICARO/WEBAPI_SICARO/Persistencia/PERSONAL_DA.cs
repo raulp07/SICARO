@@ -72,58 +72,107 @@ namespace WEBAPI_SICARO.Persistencia
                 }
             }
         }
-        public int InsertPERSONAL(PERSONAL_EL P)
+        public Respuesta InsertPERSONAL(PERSONAL_EL P)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
                 con.Open();
                 using (SqlCommand com = new SqlCommand("spInsertPERSONAL", con))
                 {
-                    com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@vNombrePersonal", SqlDbType.VarChar).Value = P.vNombrePersonal;
-                    com.Parameters.Add("@vApellidoPaternoPersonal", SqlDbType.VarChar).Value = P.vApellidoPaternoPersonal;
-                    com.Parameters.Add("@vApellidoMaternoPersonal", SqlDbType.VarChar).Value = P.vApellidoMaternoPersonal;
-                    com.Parameters.Add("@dFechaNacimiento", SqlDbType.Date).Value = P.dFechaNacimiento;
-                    com.Parameters.Add("@vDomicilio", SqlDbType.VarChar).Value = P.vDomicilio;
-                    com.Parameters.Add("@iIdArea", SqlDbType.Int).Value = P.iIdArea;
-                    com.Parameters.Add("@iUbigeo", SqlDbType.VarChar).Value = P.iUbigeo;
-                    com.Parameters.Add("@iTipoPersonal", SqlDbType.Int).Value = P.iTipoPersonal;
-                    com.Parameters.Add("@iEstadoPersonal", SqlDbType.Int).Value = P.iEstadoPersonal;
-                    com.Parameters.Add("@Email", SqlDbType.VarChar).Value = P.Email;
-                    com.Parameters.Add("@TipoDocumento", SqlDbType.Int).Value = P.TipoDocumento;
-                    com.Parameters.Add("@NroDocumento", SqlDbType.VarChar).Value = P.NroDocumento;
-                    com.Parameters.Add("@Telefono", SqlDbType.VarChar).Value = P.Telefono;
-                    com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = P.iUsuarioCrea;
+                    Respuesta res = new Respuesta();
+                    try
+                    {
+                        com.CommandType = CommandType.StoredProcedure;
+                        com.Parameters.Add("@vNombrePersonal", SqlDbType.VarChar).Value = P.vNombrePersonal;
+                        com.Parameters.Add("@vApellidoPaternoPersonal", SqlDbType.VarChar).Value = P.vApellidoPaternoPersonal;
+                        com.Parameters.Add("@vApellidoMaternoPersonal", SqlDbType.VarChar).Value = P.vApellidoMaternoPersonal;
+                        com.Parameters.Add("@dFechaNacimiento", SqlDbType.Date).Value = P.dFechaNacimiento;
+                        com.Parameters.Add("@vDomicilio", SqlDbType.VarChar).Value = P.vDomicilio;
+                        com.Parameters.Add("@iIdArea", SqlDbType.Int).Value = P.iIdArea;
+                        com.Parameters.Add("@iUbigeo", SqlDbType.VarChar).Value = P.iUbigeo;
+                        com.Parameters.Add("@iTipoPersonal", SqlDbType.Int).Value = P.iTipoPersonal;
+                        com.Parameters.Add("@iEstadoPersonal", SqlDbType.Int).Value = P.iEstadoPersonal;
+                        com.Parameters.Add("@Email", SqlDbType.VarChar).Value = P.Email;
+                        com.Parameters.Add("@TipoDocumento", SqlDbType.Int).Value = P.TipoDocumento;
+                        com.Parameters.Add("@NroDocumento", SqlDbType.VarChar).Value = P.NroDocumento;
+                        com.Parameters.Add("@Telefono", SqlDbType.VarChar).Value = P.Telefono;
+                        com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = P.iUsuarioCrea;
+                        res.codigo = com.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+                        res.codigo = -1;
+                        res.Mensaje = e.Message;
+                    }
+                    
 
-                    return com.ExecuteNonQuery();
+                    return res;
                 }
             }
         }
-        public int UpdatePERSONAL(PERSONAL_EL P)
+        public Respuesta UpdatePERSONAL(PERSONAL_EL P)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
                 con.Open();
                 using (SqlCommand com = new SqlCommand("spUpdatePERSONAL", con))
                 {
-                    com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdPersonal", SqlDbType.Int).Value = P.iIdPersonal;
-                    com.Parameters.Add("@vNombrePersonal", SqlDbType.VarChar).Value = P.vNombrePersonal;
-                    com.Parameters.Add("@vApellidoPaternoPersonal", SqlDbType.VarChar).Value = P.vApellidoPaternoPersonal;
-                    com.Parameters.Add("@vApellidoMaternoPersonal", SqlDbType.VarChar).Value = P.vApellidoMaternoPersonal;
-                    com.Parameters.Add("@dFechaNacimiento", SqlDbType.Date).Value = P.dFechaNacimiento;
-                    com.Parameters.Add("@vDomicilio", SqlDbType.VarChar).Value = P.vDomicilio;
-                    com.Parameters.Add("@iIdArea", SqlDbType.Int).Value = P.iIdArea;
-                    com.Parameters.Add("@iUbigeo", SqlDbType.VarChar).Value = P.iUbigeo;
-                    com.Parameters.Add("@iTipoPersonal", SqlDbType.Int).Value = P.iTipoPersonal;
-                    com.Parameters.Add("@iEstadoPersonal", SqlDbType.Int).Value = P.iEstadoPersonal;
-                    com.Parameters.Add("@Email", SqlDbType.VarChar).Value = P.Email;
-                    com.Parameters.Add("@TipoDocumento", SqlDbType.Int).Value = P.TipoDocumento;
-                    com.Parameters.Add("@NroDocumento", SqlDbType.VarChar).Value = P.NroDocumento;
-                    com.Parameters.Add("@Telefono", SqlDbType.VarChar).Value = P.Telefono;
-                    com.Parameters.Add("@iUsuarioMod", SqlDbType.Int).Value = P.iUsuarioMod;
+                    Respuesta res = new Respuesta();
 
-                    return com.ExecuteNonQuery();
+                    try
+                    {
+                        com.CommandType = CommandType.StoredProcedure;
+                        com.Parameters.Add("@iIdPersonal", SqlDbType.Int).Value = P.iIdPersonal;
+                        com.Parameters.Add("@vNombrePersonal", SqlDbType.VarChar).Value = P.vNombrePersonal;
+                        com.Parameters.Add("@vApellidoPaternoPersonal", SqlDbType.VarChar).Value = P.vApellidoPaternoPersonal;
+                        com.Parameters.Add("@vApellidoMaternoPersonal", SqlDbType.VarChar).Value = P.vApellidoMaternoPersonal;
+                        com.Parameters.Add("@dFechaNacimiento", SqlDbType.Date).Value = P.dFechaNacimiento;
+                        com.Parameters.Add("@vDomicilio", SqlDbType.VarChar).Value = P.vDomicilio;
+                        com.Parameters.Add("@iIdArea", SqlDbType.Int).Value = P.iIdArea;
+                        com.Parameters.Add("@iUbigeo", SqlDbType.VarChar).Value = P.iUbigeo;
+                        com.Parameters.Add("@iTipoPersonal", SqlDbType.Int).Value = P.iTipoPersonal;
+                        com.Parameters.Add("@iEstadoPersonal", SqlDbType.Int).Value = P.iEstadoPersonal;
+                        com.Parameters.Add("@Email", SqlDbType.VarChar).Value = P.Email;
+                        com.Parameters.Add("@TipoDocumento", SqlDbType.Int).Value = P.TipoDocumento;
+                        com.Parameters.Add("@NroDocumento", SqlDbType.VarChar).Value = P.NroDocumento;
+                        com.Parameters.Add("@Telefono", SqlDbType.VarChar).Value = P.Telefono;
+                        com.Parameters.Add("@iUsuarioMod", SqlDbType.Int).Value = P.iUsuarioMod;
+                        res.codigo = com.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+                        res.codigo = -1;
+                        res.Mensaje = e.Message;
+                    }
+                    
+
+                    return res;
+                }
+            }
+        }
+
+        public Respuesta DeletePERSONAL(int iIdPersonal)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("spDeletePERSONAL", con))
+                {
+                    Respuesta res = new Respuesta();
+                    try
+                    {
+                        com.CommandType = CommandType.StoredProcedure;
+                        com.Parameters.Add("@iIdPersonal", SqlDbType.Int).Value = iIdPersonal;
+                        res.codigo = com.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+                        res.codigo = -1;
+                        res.Mensaje = e.Message;
+                    }
+                    
+
+                    return res;
                 }
             }
         }

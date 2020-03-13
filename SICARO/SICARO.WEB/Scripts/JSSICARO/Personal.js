@@ -185,12 +185,12 @@
                 strMsj = "Se eliminó.";
 
                 axios.post(strUrl, DTO).then(response => {
-                    if (response.data > 0) {
+                    if (response.data.codigo >= 0) {
                         this.iIdPersonal = '';
                         MensajeModal('Se elimino correctamente.', 0);
                         this.ListarPersonal();
                     } else {
-                        MensajeModal(response.data, 2);
+                        MensajeModal(response.data.Mensaje, 2);
                     }
                 }).catch(error => {
                     console.log(error)
@@ -221,7 +221,7 @@
                 }
 
                 axios.post(url, Datos).then(response => {
-                    if (response.data.Error == "0") {
+                    if (response.data.Data.codigo >= 1) {
                         MensajeModal(strMsj, 0);
                         this.ListarPersonal();
                         this.iIdPersonal = 0;

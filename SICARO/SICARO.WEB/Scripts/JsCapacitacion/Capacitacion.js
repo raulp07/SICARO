@@ -6,6 +6,7 @@ var Capacitacion = new Vue({
         Lista_Capacitacion: [],
         Lista_Personal: [],
         Lista_Operarios: [],
+        Lista_OperariosVisualizar: [],
         Lista_Preguntas: [],
         OpcionesRespuesta: [],
         tempOpcionesRespuesta: [],
@@ -72,7 +73,7 @@ var Capacitacion = new Vue({
                         { "data": "vTemaCapacitacion" },
                         { "data": "dFechaPropuestaCapacitacion" },
                         {
-                            render: function (j, k, r) {
+                            render: function (j, k, r) { 
                                 var Estado = '';
                                 $.each(Capacitacion.dEstadoCapacitacion, function (key, val) {
                                     if (val.co_codigo == r['iEstadoCapactiacion']) {
@@ -149,7 +150,7 @@ var Capacitacion = new Vue({
         CRUDCapacitacion: function () {
 
             var fechaCapacitacion = $('#txtFechaCapacitacion').data('date');
-            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+            //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var URL = '';
             var jsonData = {
@@ -164,12 +165,12 @@ var Capacitacion = new Vue({
             }
 
             axios.post(URL, jsonData).then(function (response) {
-                if (response.data.perosnalizaicon == 1) {
+                if (response.data.respuesta.codigo >=0) {
                     Mensaje('La Capacitacion se programo correctamente', 0);
                     this.ListaCapacitacion();
                     $("#ModalCapacitacion").modal('hide');
                 } else {
-                    Mensaje('Ocurrio un error', 2);
+                    Mensaje(response.data.respuesta.Mensaje, 2);
                 }
             }.bind(this)).catch(function (error) {
             });
@@ -368,11 +369,39 @@ var Capacitacion = new Vue({
             $('#ModalOperario button').attr('disabled', false);
         },
         VerOperarios: function () {
-            this.Lista_Operarios = this.Lista_Personal;
-            $('#ModalOperario input').attr('disabled', true);
-            $('#ModalOperario button').attr('disabled', true);
-            $('#ModalOperario .cancelaroperarios').attr('disabled', false);
-            $("#ModalOperario").modal('show');
+            
+            var _vCodPersonal = this.vCodPersonal;
+            //this.Capacitacion_Personal
+            if (this.vCodPersonal.length != 0) {
+                var _Lista_Personal = this.Lista_Personal;
+                _Lista_Personal = _Lista_Personal.filter(function (eval) {
+                    return eval.vCodPersonal != _vCodPersonal;
+                });
+                this.Lista_Operarios = _Lista_Personal;
+            } else {
+                this.Lista_Operarios = this.Lista_Personal;
+            }
+
+            var _Capacitacion_Personal = this.Capacitacion_Personal;
+            if (_Capacitacion_Personal.length > 0) {
+                var _Lista_Operarios = this.Lista_Operarios;
+
+                $.each(_Lista_Operarios, function (key, value) {
+                    $.each(_Capacitacion_Personal, function (k, v) {
+                        if (value.iIdPersonal == v.iIdPersonal) {
+                            value.iEstadoPersonal = -1;
+                        }
+                    });
+                });
+                this.Lista_Operarios = _Lista_Operarios;
+            }
+
+            this.Lista_OperariosVisualizar = this.Lista_Operarios.filter(x=> x.iEstadoPersonal == -1);
+
+            //$('#ModalOperario input').attr('disabled', true);
+            //$('#ModalOperario button').attr('disabled', true);
+            //$('#ModalOperario .cancelaroperarios').attr('disabled', false);
+            $("#ModalVerOperario").modal('show');
 
         },
         SeleccionarMapa: function () {
@@ -890,7 +919,7 @@ var Capacitacion = new Vue({
             var nLongitud = (parseFloat($('#Longitud').text()) == 0 ? parseFloat("-12.130453115407523") : parseFloat($('#Longitud').text()));
 
             var fechaCapacitacion = $('#dfecha').data('date');
-            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+            //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var GestionCapacitacion = {
                 'iIdCapacitacion': this.iIdCapacitacion,
@@ -935,7 +964,7 @@ var Capacitacion = new Vue({
 
             var jsonData = { GestionCapacitacion: GestionCapacitacion, _Preguntas: _Preguntas, _CapacitacionPersonal: _CapacitacionPersonal, _ExpositorExterno: _ExpositorExterno };
             axios.post("/Capacitacion/RegistrarCapacitacion/", jsonData).then(function (response) {
-                if (response.data.perosnalizaicon == 1) {
+                if (response.data.respuesta.codigo >= 0) {
                     Mensaje('La Capacitacion se programo correctamente', 0);
                     //alert('La Capacitacion se programo correctamente');
                     //this.Estado_Almacenamiento_Preguntas = 0;
@@ -944,7 +973,7 @@ var Capacitacion = new Vue({
                     $('#CAPACITACION').removeClass('hide');
                     this.ListaCapacitacion();
                 } else {
-                    Mensaje('Ocurrio un error', 2);
+                    Mensaje(response.data.respuesta.Mensaje, 2);
                     //alert('Ocurrio un error');
                 }
 

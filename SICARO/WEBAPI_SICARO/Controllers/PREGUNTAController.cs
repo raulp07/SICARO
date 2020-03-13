@@ -31,9 +31,9 @@ namespace WEBAPI_SICARO.Controllers
 
         [HttpGet]
         [Route("TESTPREGUNTA")]
-        public IEnumerable<PREGUNTA_EL> TESTPREGUNTA(int value)
+        public IEnumerable<PREGUNTA_EL> TESTPREGUNTA(int value,int value2 = 0)
         {
-            return PREGUNTA_DA.Accion.GetTestPREGUNTA(value);
+            return PREGUNTA_DA.Accion.GetTestPREGUNTA(value, value2);
         }
 
     }

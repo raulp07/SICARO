@@ -92,7 +92,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<OPCION_PREGUNTA_EL> GetAllTestPreguntaOpcion(int iIdCapacitacion)
+        public List<OPCION_PREGUNTA_EL> GetAllTestPreguntaOpcion(int iIdCapacitacion,int idUsuario)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -101,6 +101,7 @@ namespace WEBAPI_SICARO.Persistencia
                 {
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = iIdCapacitacion;
+                    com.Parameters.Add("@idUsuario", SqlDbType.Int).Value = idUsuario;
                     List<OPCION_PREGUNTA_EL> list = new List<OPCION_PREGUNTA_EL>();
                     using (IDataReader dataReader = com.ExecuteReader())
                     {

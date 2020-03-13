@@ -55,28 +55,25 @@ namespace SICARO.WEB.Controllers
         [HttpPost]
         public JsonResult RegistrarCapacitacionCabecera(CAPACITACION_EL GestionCapacitacion)
         {
-            string perosnalizaicon = "1";
             string postdata = JsonConvert.SerializeObject(GestionCapacitacion);
-            int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "POST", postdata));
+            var respuesta = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "POST", postdata));
 
-            return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
+            return Json(new { respuesta = respuesta, JsonRequestBehavior.AllowGet });
         }
 
         [HttpPost]
         public JsonResult ActualizarCapacitacionCabecera(CAPACITACION_EL GestionCapacitacion)
         {
-            string perosnalizaicon = "1";
             string postdata = JsonConvert.SerializeObject(GestionCapacitacion);
-            int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "PUT", postdata, GestionCapacitacion.iIdCapacitacion.ToString()));
+            var respuesta = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION", "PUT", postdata, GestionCapacitacion.iIdCapacitacion.ToString()));
 
-            return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
+            return Json(new { respuesta = respuesta, JsonRequestBehavior.AllowGet });
         }
 
 
         [HttpPost]
         public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion, List<PREGUNTA_EL> _Preguntas, List<CAPACITACION_PERSONAL_EL> _CapacitacionPersonal ,List<ExpositorExterno_EL> _ExpositorExterno)
         {
-            string perosnalizaicon = "1";
             var xmlPreguntas = Utilitario.Serialize(_Preguntas).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
             var xmlCapacitacionPersonal = Utilitario.Serialize(_CapacitacionPersonal).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
             var xmlExpositorExterno = Utilitario.Serialize(_ExpositorExterno).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
@@ -85,9 +82,9 @@ namespace SICARO.WEB.Controllers
             GestionCapacitacion.xmlExpositorExterno = xmlExpositorExterno;
 
             string postdata = JsonConvert.SerializeObject(GestionCapacitacion);
-            int respuesta = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "POST", postdata));
+            Respuesta respuesta = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "POST", postdata));
 
-            return Json(new { perosnalizaicon = perosnalizaicon, JsonRequestBehavior.AllowGet });
+            return Json(new { respuesta = respuesta, JsonRequestBehavior.AllowGet });
         }
 
         

@@ -18,7 +18,7 @@ namespace WEBAPI_SICARO.Controllers
         }
 
         [HttpPost]
-        public int POST(GESTION_CAPACITACION_EL value)
+        public Respuesta POST(GESTION_CAPACITACION_EL value)
         {
             return GESTION_CAPACITACION_DA.Accion.InsertGESTION_CAPACITACION(value);
         }

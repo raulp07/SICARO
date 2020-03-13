@@ -167,5 +167,7 @@ namespace WEBAPI_SICARO.Modles
         public string XMLPreguntas { get; set; }
         public string XMLCapacitacionPersonal { get; set; }
         public string xmlExpositorExterno { get; set; }
+
+        public Respuesta error { get; set; }
     }
 }

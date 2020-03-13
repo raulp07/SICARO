@@ -70,28 +70,41 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public int InsertGESTION_CAPACITACION(GESTION_CAPACITACION_EL GC)
+        public Respuesta InsertGESTION_CAPACITACION(GESTION_CAPACITACION_EL GC)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
                 con.Open();
                 using (SqlCommand com = new SqlCommand("spInsertGESTION_CAPACITACION", con))
                 {
-                    com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = GC.iIdCapacitacion;
-                    com.Parameters.Add("@iIdRepresentante", SqlDbType.Int).Value = GC.iIdRepresentante;
-                    com.Parameters.Add("@dFechaRealizacionCapacitacion", SqlDbType.Date).Value = GC.dFechaRealizacionCapacitacion;
-                    com.Parameters.Add("@tHoraInicio", SqlDbType.Time).Value = GC.tHoraInicio;
-                    com.Parameters.Add("@tHoraFin", SqlDbType.Time).Value = GC.tHoraFin;
-                    com.Parameters.Add("@iTiempoTest", SqlDbType.Int).Value = GC.iTiempoTest;
-                    com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = GC.iUsuarioCrea;
-                    com.Parameters.Add("@nLatitud", SqlDbType.Float).Value = GC.nLatitud;
-                    com.Parameters.Add("@nLongitud", SqlDbType.Float).Value = GC.nLongitud;
-                    com.Parameters.Add("@iTipoExpositor", SqlDbType.Int).Value = GC.iTipoExpositor;
-                    com.Parameters.Add("@XMLPreguntas", SqlDbType.Xml).Value = GC.XMLPreguntas;
-                    com.Parameters.Add("@XMLCapacitacionPersonal", SqlDbType.Xml).Value = GC.XMLCapacitacionPersonal;
-                    com.Parameters.Add("@xmlExpositorExterno", SqlDbType.Xml).Value = GC.xmlExpositorExterno;
-                    return com.ExecuteNonQuery();
+                    Respuesta error = new Respuesta();
+                    try
+                    {
+                        int respuesta = 0;
+                        com.CommandType = CommandType.StoredProcedure;
+                        com.Parameters.Add("@iIdCapacitacion", SqlDbType.Int).Value = GC.iIdCapacitacion;
+                        com.Parameters.Add("@iIdRepresentante", SqlDbType.Int).Value = GC.iIdRepresentante;
+                        com.Parameters.Add("@dFechaRealizacionCapacitacion", SqlDbType.Date).Value = GC.dFechaRealizacionCapacitacion;
+                        com.Parameters.Add("@tHoraInicio", SqlDbType.Time).Value = GC.tHoraInicio;
+                        com.Parameters.Add("@tHoraFin", SqlDbType.Time).Value = GC.tHoraFin;
+                        com.Parameters.Add("@iTiempoTest", SqlDbType.Int).Value = GC.iTiempoTest;
+                        com.Parameters.Add("@iUsuarioCrea", SqlDbType.Int).Value = GC.iUsuarioCrea;
+                        com.Parameters.Add("@nLatitud", SqlDbType.Float).Value = GC.nLatitud;
+                        com.Parameters.Add("@nLongitud", SqlDbType.Float).Value = GC.nLongitud;
+                        com.Parameters.Add("@iTipoExpositor", SqlDbType.Int).Value = GC.iTipoExpositor;
+                        com.Parameters.Add("@XMLPreguntas", SqlDbType.Xml).Value = GC.XMLPreguntas;
+                        com.Parameters.Add("@XMLCapacitacionPersonal", SqlDbType.Xml).Value = GC.XMLCapacitacionPersonal;
+                        com.Parameters.Add("@xmlExpositorExterno", SqlDbType.Xml).Value = GC.xmlExpositorExterno;
+                        respuesta = com.ExecuteNonQuery();
+                        error.codigo = respuesta;
+
+                    }
+                    catch (Exception e)
+                    {
+                        error.codigo = -1;
+                        error.Mensaje = e.Message;
+                    }
+                    return error;
                 }
             }
         }

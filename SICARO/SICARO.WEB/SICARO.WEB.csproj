@@ -252,6 +252,7 @@
     <Compile Include="Models\pronostico_merma_insumo_EL.cs" />
     <Compile Include="Models\PROVEEDOR_MATERIAPRIMA_EL.cs" />
     <Compile Include="Models\Reporte_EL.cs" />
+    <Compile Include="Models\Respuesta.cs" />
     <Compile Include="Models\Rol_EL.cs" />
     <Compile Include="Models\PERSONAL_EL.cs" />
     <Compile Include="Models\PREGUNTA_EL.cs" />

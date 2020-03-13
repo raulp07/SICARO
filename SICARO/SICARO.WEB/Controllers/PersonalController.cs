@@ -21,7 +21,7 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                var Data = JsonConvert.DeserializeObject<List<PERSONAL_EL>>(Utilitario.Accion.Conect_WEBAPI("Personal", "GET","","0"));
+                var Data = JsonConvert.DeserializeObject<List<PERSONAL_EL>>(Utilitario.Accion.Conect_WEBAPI("Personal", "GET", "", "0"));
                 return Json(new { Data = Data, Error = "0" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -30,11 +30,12 @@ namespace SICARO.WEB.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Ins_PERSONAL(PERSONAL_EL personal) {
+        public ActionResult Ins_PERSONAL(PERSONAL_EL personal)
+        {
             try
             {
                 string postdata = JsonConvert.SerializeObject(personal);
-                var Data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("Personal", "POST", postdata));
+                var Data = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("Personal", "POST", postdata));
                 return Json(Data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -48,13 +49,20 @@ namespace SICARO.WEB.Controllers
             try
             {
                 string postdata = JsonConvert.SerializeObject(personal);
-                var Data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("Personal", "PUT", postdata));
-                return Json(new { Data = Data, Error = "0" }, JsonRequestBehavior.AllowGet);
+                var Data = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("Personal", "PUT", postdata));
+                return Json(Data, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
                 return Json(new { Mensaje = e.Message, Error = "1" }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public ActionResult Del_PERSONAL(PERSONAL_EL personal)
+        {
+            var Data = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("Personal", "DEL", "", personal.iIdPersonal.ToString()));
+            return Json(Data, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -64,7 +72,7 @@ namespace SICARO.WEB.Controllers
             {
                 string postdata = JsonConvert.SerializeObject(usu);
                 var Data = JsonConvert.DeserializeObject<int>(Utilitario.Accion.Conect_WEBAPI("USUARIO/GestionarUsuario", "POST", postdata));
-                return Json(new { Data = Data, Error="0" }, JsonRequestBehavior.AllowGet);
+                return Json(new { Data = Data, Error = "0" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {

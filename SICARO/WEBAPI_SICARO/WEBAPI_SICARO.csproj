@@ -248,6 +248,7 @@
     <Compile Include="Models\ReporteGrafico_EL.cs" />
     <Compile Include="Models\Reporte_EL.cs" />
     <Compile Include="Models\REPRESENTANTE_EL.cs" />
+    <Compile Include="Models\Respuesta.cs" />
     <Compile Include="Models\Rol_EL.cs" />
     <Compile Include="Models\stats.cs" />
     <Compile Include="Models\TEST_EL.cs" />

@@ -131,6 +131,9 @@ $(document).ready(function () {
                     case 'radio':
                         itemElement.parent().siblings().remove('.MensajeError');
                         break;
+                    case 'password':
+                        itemElement.val('');
+                        break;
                 }
             }
             if (itemElement.is("Select")) {

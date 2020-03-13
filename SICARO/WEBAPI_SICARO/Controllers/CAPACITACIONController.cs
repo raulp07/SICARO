@@ -25,13 +25,13 @@ namespace WEBAPI_SICARO.Controllers
         }
 
         [HttpPost]
-        public int POST(CAPACITACION_EL value)
+        public Respuesta POST(CAPACITACION_EL value)
         {
             return CAPACITACION_DA.Accion.InsertCAPACITACION(value);
         }
 
         [HttpPut]
-        public int Put(int id,CAPACITACION_EL value)
+        public Respuesta Put(int id,CAPACITACION_EL value)
         {
             return CAPACITACION_DA.Accion.UpdateCAPACITACION(value);
         }
