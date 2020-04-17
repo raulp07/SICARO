@@ -291,6 +291,11 @@
     <Content Include="Content\Login.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\Logos\digesa1.jpg" />
+    <Content Include="fonts\Logos\digesa2.jpg" />
+    <Content Include="fonts\Logos\digesa3.jpg" />
+    <Content Include="fonts\Logos\digesa4.jpg" />
+    <Content Include="fonts\Logos\digesa5.jpg" />
     <Content Include="fonts\Logos\logoDigesa.jpg" />
     <Content Include="fonts\Logos\logoicaro.jpg" />
     <Content Include="Global.asax" />
