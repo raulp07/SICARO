@@ -45,5 +45,11 @@ namespace WEBAPI_SICARO.Controllers
             return CAPACITACION_PERSONAL_DA.Accion.RegistrarAsistencia(value);
         }
 
+        [HttpGet]
+        [Route("GETOPERADORCORREO")]
+        public string GETOPERADORCORREO(int value)
+        {
+            return CAPACITACION_PERSONAL_DA.Accion.GETOPERADORCORREO(value);
+        }
     }
 }

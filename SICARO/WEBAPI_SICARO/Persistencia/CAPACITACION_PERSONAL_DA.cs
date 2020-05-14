@@ -162,7 +162,7 @@ namespace WEBAPI_SICARO.Persistencia
                 {
                     con.Open();
                     foreach (CAPACITACION_PERSONAL_EL CP in ListaCP)
-                    {                        
+                    {
                         using (SqlCommand com = new SqlCommand("sp_RegistrarAsistencia", con))
                         {
                             com.CommandType = CommandType.StoredProcedure;
@@ -180,6 +180,31 @@ namespace WEBAPI_SICARO.Persistencia
                 catch (Exception)
                 {
                     return -1;
+                }
+            }
+        }
+
+        public string GETOPERADORCORREO(int iidCapacitacion)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("ListarCorreos", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@iidCapacitacion", SqlDbType.Int).Value = iidCapacitacion;
+
+                    string Correos = "";
+
+                    using (IDataReader dataReader = com.ExecuteReader())
+                    {
+                        while (dataReader.Read())
+                        {
+                            if (dataReader["Email"] != DBNull.Value) { Correos += (string)dataReader["Email"] + ";"; }
+                        }
+                        Correos = Correos.Substring(0, Correos.Length - 1);
+                    }
+                    return Correos;
                 }
             }
         }

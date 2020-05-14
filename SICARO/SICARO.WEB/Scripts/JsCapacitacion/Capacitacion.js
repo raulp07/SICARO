@@ -150,7 +150,7 @@ var Capacitacion = new Vue({
         CRUDCapacitacion: function () {
 
             var fechaCapacitacion = $('#txtFechaCapacitacion').data('date');
-            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+            //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var URL = '';
             var jsonData = {
@@ -919,7 +919,7 @@ var Capacitacion = new Vue({
             var nLongitud = (parseFloat($('#Longitud').text()) == 0 ? parseFloat("-12.130453115407523") : parseFloat($('#Longitud').text()));
 
             var fechaCapacitacion = $('#dfecha').data('date');
-            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+            //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var GestionCapacitacion = {
                 'iIdCapacitacion': this.iIdCapacitacion,

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -69,6 +70,35 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
+                
+
+                //string envios = "raulpaucar7@gmail.com";
+                //MailMessage correo = new MailMessage();
+                //correo.From = new MailAddress("Sys.ICARO@gmail.com");
+
+                //var listaCorreos = envios.Split(';');
+                //foreach (string item in listaCorreos)
+                //{
+                //    correo.To.Add(item);
+                //}
+
+                //correo.Subject = "Prueba";
+                //correo.Body = "empieza la prueba";
+                //correo.IsBodyHtml = true;
+                //correo.Priority = MailPriority.Normal;
+
+                //SmtpClient smtp = new SmtpClient();
+                //smtp.Host = "smtp.gmail.com";
+                //smtp.Port = 25;
+                //smtp.EnableSsl = true;
+                //smtp.UseDefaultCredentials = true;
+                //string cuentacorreo = "Sys.ICARO@gmail.com";
+                //string password = "webicar0";
+                //smtp.Credentials = new System.Net.NetworkCredential(cuentacorreo,password);
+
+                //smtp.Send(correo);
+
+
                 var ListaPrediccionGrafica = new object();
                 string data = "";
                 string consulta = "";

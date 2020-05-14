@@ -311,6 +311,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Documentos\PDF\CUS05.pdf" />
     <None Include="Properties\PublishProfiles\ICAROWEB - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ICAROWEB - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\WEB.pubxml" />

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Mail;
 using System.Text;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -70,7 +71,7 @@ namespace SICARO.WEB.Controllers
         public static string urlSite = ConfigurationManager.AppSettings["urlWS"];
         public static string urlSiteWEBAPI = ConfigurationManager.AppSettings["urlWEBAPI"];
         public static string urlWEBPYTHON = ConfigurationManager.AppSettings["urlWEBPYTHON"];
-        
+
         public string ConectREST(string url, string method, string postdata = "")
         {
             try
@@ -219,6 +220,56 @@ namespace SICARO.WEB.Controllers
             {
                 throw new ArgumentNullException(e.Message);
             }
+
+        }
+
+        public string EnvioCorreo(string destinatario, string titulo, string Mensaje, string Archivo="")
+        {
+            string MSG = "";
+            try
+            {
+                var listaCorreos = destinatario.Split(';');
+
+                MailMessage correo = new MailMessage();
+                correo.From = new MailAddress("Sys.ICARO@gmail.com");
+
+                foreach (string item in listaCorreos)
+                {
+                    correo.To.Add(item); 
+                }
+
+                correo.Subject = titulo;
+                correo.Body = Mensaje;
+                correo.IsBodyHtml = true;
+                correo.Priority = MailPriority.Normal;
+                if (Archivo != "")
+                {
+                    string rutaArchivo = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Archivo);
+                    if (File.Exists(rutaArchivo))
+                    {
+                        Attachment a = new Attachment(rutaArchivo);
+                        correo.Attachments.Add(a);
+                        //File.Delete(rutaArchivo);
+                    }
+                }
+
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 25;
+                smtp.EnableSsl = true;
+                smtp.UseDefaultCredentials = true;
+                string cuentacorreo = "Sys.ICARO@gmail.com";
+                string password = "webicar0";
+                smtp.Credentials = new System.Net.NetworkCredential(cuentacorreo, password);
+
+                smtp.Send(correo);
+                MSG = "Mensaje Enviado";
+            }
+            catch (Exception e)
+            {
+                MSG = e.Message;
+            }
+            return MSG;
 
         }
 

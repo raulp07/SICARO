@@ -84,6 +84,9 @@ namespace SICARO.WEB.Controllers
             string postdata = JsonConvert.SerializeObject(GestionCapacitacion);
             Respuesta respuesta = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "POST", postdata));
 
+            var CorreoOperarios = JsonConvert.DeserializeObject<string>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION_PERSONAL/GETOPERADORCORREO", "GET", "", GestionCapacitacion.iIdCapacitacion.ToString()));
+            var res = Utilitario.Accion.EnvioCorreo(CorreoOperarios, "Capacitación " + GestionCapacitacion.dFechaRealizacionCapacitacion.ToString().Substring(0,10), "Se realizara una capacitación el día "+ GestionCapacitacion.dFechaRealizacionCapacitacion.ToString() +", que iniciara a las " + GestionCapacitacion.tHoraInicio.ToString() +" hasta "+ GestionCapacitacion.tHoraFin.ToString());
+
             return Json(new { respuesta = respuesta, JsonRequestBehavior.AllowGet });
         }
 
