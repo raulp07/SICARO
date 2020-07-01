@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 using SICARO.WEB.Models;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,14 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using Rotativa;
 
 namespace SICARO.WEB.Controllers
 {
     public class ReporteController : Controller
     {
+        static string ReporteGenerador = "";
+
         JavaScriptSerializer js = new JavaScriptSerializer();
         // GET: Reporte
         public ActionResult Index()
@@ -23,15 +27,55 @@ namespace SICARO.WEB.Controllers
             return View();
         }
 
-        [HttpPost]
 
+        public ActionResult PDF()
+        {
+            ViewBag.html = ReporteGenerador;// Session["HTMLReporte"];
+            return View();
+        }
+
+        public ActionResult ImprimirPDF()
+        {
+
+
+            var actionResult = new ActionAsPdf("PDF")
+            { FileName = "test.pdf" };
+            var misDatos = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documentos\PDF\CUS07.pdf");
+
+            var byteArray = actionResult.BuildPdf(ControllerContext);
+
+            var fileStream = new FileStream(misDatos, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            fileStream.Write(byteArray, 0, byteArray.Length);
+            fileStream.Close();
+
+            return actionResult;
+        }
+
+        [HttpPost]
+        public JsonResult GuardarEstructuraReporte(string datos)
+        {
+            ReporteGenerador = datos;
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult EnviarCorreo(string Detinatario,string Asunto)
+        {
+            var rutaArchivoEnviar = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documentos\PDF\CUS07.pdf");
+            var res = Utilitario.Accion.EnvioCorreo(Detinatario, Asunto,"Reporte ", rutaArchivoEnviar);
+            return Json("", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult GenerarReporte(Reporte_EL R)
         {
             string postdata = JsonConvert.SerializeObject(R);
+            
             var Lis = JsonConvert.DeserializeObject<List<Reporte_EL>>(Utilitario.Accion.Conect_WEBAPI("Reporte/ListarReporte", "POST", postdata));
-
+            
             return Json(new { listrm = Lis, }, JsonRequestBehavior.AllowGet);
 
+            //return Json("", JsonRequestBehavior.AllowGet);
 
             //List<Reporte_EL> Lista = new List<Reporte_EL>();
             //decimal val = Convert.ToDecimal(1.01);

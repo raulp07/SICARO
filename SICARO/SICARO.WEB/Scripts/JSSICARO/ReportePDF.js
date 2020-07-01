@@ -143,170 +143,57 @@
         },
         methods: {
             BuscarProcedimiento: function () {
-                var pIni = $('#procedimientoInicio').val();
-                var pFin = $('#procedimientoFin').val();
-
-                if (pIni > pFin) {
-                    Mensaje('El procedimiento inicial no puede ser mayor al procedimiento final', 2);
-                    return;
+                
+                var _ListaProcedimiento = this.ListaFiltrada;
+                if (response.data.listrm != null) {
+                    $.each(_ListaProcedimiento, function (k, v) {
+                        var Row = response.data.listrm.find(x=> x.indice == v.orden);
+                        if (Row != undefined) {
+                            if (Row.estado == 0) {
+                                v.NO = "X";
+                            } else {
+                                v.SI = "X";
+                            }
+                            v.OBSERVACION = Row.descripcion;
+                        }
+                    });
                 }
-                var _ListaFiltrada = [];
-                var ListaRegistrada = {};
-                $.each($("input[type=checkbox]:checked"), function () {
-                    ListaRegistrada = Reportes.ListaProcedimiento.filter(x=> x.Grupo == $(this).val());
-                    $.each(ListaRegistrada, function (k, v) {
-                        var datos = {
-                            "Grupo": v["Grupo"],
-                            "orden": v["orden"],
-                            "AspectoEvaluar": v["AspectoEvaluar"],
-                            "SI": v["SI"],
-                            "NO": v["NO"],
-                            "OBSERVACION": v["OBSERVACION"]
-                        };
-                        _ListaFiltrada.push(datos);
-                    })
-                });
 
-                //var ListaProcedimientos = this.ListaProcedimiento.filter(x=> x.orden >= pIni);
-                //var ListaProcedimientos = ListaProcedimientos.filter(x=> x.orden <= pFin);
-                this.ListaFiltrada = _ListaFiltrada;
-                this.GenerarReporte();
+                $('#tbReporte').DataTable().destroy();
 
-            },
-            ListarGrupos: function () {
+                var table = $('#tbReporte').DataTable({
+                    "data": _ListaProcedimiento,
+                    "columns": [
+                        { data: "Grupo" },
+                        { data: "orden", "width": "10%" },
+                        { data: "AspectoEvaluar", "width": "50%" },
+                        { data: "SI", "width": "5%" },
+                        { data: "NO", "width": "5%" },
+                        { data: "OBSERVACION", "width": "30%" },
+                    ],
+                    "columnDefs": [
+                        { "visible": false, "targets": groupColumn }
+                    ],
+                    "order": [[groupColumn, 'asc']],
+                    "displayLength": 10,
+                    "drawCallback": function (settings) {
+                        var api = this.api();
+                        var rows = api.rows({ page: 'current' }).nodes();
+                        var last = null;
 
-            },
-            GenerarReporte: function () {
+                        api.column(groupColumn, { page: 'current' }).data().each(function (group, i) {
+                            if (last !== group) {
+                                var Cabecera = Reportes.grupos.find(x=> x.Grupo == group);
+                                $(rows).eq(i).before(
+                                    '<tr style="background-color: #ddd!important;"><td>' + group + '</td><td colspan="4">' + Cabecera.Descripcion + '</td></tr>'
+                                );
 
-                //{ "Grupo": 2, "orden": 2.16, "AspectoEvaluar": "dictamen", "SI": "", "NO": "X", "OBSERVACION": "Nada" },
-                //];
-
-                var fechainicial = $('#dfechaIni').data('date');
-                var fechafinal = $('#dfechaFin').data('date');
-
-                //if (fechainicial > fechafinal) {
-                //    Mensaje('La fecha inicial no puede ser mayor a la fecha final', 2);
-                //    return;
-                //}
-
-                //fechainicial = fechainicial.substr(3, 2) + "/" + fechainicial.substr(0, 2) + "/" + fechainicial.substr(6, 10);                
-                //fechafinal = fechafinal.substr(3, 2) + "/" + fechafinal.substr(0, 2) + "/" + fechafinal.substr(6, 10);
-
-                var R = {
-                    fechainicial: fechainicial,
-                    fechafinal: fechafinal
-                };
-
-                axios.post('/Reporte/GenerarReporte', R).then(response => {
-                    var groupColumn = 0;
-
-                    var _ListaProcedimiento = this.ListaFiltrada;
-                    if (response.data.listrm != null) {
-                        $.each(_ListaProcedimiento, function (k, v) {
-                            var Row = response.data.listrm.find(x=> x.indice == v.orden);
-                            if (Row != undefined) {
-                                if (Row.estado == 0) {
-                                    v.NO = "X";
-                                } else {
-                                    v.SI = "X";
-                                }
-                                v.OBSERVACION = Row.descripcion;
+                                last = group;
                             }
                         });
-                    }
-                    $('#tbReporte').DataTable().destroy();
-
-                    var table = $('#tbReporte').DataTable({
-                        "data": _ListaProcedimiento,
-                        "columns": [
-                            { data: "Grupo" },
-                            { data: "orden", "width": "10%" },
-                            { data: "AspectoEvaluar", "width": "50%" },
-                            { data: "SI", "width": "5%" },
-                            { data: "NO", "width": "5%" },
-                            { data: "OBSERVACION", "width": "30%" },
-                        ],
-                        "columnDefs": [
-                            { "visible": false, "targets": groupColumn }
-                        ],
-                        "order": [[groupColumn, 'asc']],
-                        "displayLength": 10,
-                        "drawCallback": function (settings) {
-                            var api = this.api();
-                            var rows = api.rows({ page: 'current' }).nodes();
-                            var last = null;
-
-                            api.column(groupColumn, { page: 'current' }).data().each(function (group, i) {
-                                if (last !== group) {
-                                    var Cabecera = Reportes.grupos.find(x=> x.Grupo == group);
-                                    $(rows).eq(i).before(
-                                        '<tr style="background-color: #ddd!important;"><td>' + group + '</td><td colspan="4">' + Cabecera.Descripcion + '</td></tr>'
-                                    );
-
-                                    last = group;
-                                }
-                            });
-                        },
-                    });
-
-                    var html = '<table ><thead>' +
-                                        '<tr>' +
-                                            //'<th style="border: solid black">Grupo</th>' +
-                                            '<th style="border: solid black">N°</th>' +
-                                            '<th style="border: solid black">ASPECTOS A EVALUAR</th>' +
-                                            '<th style="border: solid black">SI</th>' +
-                                            '<th style="border: solid black">NO</th>' +
-                                            '<th style="border: solid black">OBSERVACIONES</th>' +
-                               '<thead><tbody>';
-                    var gr = 0;
-
-                    $.each(_ListaProcedimiento, function (i, e) {
-                        if (gr != e["Grupo"]) {
-                            var Cabecera = Reportes.grupos.find(x=> x.Grupo == e["Grupo"]);
-                            html += '<tr style="background-color: #ddd;">' +
-                                        '<td style="border: 1px solid black">' + e["Grupo"] + '</td>' +
-                                        '<td colspan="4" style="border: 1px solid black">' + Cabecera.Descripcion + '</td>' +
-                                    '</tr>';
-                            gr = e["Grupo"];
-                        }
-                        html += '<tr >' +
-                                //'<td style="border: 1px solid black">' + e["Grupo"] + '</td>' +
-                                '<td style="border: 1px solid black">' + e["orden"] + '</td>' +
-                                '<td style="border: 1px solid black">' + e["AspectoEvaluar"] + '</td>' +
-                                '<td style="border: 1px solid black">' + e["SI"] + '</td>' +
-                                '<td style="border: 1px solid black">' + e["NO"] + '</td>' +
-                                '<td style="border: 1px solid black">' + e["OBSERVACION"] + '</td>' +
-                                '</tr>';
-                    });
-
-                    html += '</tbody></table>';
-                    htmltemporal = html;
-                    axios.post('/Reporte/GuardarEstructuraReporte', { datos: html }).then(response => {
-
-                    }).catch(error => {
-                        console.log(error);
-                        this.errored = true;
-                    });
-                    //$('#tbtemporal').html(html);
-                }).catch(error => {
-                    console.log(error);
-                    this.errored = true;
+                    },
                 });
-            },
-            EnviarDocumento: function () {
-                $('#ModalEnviarCorreo').modal('show');
-            },
-            EnviarCorreo: function () {
-                axios.post('/Reporte/EnviarCorreo', { Detinatario: $('#txtDestinatario').val(), Asunto: $('#txtAsunto').val() }).then(response => {
 
-                }).catch(error => {
-                    console.log(error);
-                    this.errored = true;
-                });
-            },
-            GenerarPDF: function () {
-
-                $('#ImprimirGuardarPDF').click();
             },
         },
         computed: {},
@@ -317,68 +204,6 @@
         }
     });
 
-    $('#chkveg').multiselect({
-        includeSelectAllOption: true
-    });
 
-    $('#btnget').click(function () {
-        alert($('#chkveg').val());
-    });
-
-
-    $('#dfechaIni').datetimepicker({
-        language: 'es',
-        weekStart: 1,
-        todayBtn: 1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-
-    });
-
-    $('#dfechaFin').datetimepicker({
-        language: 'es',
-        weekStart: 1,
-        todayBtn: 1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-
-    });
 
 });
-
-var htmltemporal = '';
-
-function printData() {
-
-    var doc = new jsPDF();
-
-    //doc.fromHTML($('#RegionReporte').html(), 15, 15, {
-    //    'width': 170,
-    //    'elementHandlers': specialElementHandlers
-    //});
-    //doc.save('sample-file.pdf');
-
-
-    var divToPrint = document.getElementById("RegionReporte");
-    newWin = window.open("");
-    
-    newWin.document.write(htmltemporal);
-    newWin.print();
-    newWin.close();
-
-
-    //var htmlReporte = divToPrint.outerHTML.replace('<div class="row"><div class="col-sm-6"><div class="dataTables_length" id="tbReporte_length"><label>Show <select name="tbReporte_length" aria-controls="tbReporte" class="form-control input-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-6"><div id="tbReporte_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="tbReporte"></label></div></div></div>', '');
-    //htmlReporte.replace('<div class="row"><div class="col-sm-5"><div class="dataTables_info" id="tbReporte_info" role="status" aria-live="polite">Showing 21 to 30 of 60 entries</div></div><div class="col-sm-7"><div class="dataTables_paginate paging_simple_numbers" id="tbReporte_paginate"><ul class="pagination"><li class="paginate_button previous" id="tbReporte_previous"><a href="#" aria-controls="tbReporte" data-dt-idx="0" tabindex="0">Previous</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="2" tabindex="0">2</a></li><li class="paginate_button active"><a href="#" aria-controls="tbReporte" data-dt-idx="3" tabindex="0">3</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="4" tabindex="0">4</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="5" tabindex="0">5</a></li><li class="paginate_button "><a href="#" aria-controls="tbReporte" data-dt-idx="6" tabindex="0">6</a></li><li class="paginate_button next" id="tbReporte_next"><a href="#" aria-controls="tbReporte" data-dt-idx="7" tabindex="0">Next</a></li></ul></div></div></div>', '');
-}
-
-var specialElementHandlers = {
-    '#editor': function (element, renderer) {
-        return true;
-    }
-};
