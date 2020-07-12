@@ -19,34 +19,63 @@ namespace SICARO.WEB.Controllers
     public class ReporteController : Controller
     {
         static string ReporteGenerador = "";
-
+        static string NombreReporte = "REPORTEINSPECCIONSANITARIA";
+        static string Extencion = ".PDF";
+        static string ArchivoReporte = NombreReporte + Extencion;
+        static string RutaPDF = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documentos\PDF\");
         JavaScriptSerializer js = new JavaScriptSerializer();
         // GET: Reporte
         public ActionResult Index()
         {
+            foreach (var item in Directory.GetFiles(RutaPDF, "*.PDF"))
+            {
+                try
+                {
+
+                    System.IO.File.SetAttributes(item, FileAttributes.Normal);
+                    System.IO.File.Delete(item);
+                }
+                catch (Exception)
+                {
+                }
+            }
             return View();
         }
 
 
         public ActionResult PDF()
         {
-            ViewBag.html = ReporteGenerador;// Session["HTMLReporte"];
+            ViewBag.html = ReporteGenerador;
             return View();
         }
 
         public ActionResult ImprimirPDF()
         {
-
-
             var actionResult = new ActionAsPdf("PDF")
             { FileName = "test.pdf" };
-            var misDatos = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documentos\PDF\CUS07.pdf");
-
+            var misDatos = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, RutaPDF + ArchivoReporte);
             var byteArray = actionResult.BuildPdf(ControllerContext);
+            try
+            {
+                using (var fileStream = new FileStream(misDatos, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    fileStream.Write(byteArray, 0, byteArray.Length);
+                    fileStream.Close();
+                }
 
-            var fileStream = new FileStream(misDatos, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            fileStream.Write(byteArray, 0, byteArray.Length);
-            fileStream.Close();
+            }
+            catch (Exception)
+            {
+                ArchivoReporte = NombreReporte + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day + DateTime.Now.Hour + DateTime.Now.Minute + DateTime.Now.Second + Extencion;
+                misDatos = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, RutaPDF + ArchivoReporte);
+                using (var fileStream = new FileStream(misDatos, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    fileStream.Write(byteArray, 0, byteArray.Length);
+                    fileStream.Close();
+                }
+
+            }
+
 
             return actionResult;
         }
@@ -59,142 +88,22 @@ namespace SICARO.WEB.Controllers
         }
 
         [HttpPost]
-        public JsonResult EnviarCorreo(string Detinatario,string Asunto)
+        public JsonResult EnviarCorreo(string Detinatario, string Asunto)
         {
-            var rutaArchivoEnviar = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documentos\PDF\CUS07.pdf");
-            var res = Utilitario.Accion.EnvioCorreo(Detinatario, Asunto,"Reporte ", rutaArchivoEnviar);
-            return Json("", JsonRequestBehavior.AllowGet);
+            //System.IO.File.Copy(RutaPDF + ArchivoReporte, RutaPDF + "Reporte.pdf",true);
+            var rutaArchivoEnviar = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, RutaPDF + ArchivoReporte);
+            var res = Utilitario.Accion.EnvioCorreo(Detinatario, Asunto, "Reporte ", rutaArchivoEnviar);
+            return Json(res, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult GenerarReporte(Reporte_EL R)
         {
             string postdata = JsonConvert.SerializeObject(R);
-            
+
             var Lis = JsonConvert.DeserializeObject<List<Reporte_EL>>(Utilitario.Accion.Conect_WEBAPI("Reporte/ListarReporte", "POST", postdata));
-            
+
             return Json(new { listrm = Lis, }, JsonRequestBehavior.AllowGet);
-
-            //return Json("", JsonRequestBehavior.AllowGet);
-
-            //List<Reporte_EL> Lista = new List<Reporte_EL>();
-            //decimal val = Convert.ToDecimal(1.01);
-            //int est = 0;
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    val = val + Convert.ToDecimal(0.01);
-            //    est = (i % 2 == 0 ? 1 : 0);
-            //    Reporte_EL list = new Reporte_EL()
-            //    {
-            //        indice = val,
-            //        estado = Convert.ToInt16(est),
-            //        descripcion = ""
-            //    };
-            //    Lista.Add(list);
-            //}
-
-
-
-            //TrazabilidadSample MP = new TrazabilidadSample();
-            //MP.producto = 1;
-            //MP.proveedor = 10;
-            //MP.peso = 1;
-            //MP.duracion = 0;
-            //float longitud = 0;
-            //string postdata = js.Serialize(MP);
-            //Prediccion ListaMATERIA_PRIMA = new Prediccion();
-
-            //try
-            //{
-            //    HttpWebRequest req = (HttpWebRequest)WebRequest.Create("http://localhost:56225/Service1.svc/PREDICCION");
-            //    HttpWebResponse res = null;
-            //    StreamReader reader = null;
-            //    byte[] data = Encoding.UTF8.GetBytes(postdata);
-            //    req.Method = "POST";
-            //    req.ContentLength = data.Length;
-            //    req.ContentType = "application/json";
-            //    var reqStream = req.GetRequestStream();
-            //    reqStream.Write(data, 0, data.Length);
-            //    res = (HttpWebResponse)req.GetResponse();
-            //    reader = new StreamReader(res.GetResponseStream());
-            //    //return reader.ReadToEnd();
-            //    ListaMATERIA_PRIMA = js.Deserialize<Prediccion>(reader.ReadToEnd());
-            //    longitud = ListaMATERIA_PRIMA.prediccion;
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new ArgumentNullException(e.Message);
-            //}
-
-
-
-            //DataSet ds = new DataSet();
-            //using (SqlConnection con = new SqlConnection("Data Source='BDICAROV1.mssql.somee.com';Initial Catalog=BDICAROV1;user=sefiroth_SQLLogin_1;password=2llanx2cd9;"))
-            //{
-            //    con.Open();
-            //    using (SqlCommand com = new SqlCommand("sp_reporte", con))
-            //    {
-            //        com.CommandType = CommandType.Text;
-            //        SqlDataAdapter da = new SqlDataAdapter(com);
-
-            //        da.Fill(ds);
-            //        //dtReporte = ds.Tables[0];
-            //    }
-            //}
-            //List<reporteACTIVIDADCONTROLPRODUCCION> listAP = new List<reporteACTIVIDADCONTROLPRODUCCION>();
-            //foreach (DataRow item in ds.Tables[0].Rows)
-            //{
-            //    reporteACTIVIDADCONTROLPRODUCCION r = new reporteACTIVIDADCONTROLPRODUCCION();
-            //    r.Tiempoinicial = item["Tiempoinicial"].ToString();
-            //    r.TiempoFinal = item["TiempoFinal"].ToString();
-            //    r.tiempototalmezclado = item["tiempototalmezclado"].ToString();
-            //    r.tiempototalreposo = item["tiempototalreposo"].ToString();
-            //    r.tiempototalfiltrado = item["tiempototalfiltrado"].ToString();
-            //    r.tiempototalllenado = item["tiempototalllenado"].ToString();
-            //    r.tiempototalencajonado = item["tiempototalencajonado"].ToString();
-            //    listAP.Add(r);
-            //}
-
-            //List<reporteMateriaPrima> listrm = new List<reporteMateriaPrima>();
-            //foreach (DataRow item in ds.Tables[1].Rows)
-            //{
-            //    reporteMateriaPrima r = new reporteMateriaPrima();
-            //    r.vnombremateriaprima = item["vnombremateriaprima"].ToString();
-            //    r.tipopronostico = item["tipopronostico"].ToString();
-            //    r.indicador = item["indicador"].ToString();
-            //    listrm.Add(r);
-            //}
-
-
-
-            //List<reporteCAPACITACION> listM = new List<reporteCAPACITACION>();
-            //foreach (DataRow item in ds.Tables[2].Rows)
-            //{
-            //    reporteCAPACITACION r = new reporteCAPACITACION();
-            //    r.vcodcapacitacion = item["vcodcapacitacion"].ToString();
-            //    r.vtemacapacitacion = item["vtemacapacitacion"].ToString();
-            //    r.dfechapropuestacapacitacion = item["dfechapropuestacapacitacion"].ToString();
-            //    r.cantidadcapacitados = item["cantidadcapacitados"].ToString();
-            //    r.cantidad = item["cantidad"].ToString();
-            //    listM.Add(r);
-            //}
-
-            //List<reportePROVEEDOR> listP = new List<reportePROVEEDOR>();
-            //foreach (DataRow item in ds.Tables[3].Rows)
-            //{
-            //    reportePROVEEDOR r = new reportePROVEEDOR();
-            //    r.vnombreproveedor = item["vnombreproveedor"].ToString();
-            //    r.vnombremateriaprima = item["vnombremateriaprima"].ToString();
-            //    r.icondiciones = item["icondiciones"].ToString();
-            //    r.puntaje = item["puntaje"].ToString();
-
-            //    listP.Add(r);
-            //}
-
-
-
-
-            //return Json(new { listrm = listrm, listAP = listAP, listM = listM, listP = listP, longitud = longitud }, JsonRequestBehavior.AllowGet);
         }
 
 

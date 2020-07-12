@@ -298,7 +298,14 @@
             },
             EnviarCorreo: function () {
                 axios.post('/Reporte/EnviarCorreo', { Detinatario: $('#txtDestinatario').val(), Asunto: $('#txtAsunto').val() }).then(response => {
+                    if (response.data == 'Mensaje Enviado') {
+                        MensajeModal('Mensaje Enviado', 0);
 
+                        $('#txtDestinatario').val('');
+                        $('#txtAsunto').val('');
+                    } else {
+                        MensajeModal(response.data, 2);
+                    }
                 }).catch(error => {
                     console.log(error);
                     this.errored = true;
