@@ -81,6 +81,11 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -301,6 +306,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Reporte\ReporteActa.aspx" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.es.js" />
@@ -311,7 +317,9 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Documentos\PDF\CUS05.pdf" />
+    <Content Include="App_Browsers\qt.browser" />
+    <Content Include="Documentos\PDF\Reporte.pdf" />
+    <Content Include="Documentos\PDF\REPORTEINSPECCIONSANITARIA.pdf" />
     <None Include="Properties\PublishProfiles\ICAROWEB - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ICAROWEB - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\WEB.pubxml" />
@@ -346,6 +354,7 @@
     <Content Include="Scripts\JSSICARO\Menu.js" />
     <Content Include="Scripts\JSSICARO\Personal.js" />
     <Content Include="Scripts\JSSICARO\Reporte.js" />
+    <Content Include="Scripts\JSSICARO\ReportePDF.js" />
     <Content Include="Scripts\JSSICARO\Rol.js" />
     <Content Include="Scripts\JSSICARO\TGeneral.js" />
     <Content Include="Scripts\JsTestEvaluacion\TestEvaluacion.js" />
@@ -411,6 +420,7 @@
     <Content Include="Views\Menu\Index.cshtml" />
     <Content Include="Views\Personal\Index.cshtml" />
     <Content Include="Views\Rol\Index.cshtml" />
+    <Content Include="Views\Reporte\PDF.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BACKUP\" />
