@@ -362,7 +362,7 @@
                         default:
                     }
 
-                    
+
 
                     $.each(ListaPrediccionGrafica, function (k, v) {
                         var Columnas = [];
