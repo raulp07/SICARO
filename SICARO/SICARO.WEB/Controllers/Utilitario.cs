@@ -125,6 +125,8 @@ namespace SICARO.WEB.Controllers
                 ByteArrayContent byteContent;
                 HttpResponseMessage request;
 
+                
+
                 switch (method)
                 {
                     case "GET":

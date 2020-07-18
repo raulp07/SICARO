@@ -14,7 +14,7 @@ namespace SICARO.WEB.Models
         public int idProveedor { get; set; }
         public int idIntervaloProduccion { get; set; }
         public int idUnidadMedida { get; set; }
-        public int Peso { get; set; }
+        public int idPeso { get; set; }
         public int idActividad { get; set; }
         public int cantidadProducida { get; set; }
         public string PRECISION { get; set; }
