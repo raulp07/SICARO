@@ -71,41 +71,12 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                
-
-                //string envios = "raulpaucar7@gmail.com";
-                //MailMessage correo = new MailMessage();
-                //correo.From = new MailAddress("Sys.ICARO@gmail.com");
-
-                //var listaCorreos = envios.Split(';');
-                //foreach (string item in listaCorreos)
-                //{
-                //    correo.To.Add(item);
-                //}
-
-                //correo.Subject = "Prueba";
-                //correo.Body = "empieza la prueba";
-                //correo.IsBodyHtml = true;
-                //correo.Priority = MailPriority.Normal;
-
-                //SmtpClient smtp = new SmtpClient();
-                //smtp.Host = "smtp.gmail.com";
-                //smtp.Port = 25;
-                //smtp.EnableSsl = true;
-                //smtp.UseDefaultCredentials = true;
-                //string cuentacorreo = "Sys.ICARO@gmail.com";
-                //string password = "webicar0";
-                //smtp.Credentials = new System.Net.NetworkCredential(cuentacorreo,password);
-
-                //smtp.Send(correo);
-
-
                 var ListaPrediccionGrafica = new object();
                 string data = "";
                 string consulta = "";
                 string Llamada = "";
 
-                js.MaxJsonLength = 50000000;
+                js.MaxJsonLength = int.MaxValue;
                 switch (P.tipoPronostico)
                 {
                     case 1:
@@ -137,9 +108,6 @@ namespace SICARO.WEB.Controllers
                 }
                 
                 var resultado = new Respuesta();
-                //respuesta.prediccion = "12.23213";
-                //respuesta.exactitud = "0.236543";
-                //respuesta.mse = "16.21";
 
                 resultado = js.Deserialize<Respuesta>(Utilitario.Accion.Conect_WEBPython(Llamada, "GET", "", consulta));
                 if (resultado == null)
@@ -164,7 +132,10 @@ namespace SICARO.WEB.Controllers
                 var Res = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CONTROLPRODUCCION", "POST", postdata));
 
 
-                return Json(new { resultado = resultado, ListaPrediccionGrafica = ListaPrediccionGrafica }, JsonRequestBehavior.AllowGet);
+                var jsresult =  Json(new { resultado = resultado, ListaPrediccionGrafica = ListaPrediccionGrafica }, JsonRequestBehavior.AllowGet);
+
+                jsresult.MaxJsonLength = int.MaxValue;
+                return jsresult;
             }
             catch (Exception e)
             {
