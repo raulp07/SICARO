@@ -127,7 +127,7 @@ namespace SICARO.WEB.Controllers
                         ListaPrediccionGrafica = js.Deserialize<List<pronostico_cantidad_producida_EL>>(Utilitario.Accion.Conect_WEBAPI("PREDICCION/pronostico_cantidad_producida", "GET", "", data));
                         break;
                     case 4:
-                        data = P.idProducto + "&value2=" + P.idProveedor + "&value3=" + P.idUnidadMedida;
+                        data = P.idProducto + "&value2=" + P.idProveedor + "&value3=" + P.idUnidadMedida ;
                         consulta = "producto=" + P.idProducto + "&proveedor=" + P.idProveedor + "&unidadmedida=" + P.idUnidadMedida + "&peso=" + P.idPeso;
                         Llamada = "mermainsumo";
                         ListaPrediccionGrafica = js.Deserialize<List<pronostico_merma_insumo_EL>>(Utilitario.Accion.Conect_WEBAPI("PREDICCION/pronostico_merma_insumo", "GET", "", data));
