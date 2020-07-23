@@ -567,9 +567,9 @@ $(document).ready(function () {
 
 
                     var data = new google.visualization.DataTable();
-                    var data1 = new google.visualization.DataTable();
+                    //var data1 = new google.visualization.DataTable();
                     var data2 = new google.visualization.DataTable();
-                    var data3 = new google.visualization.DataTable();
+                    //var data3 = new google.visualization.DataTable();
                     var data4 = new google.visualization.DataTable();
 
                     //data.addColumn('number', 'Producto');
@@ -578,14 +578,14 @@ $(document).ready(function () {
                     //data.addColumn('number', 'Final1');
                     //data.addColumn('number', 'Final2');
 
-                    data1.addColumn('number', Columna1cuadro1);
-                    data1.addColumn('number', Columna2cuadro1);
+                    //data1.addColumn('number', Columna1cuadro1);
+                    //data1.addColumn('number', Columna2cuadro1);
 
                     data2.addColumn('number', Columna1cuadro2);
                     data2.addColumn('number', Columna2cuadro2);
 
-                    data3.addColumn('number', Columna1cuadro3);
-                    data3.addColumn('number', Columna2cuadro3);
+                    //data3.addColumn('number', Columna1cuadro3);
+                    //data3.addColumn('number', Columna2cuadro3);
 
                     data4.addColumn('number', Columna1cuadro4);
                     data4.addColumn('number', Columna2cuadro4);
@@ -593,9 +593,9 @@ $(document).ready(function () {
 
                     data.addRows(Grafica);
 
-                    data1.addRows(Grafica1);
+                    //data1.addRows(Grafica1);
                     data2.addRows(Grafica2);
-                    data3.addRows(Grafica3);
+                    //data3.addRows(Grafica3);
                     data4.addRows(Grafica4);
 
                     var options = {
