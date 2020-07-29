@@ -95,6 +95,10 @@ $(document).ready(function () {
                         $('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').show();
                         $('.divActividad').hide();
+
+                        $('#cuadro2').addClass('hide');
+                        $('#cuadro4').addClass('hide');
+
                         break;
 
                     case "2":
@@ -102,18 +106,30 @@ $(document).ready(function () {
                         $('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
+
+                        $('#cuadro2').addClass('hide');
+                        $('#cuadro4').addClass('hide');
+
                         break;
                     case "3":
                         $('.divProveedor').hide();
                         $('.divUnidadMedida').hide();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').show();
+
+                        $('#cuadro2').addClass('hide');
+                        $('#cuadro4').addClass('hide');
+
                         break;
                     case "4":
                         $('.divProveedor').show();
                         $('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
+
+                        $('#cuadro2').addClass('hide');
+                        $('#cuadro4').addClass('hide');
+
                         break;
                 }
 
@@ -147,6 +163,7 @@ $(document).ready(function () {
                             PRECISION: $('#PorcentajePrecision').val(),
                             ErrorMedioCuadratico: $('#ErrorMedioCuadratico').val(),
                             predicion: $('#NroPrediccion').text(),
+
                         };
                         $('#txttipoprediccion').text('Días');
                         break;
@@ -332,28 +349,28 @@ $(document).ready(function () {
 
                             break;
                         case "4":
-                            options1 = {
-                                title: 'Comparacion Producto vs. Tiempo',
-                                hAxis: { title: 'Producto', minValue: 0, maxValue: 26 },
-                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
-                                legend: 'none'
-                            };
-                            options2 = {
-                                title: 'Comparacion Proveedor vs. Tiempo',
-                                hAxis: { title: 'Proveedor', minValue: 0, maxValue: 26 },
-                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
-                                legend: 'none'
-                            };
-                            options3 = {
-                                title: 'Comparacion Unidad Medida vs. Tiempo',
-                                hAxis: { title: 'Unidad M.', minValue: 0, maxValue: 26 },
-                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
-                                legend: 'none'
-                            };
+                            //options1 = {
+                            //    title: 'Comparacion Producto vs. Tiempo',
+                            //    hAxis: { title: 'Producto', minValue: 0, maxValue: 26 },
+                            //    vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
+                            //    legend: 'none'
+                            //};
+                            //options2 = {
+                            //    title: 'Comparacion Proveedor vs. Tiempo',
+                            //    hAxis: { title: 'Proveedor', minValue: 0, maxValue: 26 },
+                            //    vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
+                            //    legend: 'none'
+                            //};
+                            //options3 = {
+                            //    title: 'Comparacion Merma vs. Cantidad',
+                            //    hAxis: { title: 'Merma', minValue: 0, maxValue: 50 },
+                            //    vAxis: { title: 'Cantidad', minValue: 0, maxValue: 50 },
+                            //    legend: 'none'
+                            //};
                             options4 = {
-                                title: 'Comparacion Peso vs. Tiempo',
-                                hAxis: { title: 'Peso', minValue: 0, maxValue: 26 },
-                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
+                                title: 'Comparacion Merma vs. Dias',
+                                hAxis: { title: 'Merma', minValue: 0, maxValue: 50 },
+                                vAxis: { title: 'Dias', minValue: 0, maxValue: 50 },
                                 legend: 'none'
                             };
 
@@ -512,7 +529,7 @@ $(document).ready(function () {
                                 v.peso,
                                 v.merma
                                 ];
-                                Columna1cuadro4 = 'Peso';
+                                Columna1cuadro4 = 'Días';
                                 Columna2cuadro4 = 'Merma';
 
                                 break;
@@ -548,7 +565,7 @@ $(document).ready(function () {
                         $('#cuadro1').addClass('hide');
                     }
                     if (Grafica2.length == 0) {
-                        $('#cuadro2').addClass('hide');
+                        
                     }
                     if (Grafica3.length == 0) {
                         $('#cuadro3').addClass('hide');
@@ -604,7 +621,48 @@ $(document).ready(function () {
                     };
 
 
+                    switch (_ddlPronostico) {
+                        case "1":
 
+                            document.getElementById("especial").innerHTML = "<div class='col-md-6'><div id='cuadro2' style='width: 650px; height: 450px;'></div></div><div class='col-md-6'><div id='cuadro4' style='width: 650px; height: 450px;'></div></div>"
+                            var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
+                            chart2.draw(data2, options2);
+
+                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
+                            chart4.draw(data4, options4);
+
+                            break;
+                        case "2":
+
+                            document.getElementById("especial").innerHTML = "<div class='col-md-6'><div id='cuadro2' style='width: 650px; height: 450px;'></div></div><div class='col-md-6'><div id='cuadro4' style='width: 650px; height: 450px;'></div></div>"
+                            var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
+                            chart2.draw(data2, options2);
+
+                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
+                            chart4.draw(data4, options4);
+
+                            break;
+                        case "3":
+
+                            document.getElementById("especial").innerHTML = "<div class='col-'><div id='cuadro4' style='margin:auto; width: 650px; height: 450px;'></div></div>";
+                            $('#cuadro2').addClass('hide');
+
+                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
+                            chart4.draw(data4, options4);
+                            break;
+                        case "4":
+                           
+                            document.getElementById("especial").innerHTML = "<div class='col-md'><div id='cuadro4' style='margin:auto; width: 650px; height: 450px;'></div></div>";
+                            
+                            //var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
+                            //chart2.draw(data2, options2);
+
+                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
+                            chart4.draw(data4, options4);
+
+                            break;
+                            default:
+                    }
             //        var chart = new google.charts.Scatter(document.getElementById('DiagramaDispercion'));
             //        chart.draw(data, google.charts.Scatter.convertOptions(options));
 
@@ -612,14 +670,14 @@ $(document).ready(function () {
                     var chart1 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
                     chart1.draw(data1, options1);
 
-                    var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
-                    chart2.draw(data2, options2);
+                    //var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
+                    //chart2.draw(data2, options2);
 
                     var chart3 = new google.visualization.ScatterChart(document.getElementById('cuadro3'));
                     chart3.draw(data3, options3);
 
-                    var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
-                    chart4.draw(data4, options4);
+                    //var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
+                    //chart4.draw(data4, options4);
 
 
                 }.bind(this)).catch(function (error) {
