@@ -58,5 +58,18 @@ namespace SICARO.WEB.Controllers
                 return Json(new { Mensaje = e.Message, Error = "1" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public ActionResult Del_MENU(int idOpcion)
+        {
+            var Data = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("Opcion", "DEL", "", idOpcion.ToString()));
+            return Json(Data, JsonRequestBehavior.AllowGet);
+        }
+        //[HttpPost]
+        //public ActionResult Del_PERSONAL(PERSONAL_EL personal)
+        //{
+        //    var Data = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("Personal", "DEL", "", personal.iIdPersonal.ToString()));
+        //    return Json(Data, JsonRequestBehavior.AllowGet);
+        //}
     }
 }

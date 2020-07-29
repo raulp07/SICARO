@@ -75,12 +75,12 @@
                 let strUrl = "";
                 let strMsj = "";
 
-                DTO.Id = this.Id;
+                DTO.idOpcion = this.Id;
                 strUrl = "/Menu/Del_MENU";
                 strMsj = "Se eliminó.";
 
                 axios.post(strUrl, DTO).then(response => {
-                    if (response.data > 0) {
+                    if (response.data.codigo > 0) {
                         this.Id = '';
                         MensajeModal('Se elimino correctamente.', 0);
                         this.ListarMenu();

@@ -365,7 +365,7 @@ $(document).ready(function () {
                     
 
                     $.each(ListaPrediccionGrafica, function (k, v) {
-                        var Columnas = [];
+                        //var Columnas = [];
 
                         var Columnascuadro1 = [];
                         var Columnascuadro2 = [];
@@ -374,12 +374,12 @@ $(document).ready(function () {
 
                         switch (_ddlPronostico) {
                             case "1":
-                                Columnas = [
-                                v.peso,
-                                v.tiempo
-                                ];
-                                Columna1 = 'Peso';
-                                Columna2 = 'Tiempo';
+                                //Columnas = [
+                                //v.peso,
+                                //v.tiempo
+                                //];
+                                //Columna1 = 'Peso';
+                                //Columna2 = 'Tiempo';
 
                                 Columnascuadro1 = [
                                 v.producto,
@@ -411,12 +411,12 @@ $(document).ready(function () {
 
                                 break;
                             case "2":
-                                Columnas = [
-                                v.peso,
-                                v.tiempo
-                                ];
-                                Columna1 = 'Peso';
-                                Columna2 = 'Tiempo';
+                                //Columnas = [
+                                //v.peso,
+                                //v.tiempo
+                                //];
+                                //Columna1 = 'Peso';
+                                //Columna2 = 'Tiempo';
 
                                 Columnascuadro1 = [
                                 v.producto,
@@ -449,12 +449,12 @@ $(document).ready(function () {
 
                                 break;
                             case "3":
-                                Columnas = [
-                                v.cantidad,
-                                v.tiempo
-                                ];
-                                Columna1 = 'Cantidad';
-                                Columna2 = 'Tiempo';
+                                //Columnas = [
+                                //v.cantidad,
+                                //v.tiempo
+                                //];
+                                //Columna1 = 'Cantidad';
+                                //Columna2 = 'Tiempo';
 
                                 Columnascuadro1 = [
                                 v.producto,
@@ -480,12 +480,12 @@ $(document).ready(function () {
 
                                 break;
                             case "4":
-                                Columnas = [
-                                v.peso,
-                                v.merma
-                                ];
-                                Columna1 = 'Peso';
-                                Columna2 = 'Merma';
+                                //Columnas = [
+                                //v.peso,
+                                //v.merma
+                                //];
+                                //Columna1 = 'Peso';
+                                //Columna2 = 'Merma';
 
                                 Columnascuadro1 = [
                                 v.producto,
@@ -519,18 +519,27 @@ $(document).ready(function () {
                             default:
                         }
 
-                        Grafica.push(Columnas);
+                        //Grafica.push(Columnas);
                         if (Columnascuadro1.length != 0) {
-                            Grafica1.push(Columnascuadro1);
+
+                            if (Grafica1.filter(x=> x[0] == Columnascuadro1[0] && x[1] == Columnascuadro1[1]).length == 0) {
+                                Grafica1.push(Columnascuadro1);
+                            }
                         }
                         if (Columnascuadro2.length != 0) {
-                            Grafica2.push(Columnascuadro2);
+                            if (Grafica2.filter(x=> x[0] == Columnascuadro2[0] && x[1] == Columnascuadro2[1]).length == 0) {
+                                Grafica2.push(Columnascuadro2);
+                            }
                         }
                         if (Columnascuadro3.length != 0) {
-                            Grafica3.push(Columnascuadro3);
+                            if (Grafica3.filter(x=> x[0] == Columnascuadro3[0] && x[1] == Columnascuadro3[1]).length == 0) {
+                                Grafica3.push(Columnascuadro3);
+                            }
                         }
                         if (Columnascuadro4.length != 0) {
-                            Grafica4.push(Columnascuadro4);
+                            if (Grafica4.filter(x=> x[0] == Columnascuadro4[0] && x[1] == Columnascuadro4[1]).length == 0) {
+                                Grafica4.push(Columnascuadro4);
+                            }
                         }
 
                     });
@@ -550,25 +559,24 @@ $(document).ready(function () {
 
 
                     var data = new google.visualization.DataTable();
-                    //var data1 = new google.visualization.DataTable();
+                    var data1 = new google.visualization.DataTable();
                     var data2 = new google.visualization.DataTable();
-                    //var data3 = new google.visualization.DataTable();
+                    var data3 = new google.visualization.DataTable();
                     var data4 = new google.visualization.DataTable();
 
-                    //data.addColumn('number', 'Producto');
-                    data.addColumn('number', Columna1);
-                    data.addColumn('number', Columna2);
-                    //data.addColumn('number', 'Final1');
-                    //data.addColumn('number', 'Final2');
 
-                    //data1.addColumn('number', Columna1cuadro1);
-                    //data1.addColumn('number', Columna2cuadro1);
+                    //data.addColumn('number', Columna1);
+                    //data.addColumn('number', Columna2);
+
+
+                    data1.addColumn('number', Columna1cuadro1);
+                    data1.addColumn('number', Columna2cuadro1);
 
                     data2.addColumn('number', Columna1cuadro2);
                     data2.addColumn('number', Columna2cuadro2);
 
-                    //data3.addColumn('number', Columna1cuadro3);
-                    //data3.addColumn('number', Columna2cuadro3);
+                    data3.addColumn('number', Columna1cuadro3);
+                    data3.addColumn('number', Columna2cuadro3);
 
                     data4.addColumn('number', Columna1cuadro4);
                     data4.addColumn('number', Columna2cuadro4);
@@ -576,9 +584,9 @@ $(document).ready(function () {
 
                     data.addRows(Grafica);
 
-                    //data1.addRows(Grafica1);
+                    data1.addRows(Grafica1);
                     data2.addRows(Grafica2);
-                    //data3.addRows(Grafica3);
+                    data3.addRows(Grafica3);
                     data4.addRows(Grafica4);
 
                     var options = {
@@ -601,14 +609,14 @@ $(document).ready(function () {
             //        chart.draw(data, google.charts.Scatter.convertOptions(options));
 
 
-                    //var chart1 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
-                    //chart1.draw(data1, options1);
+                    var chart1 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
+                    chart1.draw(data1, options1);
 
                     var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
                     chart2.draw(data2, options2);
 
-                    //var chart3 = new google.visualization.ScatterChart(document.getElementById('cuadro3'));
-                    //chart3.draw(data3, options3);
+                    var chart3 = new google.visualization.ScatterChart(document.getElementById('cuadro3'));
+                    chart3.draw(data3, options3);
 
                     var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
                     chart4.draw(data4, options4);

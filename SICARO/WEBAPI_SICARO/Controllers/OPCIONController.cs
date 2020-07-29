@@ -35,5 +35,17 @@ namespace WEBAPI_SICARO.Controllers
         //{
         //    return OPCION_DA.Accion.UpdateOPCION(value);
         //}
+
+        [HttpDelete]
+        public Respuesta Delete(int value)
+        {
+            return OPCION_DA.Opcion.EliminarOpcion(value);
+        }
+
+        //[HttpDelete]
+        //public Respuesta Delete(int value)
+        //{
+        //    return PERSONAL_DA.Accion.DeletePERSONAL(value);
+        //}
     }
 }

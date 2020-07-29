@@ -122,5 +122,22 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
+        public Respuesta EliminarOpcion(int idOpcion)
+        {
+            using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
+            {
+                con.Open();
+                using (SqlCommand com = new SqlCommand("Sp_Del_Menu", con))
+                {
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.Add("@id_tabla", SqlDbType.Int).Value = idOpcion;
+
+                    Respuesta res = new Respuesta();
+                    res.codigo = com.ExecuteNonQuery();
+
+                    return res;
+                }
+            }
+        }
     }
 }
