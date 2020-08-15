@@ -150,6 +150,8 @@ var Capacitacion = new Vue({
         CRUDCapacitacion: function () {
 
             var fechaCapacitacion = $('#txtFechaCapacitacion').data('date');
+
+            //Descomentar al subir al servidor
             //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var URL = '';
@@ -270,7 +272,8 @@ var Capacitacion = new Vue({
             var _lista = _ListaCapacitacion.find(function (val) {
                 return (val.iIdCapacitacion == iIdCapacitacion);
             });
-
+            this.LimpiarExpositor();
+            this.LimpiarFormularioGestionCapacitacion();         
             this.Latitud = _lista.dLatitud;
             this.Longitud = _lista.dLongitud;
             $('#Latitud').text(_lista.dLatitud);
@@ -863,6 +866,24 @@ var Capacitacion = new Vue({
             this.tempOpcionesRespuesta = [];
             this.tempOpcionesRespuestaMultiple = [];
         },
+        LimpiarExpositor: function(){
+            $('#ExpNombre').val('');
+            $('#ExpoApePat').val('');
+            $('#ExpoApeMat').val('');
+            $('#ExpoDNI').val('');
+            $('#ExpoEmpresa').val('');
+        },
+        LimpiarFormularioGestionCapacitacion: function(){
+            this.Lista_Preguntas = [];
+            this.OpcionesRespuesta = [];
+            this.Capacitacion_Personal = [];
+            $('#dfecha').datetimepicker('setDate', new Date());
+            $('#horarinicio').datetimepicker('setDate', new Date());
+            $('#horartermino').datetimepicker('setDate', new Date());
+
+            $('#horartermino').val(20);
+            $('input:radio[name=optradio][value=0]').prop('checked', true);
+        },
         GrabarPreguntas: function () {
             if (!this.ValidarCantidadPreguntas())
                 return;
@@ -919,6 +940,7 @@ var Capacitacion = new Vue({
             var nLongitud = (parseFloat($('#Longitud').text()) == 0 ? parseFloat("-12.130453115407523") : parseFloat($('#Longitud').text()));
 
             var fechaCapacitacion = $('#dfecha').data('date');
+            //Descomentar al subir al servidor
             //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var GestionCapacitacion = {
