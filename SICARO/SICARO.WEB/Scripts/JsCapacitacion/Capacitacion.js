@@ -152,7 +152,7 @@ var Capacitacion = new Vue({
             var fechaCapacitacion = $('#txtFechaCapacitacion').data('date');
 
             //Descomentar al subir al servidor
-            //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var URL = '';
             var jsonData = {
@@ -941,7 +941,7 @@ var Capacitacion = new Vue({
 
             var fechaCapacitacion = $('#dfecha').data('date');
             //Descomentar al subir al servidor
-            //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var GestionCapacitacion = {
                 'iIdCapacitacion': this.iIdCapacitacion,
@@ -1035,6 +1035,43 @@ var Capacitacion = new Vue({
             }
         },
         GrabarExpositorExterno: function () {
+
+            if ($('#txtEmpresa').val() == '') {
+                MensajeModal('El nombnre de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtRUC').val() == '') {
+                MensajeModal('El RUC de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtTelefono').val() == '') {
+                MensajeModal('El txtTelefono de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtApellidoPE').val() == '') {
+                MensajeModal('El apellido paterno del expositor externo de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtApellidoME').val() == '') {
+                MensajeModal('El apellido materno del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtCelular').val() == '') {
+                MensajeModal('El celular del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#cboTipoDocumentoModal').val() == '') {
+                MensajeModal('El docuemento del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            } 
+            if ($('#txtNroDocumentoModal').val() == '') {
+                MensajeModal('El nro documento del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtCelular').val() == '') {
+                MensajeModal('El celular del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            }
 
             $('#ExpNombre').val($('#txtExpositorE').val());
             $('#ExpoApePat').val($('#txtApellidoPE').val());
