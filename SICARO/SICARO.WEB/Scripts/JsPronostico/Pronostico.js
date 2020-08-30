@@ -82,8 +82,8 @@
                         yellowFrom: Pronostico.YellowInicio, yellowTo: Pronostico.YellowFin,
                         greenFrom: Pronostico.GreenInicio, greenTo: Pronostico.GreenFin,
                         //minorTicks: 20,
-                        max: 100,
-                        min: 0,
+                        max: Pronostico.GreenFin,
+                        min: Pronostico.RedInicio,
                         //majorTicks: ['100', '1']
                     };
                     var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
@@ -179,7 +179,7 @@
                 $('#Consulta').val(lista.tipoPronostico);
                 this.ModificarConulta();
                 $('#slProducto').val(lista.idProducto);
-                this.RangoPronosticado = lista.cantidadProducida;
+                this.RangoPronosticado = lista.predicion;
                 this.GenerarGrafico();
             },
             ListaControlPoduccion: function () {
@@ -249,8 +249,26 @@
             Salir: function () {
                 window.location.href = "/Home";
             },
+            CambioFinRojo: function (v) {
+                Pronostico.YellowInicio = v;
+            },
+            CambioInicioAmarrillo: function () {
+                Pronostico.YellowInicio = Pronostico.RedFin;
+            },
+            CambioFinAmarillo: function (v) {
+                Pronostico.GreenInicio = v;
+            },
+            CambioInicioVerde: function (v) {
+                Pronostico.YellowFin = v;
+            }
+
         },
-        computed: {},
+        //computed: {
+        //    RedFin: function () {
+        //        var dato = 'dd';
+        //        return Pronostico.YellowInicio = Pronostico.RedFin;
+        //    }
+        //},
         created: function () {
             this.seleccionTipoPronostico = parseInt($('#Tipopronostico').val());
             this.seleccionProducto = parseInt($('#Producto').val());

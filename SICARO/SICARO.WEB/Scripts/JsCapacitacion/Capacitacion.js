@@ -152,7 +152,7 @@ var Capacitacion = new Vue({
             var fechaCapacitacion = $('#txtFechaCapacitacion').data('date');
 
             //Descomentar al subir al servidor
-            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+            //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var URL = '';
             var jsonData = {
@@ -941,7 +941,7 @@ var Capacitacion = new Vue({
 
             var fechaCapacitacion = $('#dfecha').data('date');
             //Descomentar al subir al servidor
-            fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
+            //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var GestionCapacitacion = {
                 'iIdCapacitacion': this.iIdCapacitacion,

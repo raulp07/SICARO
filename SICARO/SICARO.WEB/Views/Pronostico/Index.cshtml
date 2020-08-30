@@ -113,7 +113,7 @@
                 <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedInicio"/>
             </div>
             <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedFin"/>
+                <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedFin" v-on:Change="CambioFinRojo(RedFin)"/>
             </div>
             <div class="col-sm-3 text-center">
                 <label class="radio-inline"><input type="radio" name="optradioRojo" checked>Si</label>
@@ -126,10 +126,10 @@
                 <label>Amarillo</label>
             </div>
             <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowInicio"/>
+                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowInicio" v-on:Change="CambioInicioAmarrillo(YellowInicio)"/>
             </div>
             <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowFin"/>
+                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowFin" v-on:Change="CambioFinAmarillo(YellowFin)"/>
             </div>
             <div class="col-sm-3 text-center">
                 <label class="radio-inline"><input type="radio" name="optradioAmarillo" checked>Si</label>
@@ -142,7 +142,7 @@
                 <label>Verde</label>
             </div>
             <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenInicio"/>
+                <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenInicio" v-on:Change="CambioInicioVerde()"/>
             </div>
             <div class="col-sm-3">
                 <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenFin"/>
@@ -162,7 +162,7 @@
         <div class="col-sm-4 col-sm-offset-2">
             <div id="chart_div" class="text-center"></div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6" style="height:300px; overflow: scroll;">
             <table class="table tab-content">
                 <thead>
                     <tr>
