@@ -151,6 +151,23 @@ var Capacitacion = new Vue({
 
             var fechaCapacitacion = $('#txtFechaCapacitacion').data('date');
 
+            if ($('#txtTema').val().trim() == '') {
+                Mensaje('El tema es obligatorio', 1);
+                return;
+            }
+
+            if (fechaCapacitacion == undefined) {
+                Mensaje('La fecha no tiene el formato correcto', 1);
+                return;
+            }
+
+            //var d = new Date();
+            //var end = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+
+            //var start = new Date(fechaCapacitacion);
+            //var end = new Date();
+            //days = (end - fechaCapacitacion ) / (1000 * 60 * 60 * 24);
+            //var dias = Math.round(days);
             //Descomentar al subir al servidor
             //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
@@ -158,7 +175,8 @@ var Capacitacion = new Vue({
             var jsonData = {
                 iIdCapacitacion: this.iIdCapacitacion,
                 vTemaCapacitacion: $('#txtTema').val(),
-                dFechaPropuestaCapacitacion: fechaCapacitacion
+                dFechaPropuestaCapacitacion: fechaCapacitacion,
+                iEstadoCapactiacion: $('#cboEstadoCapacitacion').val(),
             };
             if (this.iIdCapacitacion == 0) {
                 URL = '/Capacitacion/RegistrarCapacitacionCabecera/';
@@ -1253,7 +1271,7 @@ $('#txtFechaCapacitacion').datetimepicker({
     todayHighlight: 1,
     startView: 2,
     minView: 2,
-    forceParse: 0
+    forceParse: 0,
 
 });
 
