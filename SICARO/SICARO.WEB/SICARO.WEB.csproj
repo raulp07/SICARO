@@ -81,7 +81,6 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-
     <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
       <Private>True</Private>
@@ -421,6 +420,7 @@
     <Content Include="Views\Personal\Index.cshtml" />
     <Content Include="Views\Rol\Index.cshtml" />
     <Content Include="Views\Reporte\PDF.cshtml" />
+    <Content Include="Views\Pronostico\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BACKUP\" />

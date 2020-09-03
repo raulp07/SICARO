@@ -1,0 +1,199 @@
+﻿@using SICARO.WEB.Models
+@{
+    ViewBag.Title = "Index2";
+    var usuario = SesionUsuario.Usuario;
+}
+@if (@usuario != null)
+{
+
+<script src="~/Scripts/JsPronostico/Pronostico.js"></script>
+
+<div id="app">
+    <br /><br />
+    <div class="row text-center">
+        <h2>GESTIONAR INDICADORES DE PRONOSTICO</h2>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-5">
+                <label class="">Seleccione Pronostico:</label>
+            </div>
+            <div class="col-sm-5 form-group ">
+                <select class="form-control" id="ddlPronostico" v-on:change="ModificarConulta()" v-model="seleccionTipoPronostico" >
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dTipoPronostico" v-bind:value="lista.co_codigo" :selected="lista.co_codigo == seleccionTipoPronostico"  >{{lista.de_tabla}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-5">
+                <label class="">Producto:</label>
+            </div>
+            <div class="col-sm-5 form-group ">
+                <select class="form-control" id="slProducto" v-on:change="ConsultarProveedor()" v-model="seleccionProducto">
+                    <option value="0">Seleccione</option>
+                    <option v-for="lista in Lista_Producto" v-bind:value="lista.iIdproducto" :selected="lista.iIdproducto == seleccionProducto">{{lista.vNombreProducto}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row divproveedor">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-5">
+                <label class="">Proveedor:</label>
+            </div>
+            <div class="col-sm-5 form-group ">
+                <select class="form-control" id="slProveedor">
+                    <option value="0">Seleccione</option>
+                    <option v-for="lista in Lista_Proveedor" v-bind:value="lista.iIdProveedor" :selected="lista.iIdProveedor == seleccionProveedor">{{lista.vNombreProveedor}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row divActividad">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-5">
+                <label class="">Actividad de producción:</label>
+            </div>
+            <div class="col-sm-5 form-group ">
+                <select class="form-control" id="slActividad">
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dActividad" v-bind:value="lista.co_codigo" :selected="lista.co_codigo == seleccionActividad">{{lista.de_tabla}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row divIntervaloProduccion">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-5">
+                <label class="">Intervalo de veces utilizado en producción:</label>
+            </div>
+            <div class="col-sm-5 form-group ">
+                <select class="form-control" id="slIntervaloUtilizadoProduccion">
+                    <option value="0">Seleccionar</option>
+                    <option v-for="lista in dIntervaloVecesProduccion" v-bind:value="lista.co_codigo" :selected="lista.co_codigo == seleccionIntervalo">{{lista.de_tabla}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4  text-center">
+            <input type="button" class="btn" value="MOSTRAR INDICADOR" v-on:click="GuardarControlProduccion" />
+        </div>
+        <div class="col-sm-4  text-center">
+            <input type="button" class="btn" value="ACTUALIZAR INTERVALOS" v-on:click="MostrarConfiguracionIntervalo" />
+        </div>
+        <div class="col-sm-4  text-center">
+            <input type="button" class="btn" value="SALIR" v-on:click="Salir" />
+        </div>
+    </div>
+    <br />
+    <div class="row" id="ConfiguracionIntervalos" style="display:none">
+        <div class="col-sm-12">
+            <label>Indicadores:</label>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3 text-center">
+                <label>Intervalo de:</label>
+            </div>
+            <div class="col-sm-3 text-center">
+                <label>Alarma</label>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Rojo</label>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedInicio"/>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedFin"/>
+            </div>
+            <div class="col-sm-3 text-center">
+                <label class="radio-inline"><input type="radio" name="optradioRojo" checked>Si</label>
+                <label class="radio-inline"><input type="radio" name="optradioRojo">No</label>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Amarillo</label>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowInicio"/>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowFin"/>
+            </div>
+            <div class="col-sm-3 text-center">
+                <label class="radio-inline"><input type="radio" name="optradioAmarillo" checked>Si</label>
+                <label class="radio-inline"><input type="radio" name="optradioAmarillo">No</label>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Verde</label>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenInicio"/>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenFin"/>
+            </div>
+            <div class="col-sm-3 text-center">
+                <label class="radio-inline"><input type="radio" name="optradioVerde" checked>Si</label>
+                <label class="radio-inline"><input type="radio" name="optradioVerde">No</label>
+            </div>
+        </div>
+        <br />
+        <div class="row text-center">
+            <input type="button" value="Guardar" class="btn" v-on:click="OcultarConfiguracionIntervalo"/>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-4 col-sm-offset-2">
+            <div id="chart_div" class="text-center"></div>
+        </div>
+        <div class="col-sm-6">
+            <table class="table tab-content">
+                <thead>
+                    <tr>
+                        <td>Fecha</td>
+                        <td>Indicador</td>
+                        <td>Predicción</td>
+                        <td></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="lista in Lista_Control_Produccion">
+                        <td>{{lista.fechaProduccion}}</td>
+                        <td>{{lista.Color}}</td>
+                        <td>{{lista.predicion}}</td>
+                        <td><input type="button" class="btn btn-primary" value="Ver" v-on:Click="MostrarDetalle(lista)" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+<input type="hidden" id="Tipopronostico" value="@ViewBag.Tipopronostico" />
+<input type="hidden" id="Producto" value="@ViewBag.Producto"/>
+<input type="hidden" id="Proveedor" value="@ViewBag.Proveedor" />
+<input type="hidden" id="Intervalo" value="@ViewBag.Intervalo" />
+<input type="hidden" id="Actividad" value="@ViewBag.Actividad" />
+<input type="hidden" id="Prediccion" value="@ViewBag.Prediccion" />
+}
+else
+{
+    Html.RenderPartial("~/Views/Utilitarios/Desconeccion.cshtml");
+}

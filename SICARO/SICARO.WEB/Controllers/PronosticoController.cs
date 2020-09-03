@@ -17,7 +17,21 @@ namespace SICARO.WEB.Controllers
     {
         JavaScriptSerializer js = new JavaScriptSerializer();
         // GET: Pronostico
-        
+
+        [ActionName("Index2")]
+        public ActionResult Index2()
+        {
+            
+            ViewBag.Tipopronostico = 1;
+            //ViewBag.Producto = 201;
+            //ViewBag.Proveedor = 1;
+            //ViewBag.Intervalo = 1;
+            //ViewBag.Actividad = 0;
+            //ViewBag.Prediccion = 6;
+            return View();
+        }
+
+        [ActionName("Index")]
         public ActionResult Index(int tipopronostico,int producto,int proveedor, int intervalo, int actividad,int Prediccion)
         {
             ViewBag.Tipopronostico = tipopronostico;
