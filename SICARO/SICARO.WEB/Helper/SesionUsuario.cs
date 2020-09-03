@@ -24,7 +24,7 @@ namespace SICARO.WEB.Models
 
         public static String UrlSite
         {
-            get { return ConfigurationManager.AppSettings["urlSite"].ToString(); }
+            get { return HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)+"/"; }
         }
 
         public static AplicacionEL Aplicacion

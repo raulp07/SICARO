@@ -22,22 +22,24 @@ namespace SICARO.WEB.Controllers
         static string NombreReporte = "REPORTEINSPECCIONSANITARIA";
         static string Extencion = ".PDF";
         static string ArchivoReporte = NombreReporte + Extencion;
-        static string RutaPDF = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Documentos\PDF\");
+        static string RutaPDF = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"App_Data\Documentos\PDF\");
         JavaScriptSerializer js = new JavaScriptSerializer();
         // GET: Reporte
         public ActionResult Index()
         {
-            foreach (var item in Directory.GetFiles(RutaPDF, "*.PDF"))
+            try
             {
-                try
+                foreach (var item in Directory.GetFiles(RutaPDF, "*.PDF"))
                 {
+
 
                     System.IO.File.SetAttributes(item, FileAttributes.Normal);
                     System.IO.File.Delete(item);
+
                 }
-                catch (Exception)
-                {
-                }
+            }
+            catch (Exception)
+            {
             }
             return View();
         }

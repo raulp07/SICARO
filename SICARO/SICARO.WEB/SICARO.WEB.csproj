@@ -268,13 +268,6 @@
     <Compile Include="Models\UBIGEO_EL.cs" />
     <Compile Include="Models\USUARIO_EL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reporte\ReporteActa.aspx.cs">
-      <DependentUpon>ReporteActa.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Reporte\ReporteActa.aspx.designer.cs">
-      <DependentUpon>ReporteActa.aspx</DependentUpon>
-    </Compile>
     <Compile Include="RPTDataSet\datosreporte.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -304,7 +297,6 @@
     <Content Include="fonts\Logos\logoicaro.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Reporte\ReporteActa.aspx" />
     <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
@@ -317,8 +309,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Browsers\qt.browser" />
-    <Content Include="Documentos\PDF\Reporte.pdf" />
-    <Content Include="Documentos\PDF\REPORTEINSPECCIONSANITARIA.pdf" />
+    <Content Include="App_Data\Documentos\PDF\REPORTEINSPECCIONSANITARIA.PDF" />
     <None Include="Properties\PublishProfiles\ICAROWEB - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ICAROWEB - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\WEB.pubxml" />
@@ -424,6 +415,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BACKUP\" />
+    <Folder Include="Documentos\PDF\" />
     <Folder Include="Views\CATEGORIA\" />
     <Folder Include="Views\Producto\" />
   </ItemGroup>
@@ -434,9 +426,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Reporte\rptActa.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

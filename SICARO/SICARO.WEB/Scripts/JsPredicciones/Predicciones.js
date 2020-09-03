@@ -85,7 +85,7 @@ $(document).ready(function () {
             ModificarConulta: function () {
 
                 var opcion = $('#ddlPronostico').val();
-                $('.GestionarIndicador').attr('disabled', false);
+                $('.GestionarIndicador').attr('disabled', true);
                 switch (opcion) {
                     case "0":
                         $('.GestionarIndicador').attr('disabled', true);
@@ -96,8 +96,8 @@ $(document).ready(function () {
                         $('.divIntervaloProduccion').show();
                         $('.divActividad').hide();
 
+                        $('#cuadro1').addClass('hide');
                         $('#cuadro2').addClass('hide');
-                        $('#cuadro4').addClass('hide');
 
                         break;
 
@@ -107,8 +107,8 @@ $(document).ready(function () {
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
 
+                        $('#cuadro1').addClass('hide');
                         $('#cuadro2').addClass('hide');
-                        $('#cuadro4').addClass('hide');
 
                         break;
                     case "3":
@@ -117,8 +117,8 @@ $(document).ready(function () {
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').show();
 
+                        $('#cuadro1').addClass('hide');
                         $('#cuadro2').addClass('hide');
-                        $('#cuadro4').addClass('hide');
 
                         break;
                     case "4":
@@ -127,8 +127,8 @@ $(document).ready(function () {
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
 
+                        $('#cuadro1').addClass('hide');
                         $('#cuadro2').addClass('hide');
-                        $('#cuadro4').addClass('hide');
 
                         break;
                 }
@@ -267,10 +267,17 @@ $(document).ready(function () {
                     var options3 = {};
                     var options4 = {};
 
-                    $('#cuadro1').removeClass('hide');
-                    $('#cuadro2').removeClass('hide');
-                    $('#cuadro3').removeClass('hide');
-                    $('#cuadro4').removeClass('hide');
+                    //$('#cuadro1').html('');
+                    //$('#cuadro2').html('');
+                    //$('#cuadro3').html('');
+                    //$('#cuadro4').html('');
+
+                    $('#cuadro1').addClass('hide');
+                    $('#cuadro2').addClass('hide');
+                    $('#cuadro3').addClass('hide');
+                    $('#cuadro4').addClass('hide');
+
+
 
                     switch (_ddlPronostico) {
                         case "1":
@@ -298,7 +305,6 @@ $(document).ready(function () {
                                 vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
                                 legend: 'none'
                             };
-
                             break;
                         case "2":
                             //options1 = {
@@ -325,48 +331,46 @@ $(document).ready(function () {
                                 vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
                                 legend: 'none'
                             };
-
                             break;
                         case "3":
-                            //options1 = {
-                            //    title: 'Comparacion Producto vs. Tiempo',
-                            //    hAxis: { title: 'Producto', minValue: 0, maxValue: 26 },
-                            //    vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
-                            //    legend: 'none'
-                            //};
-                            //options2 = {
-                            //    title: 'Comparacion Proveedor vs. Tiempo',
-                            //    hAxis: { title: 'Proveedor', minValue: 0, maxValue: 26 },
-                            //    vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
-                            //    legend: 'none'
-                            //};
+                            options1 = {
+                                title: 'Comparacion Producto vs. Tiempo',
+                                hAxis: { title: 'Producto', minValue: 0, maxValue: 26 },
+                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
+                                legend: 'none'
+                            };
+                            options2 = {
+                                title: 'Comparacion Proveedor vs. Tiempo',
+                                hAxis: { title: 'Proveedor', minValue: 0, maxValue: 26 },
+                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
+                                legend: 'none'
+                            };
                             options4 = {
                                 title: 'Comparacion Cantidad vs. Tiempo',
                                 hAxis: { title: 'Cantidad', minValue: 0, maxValue: 100 },
                                 vAxis: { title: 'Tiempo', minValue: 0, maxValue: 100 },
                                 legend: 'none'
                             };
-
                             break;
                         case "4":
-                            //options1 = {
-                            //    title: 'Comparacion Producto vs. Tiempo',
-                            //    hAxis: { title: 'Producto', minValue: 0, maxValue: 26 },
-                            //    vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
-                            //    legend: 'none'
-                            //};
-                            //options2 = {
-                            //    title: 'Comparacion Proveedor vs. Tiempo',
-                            //    hAxis: { title: 'Proveedor', minValue: 0, maxValue: 26 },
-                            //    vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
-                            //    legend: 'none'
-                            //};
-                            //options3 = {
-                            //    title: 'Comparacion Merma vs. Cantidad',
-                            //    hAxis: { title: 'Merma', minValue: 0, maxValue: 50 },
-                            //    vAxis: { title: 'Cantidad', minValue: 0, maxValue: 50 },
-                            //    legend: 'none'
-                            //};
+                            options1 = {
+                                title: 'Comparacion Producto vs. Tiempo',
+                                hAxis: { title: 'Producto', minValue: 0, maxValue: 26 },
+                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
+                                legend: 'none'
+                            };
+                            options2 = {
+                                title: 'Comparacion Proveedor vs. Tiempo',
+                                hAxis: { title: 'Proveedor', minValue: 0, maxValue: 26 },
+                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
+                                legend: 'none'
+                            };
+                            options3 = {
+                                title: 'Comparacion Merma vs. Cantidad',
+                                hAxis: { title: 'Merma', minValue: 0, maxValue: 50 },
+                                vAxis: { title: 'Cantidad', minValue: 0, maxValue: 50 },
+                                legend: 'none'
+                            };
                             options4 = {
                                 title: 'Comparacion Merma vs. Dias',
                                 hAxis: { title: 'Merma', minValue: 0, maxValue: 50 },
@@ -374,12 +378,11 @@ $(document).ready(function () {
                                 legend: 'none'
                             };
 
-
                             break;
                         default:
                     }
 
-                    
+
 
                     $.each(ListaPrediccionGrafica, function (k, v) {
                         //var Columnas = [];
@@ -398,12 +401,12 @@ $(document).ready(function () {
                                 //Columna1 = 'Peso';
                                 //Columna2 = 'Tiempo';
 
-                                Columnascuadro1 = [
-                                v.producto,
-                                v.tiempo
-                                ];
-                                Columna1cuadro1 = 'Producto';
-                                Columna2cuadro1 = 'Tiempo';
+                                //Columnascuadro1 = [
+                                //v.producto,
+                                //v.tiempo
+                                //];
+                                //Columna1cuadro1 = 'Producto';
+                                //Columna2cuadro1 = 'Tiempo';
 
                                 Columnascuadro2 = [
                                 v.proveedor,
@@ -412,12 +415,12 @@ $(document).ready(function () {
                                 Columna1cuadro2 = 'Proveedor';
                                 Columna2cuadro2 = 'Tiempo';
 
-                                Columnascuadro3 = [
-                                v.unidadmedida,
-                                v.tiempo
-                                ];
-                                Columna1cuadro3 = 'Unidad M.';
-                                Columna2cuadro3 = 'Tiempo';
+                                //Columnascuadro3 = [
+                                //v.unidadmedida,
+                                //v.tiempo
+                                //];
+                                //Columna1cuadro3 = 'Unidad M.';
+                                //Columna2cuadro3 = 'Tiempo';
 
                                 Columnascuadro4 = [
                                 v.peso,
@@ -435,12 +438,12 @@ $(document).ready(function () {
                                 //Columna1 = 'Peso';
                                 //Columna2 = 'Tiempo';
 
-                                Columnascuadro1 = [
-                                v.producto,
-                                v.tiempo
-                                ];
-                                Columna1cuadro1 = 'Producto';
-                                Columna2cuadro1 = 'Tiempo';
+                                //Columnascuadro1 = [
+                                //v.producto,
+                                //v.tiempo
+                                //];
+                                //Columna1cuadro1 = 'Producto';
+                                //Columna2cuadro1 = 'Tiempo';
 
                                 Columnascuadro2 = [
                                 v.proveedor,
@@ -449,12 +452,12 @@ $(document).ready(function () {
                                 Columna1cuadro2 = 'Proveedor';
                                 Columna2cuadro2 = 'Tiempo';
 
-                                Columnascuadro3 = [
-                                v.unidadmedida,
-                                v.tiempo
-                                ];
-                                Columna1cuadro3 = 'Unidad M.';
-                                Columna2cuadro3 = 'Tiempo';
+                                //Columnascuadro3 = [
+                                //v.unidadmedida,
+                                //v.tiempo
+                                //];
+                                //Columna1cuadro3 = 'Unidad M.';
+                                //Columna2cuadro3 = 'Tiempo';
 
                                 Columnascuadro4 = [
                                 v.peso,
@@ -473,19 +476,19 @@ $(document).ready(function () {
                                 //Columna1 = 'Cantidad';
                                 //Columna2 = 'Tiempo';
 
-                                Columnascuadro1 = [
-                                v.producto,
-                                v.tiempo
-                                ];
-                                Columna1cuadro1 = 'Producto';
-                                Columna2cuadro1 = 'Tiempo';
+                                //Columnascuadro1 = [
+                                //v.producto,
+                                //v.tiempo
+                                //];
+                                //Columna1cuadro1 = 'Producto';
+                                //Columna2cuadro1 = 'Tiempo';
 
-                                Columnascuadro2 = [
-                                v.actividad,
-                                v.tiempo
-                                ];
-                                Columna1cuadro2 = 'Actividad';
-                                Columna2cuadro2 = 'Tiempo';
+                                //Columnascuadro2 = [
+                                //v.actividad,
+                                //v.tiempo
+                                //];
+                                //Columna1cuadro2 = 'Actividad';
+                                //Columna2cuadro2 = 'Tiempo';
 
                                 Columnascuadro4 = [
                                 v.cantidad,
@@ -504,33 +507,34 @@ $(document).ready(function () {
                                 //Columna1 = 'Peso';
                                 //Columna2 = 'Merma';
 
-                                Columnascuadro1 = [
-                                v.producto,
-                                v.merma
-                                ];
-                                Columna1cuadro1 = 'Producto';
-                                Columna2cuadro1 = 'Merma';
+                                //Columnascuadro1 = [
+                                //v.producto,
+                                //v.merma
+                                //];
+                                //Columna1cuadro1 = 'Producto';
+                                //Columna2cuadro1 = 'Merma';
 
-                                Columnascuadro2 = [
-                                v.proveedor,
-                                v.merma
-                                ];
-                                Columna1cuadro2 = 'Proveedor';
-                                Columna2cuadro2 = 'Merma';
+                                //Columnascuadro2 = [
+                                //v.proveedor,
+                                //v.merma
+                                //];
+                                //Columna1cuadro2 = 'Proveedor';
+                                //Columna2cuadro2 = 'Merma';
 
-                                Columnascuadro3 = [
-                                v.unidadmedida,
-                                v.merma
-                                ];
-                                Columna1cuadro3 = 'Unidad M.';
-                                Columna2cuadro3 = 'Merma';
+                                //Columnascuadro3 = [
+                                //v.unidadmedida,
+                                //v.merma
+                                //];
+                                //Columna1cuadro3 = 'Unidad M.';
+                                //Columna2cuadro3 = 'Merma';
 
                                 Columnascuadro4 = [
-                                v.peso,
-                                v.merma
+                                    v.merma,
+                                    v.peso,
                                 ];
-                                Columna1cuadro4 = 'Días';
-                                Columna2cuadro4 = 'Merma';
+                                Columna1cuadro4 = 'Merma';
+                                Columna2cuadro4 = 'Días';
+                                
 
                                 break;
                             default:
@@ -561,21 +565,21 @@ $(document).ready(function () {
 
                     });
 
-                    if (Grafica1.length == 0) {
-                        $('#cuadro1').addClass('hide');
-                    }
-                    if (Grafica2.length == 0) {
-                        
-                    }
-                    if (Grafica3.length == 0) {
-                        $('#cuadro3').addClass('hide');
-                    }
-                    if (Grafica4.length == 0) {
-                        $('#cuadro4').addClass('hide');
-                    }
+                    //if (Grafica1.length == 0) {
+                    //    $('#cuadro1').addClass('hide');
+                    //}
+                    //if (Grafica2.length == 0) {
+                    //    $('#cuadro2').addClass('hide');
+                    //}
+                    //if (Grafica3.length == 0) {
+                    //    $('#cuadro3').addClass('hide');
+                    //}
+                    //if (Grafica4.length == 0) {
+                    //    $('#cuadro4').addClass('hide');
+                    //}
 
 
-                    var data = new google.visualization.DataTable();
+                    //var data = new google.visualization.DataTable();
                     var data1 = new google.visualization.DataTable();
                     var data2 = new google.visualization.DataTable();
                     var data3 = new google.visualization.DataTable();
@@ -599,7 +603,7 @@ $(document).ready(function () {
                     data4.addColumn('number', Columna2cuadro4);
 
 
-                    data.addRows(Grafica);
+                    //data.addRows(Grafica);
 
                     data1.addRows(Grafica1);
                     data2.addRows(Grafica2);
@@ -624,60 +628,69 @@ $(document).ready(function () {
                     switch (_ddlPronostico) {
                         case "1":
 
-                            document.getElementById("especial").innerHTML = "<div class='col-md-6'><div id='cuadro2' style='width: 650px; height: 450px;'></div></div><div class='col-md-6'><div id='cuadro4' style='width: 650px; height: 450px;'></div></div>"
-                            var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
+                            //var chart1 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
+                            //chart1.draw(data1, options1);
+
+                            var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
                             chart2.draw(data2, options2);
 
-                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
+                            //var chart3 = new google.visualization.ScatterChart(document.getElementById('cuadro3'));
+                            //chart3.draw(data3, options3);
+
+                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
                             chart4.draw(data4, options4);
+
+                            $('#cuadro1').removeClass('hide');
+                            $('#cuadro2').removeClass('hide');
 
                             break;
                         case "2":
 
-                            document.getElementById("especial").innerHTML = "<div class='col-md-6'><div id='cuadro2' style='width: 650px; height: 450px;'></div></div><div class='col-md-6'><div id='cuadro4' style='width: 650px; height: 450px;'></div></div>"
-                            var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
+                            //var chart1 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
+                            //chart1.draw(data1, options1);
+
+                            var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
                             chart2.draw(data2, options2);
 
-                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
+                            //var chart3 = new google.visualization.ScatterChart(document.getElementById('cuadro3'));
+                            //chart3.draw(data3, options3);
+
+                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
                             chart4.draw(data4, options4);
+
+                            $('#cuadro1').removeClass('hide');
+                            $('#cuadro2').removeClass('hide');
 
                             break;
                         case "3":
 
-                            document.getElementById("especial").innerHTML = "<div class='col-'><div id='cuadro4' style='margin:auto; width: 650px; height: 450px;'></div></div>";
-                            $('#cuadro2').addClass('hide');
+                            //var chart1 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
+                            //chart1.draw(data1, options1);
 
-                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
-                            chart4.draw(data4, options4);
-                            break;
-                        case "4":
-                           
-                            document.getElementById("especial").innerHTML = "<div class='col-md'><div id='cuadro4' style='margin:auto; width: 650px; height: 450px;'></div></div>";
-                            
                             //var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
                             //chart2.draw(data2, options2);
 
-                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
+                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
                             chart4.draw(data4, options4);
-
+                            $('#cuadro1').removeClass('hide');
                             break;
-                            default:
+                        case "4":
+
+                            //var chart1 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
+                            //chart1.draw(data1, options1);
+
+                            //var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
+                            //chart2.draw(data2, options2);
+
+                            //var chart3 = new google.visualization.ScatterChart(document.getElementById('cuadro3'));
+                            //chart3.draw(data3, options3);
+
+                            var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
+                            chart4.draw(data4, options4);
+                            $('#cuadro1').removeClass('hide');
+                            break;
+                        default:
                     }
-            //        var chart = new google.charts.Scatter(document.getElementById('DiagramaDispercion'));
-            //        chart.draw(data, google.charts.Scatter.convertOptions(options));
-
-
-                    var chart1 = new google.visualization.ScatterChart(document.getElementById('cuadro1'));
-                    chart1.draw(data1, options1);
-
-                    //var chart2 = new google.visualization.ScatterChart(document.getElementById('cuadro2'));
-                    //chart2.draw(data2, options2);
-
-                    var chart3 = new google.visualization.ScatterChart(document.getElementById('cuadro3'));
-                    chart3.draw(data3, options3);
-
-                    //var chart4 = new google.visualization.ScatterChart(document.getElementById('cuadro4'));
-                    //chart4.draw(data4, options4);
 
 
                 }.bind(this)).catch(function (error) {

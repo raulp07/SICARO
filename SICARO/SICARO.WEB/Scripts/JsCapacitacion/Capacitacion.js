@@ -150,13 +150,33 @@ var Capacitacion = new Vue({
         CRUDCapacitacion: function () {
 
             var fechaCapacitacion = $('#txtFechaCapacitacion').data('date');
+
+            if ($('#txtTema').val().trim() == '') {
+                Mensaje('El tema es obligatorio', 1);
+                return;
+            }
+
+            if (fechaCapacitacion == undefined) {
+                Mensaje('La fecha no tiene el formato correcto', 1);
+                return;
+            }
+
+            //var d = new Date();
+            //var end = d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear();
+
+            //var start = new Date(fechaCapacitacion);
+            //var end = new Date();
+            //days = (end - fechaCapacitacion ) / (1000 * 60 * 60 * 24);
+            //var dias = Math.round(days);
+            //Descomentar al subir al servidor
             //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var URL = '';
             var jsonData = {
                 iIdCapacitacion: this.iIdCapacitacion,
                 vTemaCapacitacion: $('#txtTema').val(),
-                dFechaPropuestaCapacitacion: fechaCapacitacion
+                dFechaPropuestaCapacitacion: fechaCapacitacion,
+                iEstadoCapactiacion: $('#cboEstadoCapacitacion').val(),
             };
             if (this.iIdCapacitacion == 0) {
                 URL = '/Capacitacion/RegistrarCapacitacionCabecera/';
@@ -270,7 +290,8 @@ var Capacitacion = new Vue({
             var _lista = _ListaCapacitacion.find(function (val) {
                 return (val.iIdCapacitacion == iIdCapacitacion);
             });
-
+            this.LimpiarExpositor();
+            this.LimpiarFormularioGestionCapacitacion();         
             this.Latitud = _lista.dLatitud;
             this.Longitud = _lista.dLongitud;
             $('#Latitud').text(_lista.dLatitud);
@@ -863,6 +884,24 @@ var Capacitacion = new Vue({
             this.tempOpcionesRespuesta = [];
             this.tempOpcionesRespuestaMultiple = [];
         },
+        LimpiarExpositor: function(){
+            $('#ExpNombre').val('');
+            $('#ExpoApePat').val('');
+            $('#ExpoApeMat').val('');
+            $('#ExpoDNI').val('');
+            $('#ExpoEmpresa').val('');
+        },
+        LimpiarFormularioGestionCapacitacion: function(){
+            this.Lista_Preguntas = [];
+            this.OpcionesRespuesta = [];
+            this.Capacitacion_Personal = [];
+            $('#dfecha').datetimepicker('setDate', new Date());
+            $('#horarinicio').datetimepicker('setDate', new Date());
+            $('#horartermino').datetimepicker('setDate', new Date());
+
+            $('#horartermino').val(20);
+            $('input:radio[name=optradio][value=0]').prop('checked', true);
+        },
         GrabarPreguntas: function () {
             if (!this.ValidarCantidadPreguntas())
                 return;
@@ -919,6 +958,7 @@ var Capacitacion = new Vue({
             var nLongitud = (parseFloat($('#Longitud').text()) == 0 ? parseFloat("-12.130453115407523") : parseFloat($('#Longitud').text()));
 
             var fechaCapacitacion = $('#dfecha').data('date');
+            //Descomentar al subir al servidor
             //fechaCapacitacion = fechaCapacitacion.substr(3, 2) + "/" + fechaCapacitacion.substr(0, 2) + "/" + fechaCapacitacion.substr(6, 10);
 
             var GestionCapacitacion = {
@@ -1013,6 +1053,43 @@ var Capacitacion = new Vue({
             }
         },
         GrabarExpositorExterno: function () {
+
+            if ($('#txtEmpresa').val() == '') {
+                MensajeModal('El nombnre de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtRUC').val() == '') {
+                MensajeModal('El RUC de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtTelefono').val() == '') {
+                MensajeModal('El txtTelefono de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtApellidoPE').val() == '') {
+                MensajeModal('El apellido paterno del expositor externo de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtApellidoME').val() == '') {
+                MensajeModal('El apellido materno del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtCelular').val() == '') {
+                MensajeModal('El celular del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#cboTipoDocumentoModal').val() == '') {
+                MensajeModal('El docuemento del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            } 
+            if ($('#txtNroDocumentoModal').val() == '') {
+                MensajeModal('El nro documento del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            }
+            if ($('#txtCelular').val() == '') {
+                MensajeModal('El celular del expositor de la empresa no a sido ingresada', 2);
+                return false;
+            }
 
             $('#ExpNombre').val($('#txtExpositorE').val());
             $('#ExpoApePat').val($('#txtApellidoPE').val());
@@ -1194,7 +1271,7 @@ $('#txtFechaCapacitacion').datetimepicker({
     todayHighlight: 1,
     startView: 2,
     minView: 2,
-    forceParse: 0
+    forceParse: 0,
 
 });
 
