@@ -333,6 +333,7 @@ var Capacitacion = new Vue({
             var _Lista_Personal = this.Lista_Personal;
             var _vCodPersonal = this.vCodPersonal;
             var _lista = _Lista_Personal.find(x => x.vCodPersonal == _vCodPersonal);
+            this.iIdPersonal = _lista.iIdPersonal;
             $('#ExpNombre').val(_lista.vNombrePersonal);
             $('#ExpoApePat').val(_lista.vApellidoPaternoPersonal);
             $('#ExpoApeMat').val(_lista.vApellidoMaternoPersonal);
@@ -884,12 +885,14 @@ var Capacitacion = new Vue({
             this.tempOpcionesRespuesta = [];
             this.tempOpcionesRespuestaMultiple = [];
         },
-        LimpiarExpositor: function(){
+        LimpiarExpositor: function () {
+            this.iIdPersonal = 0;
             $('#ExpNombre').val('');
             $('#ExpoApePat').val('');
             $('#ExpoApeMat').val('');
             $('#ExpoDNI').val('');
             $('#ExpoEmpresa').val('');
+
         },
         LimpiarFormularioGestionCapacitacion: function(){
             this.Lista_Preguntas = [];
@@ -1238,6 +1241,7 @@ $('#dfecha').datetimepicker({
     forceParse: 0
 
 });
+$('#dfecha > .form-control').prop('disabled', true);
 
 $('#horarinicio').datetimepicker({
     language: 'es',
@@ -1250,6 +1254,8 @@ $('#horarinicio').datetimepicker({
     maxView: 1,
     forceParse: 0
 });
+$('#horarinicio > .form-control').prop('disabled', true);
+
 
 $('#horartermino').datetimepicker({
     language: 'es',
@@ -1262,8 +1268,11 @@ $('#horartermino').datetimepicker({
     maxView: 1,
     forceParse: 0
 });
+$('#horartermino > .form-control').prop('disabled', true);
 
-$('#txtFechaCapacitacion').datetimepicker({
+
+var minDate = moment();
+$('#txtFechaCapacitacion').datetimepicker({    
     language: 'es',
     weekStart: 1,
     todayBtn: 1,
@@ -1272,7 +1281,7 @@ $('#txtFechaCapacitacion').datetimepicker({
     startView: 2,
     minView: 2,
     forceParse: 0,
-
+    minDate: moment(),
 });
-
+$('#txtFechaCapacitacion > .form-control').prop('disabled', true);
 var mymap;
