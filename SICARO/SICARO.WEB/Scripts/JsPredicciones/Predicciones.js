@@ -301,7 +301,7 @@ $(document).ready(function () {
                             //};
                             options4 = {
                                 title: 'Comparacion Peso vs. Tiempo',
-                                hAxis: { title: 'Peso', minValue: 0, maxValue: 26 },
+                                hAxis: { title: 'Peso', minValue: 0, maxValue: 100 },
                                 vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
                                 legend: 'none'
                             };

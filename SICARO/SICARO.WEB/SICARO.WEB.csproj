@@ -300,7 +300,6 @@
     <Content Include="fonts\Logos\logoicaro.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.es.js" />
@@ -313,7 +312,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Browsers\qt.browser" />
-    <Content Include="App_Data\Documentos\PDF\REPORTEINSPECCIONSANITARIA.PDF" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
     <Content Include="Content\bootstrap-theme.css.map" />
@@ -323,6 +321,7 @@
     <Content Include="RPTDataSet\datosreporte.xsc">
       <DependentUpon>datosreporte.xsd</DependentUpon>
     </Content>
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <None Include="RPTDataSet\datosreporte.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -422,6 +421,7 @@
     <Content Include="Views\Pronostico\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\Documentos\PDF\" />
     <Folder Include="BACKUP\" />
     <Folder Include="Documentos\PDF\" />
     <Folder Include="Views\CATEGORIA\" />

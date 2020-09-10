@@ -11,12 +11,12 @@
             dActividad: [],
             dIntervaloVecesProduccion: [],
             idCategoria: 0,
-            RedInicio: 0,
-            RedFin: 35,
+            GreenInicio: 0,
+            GreenFin: 35,
             YellowInicio: 35,
             YellowFin: 70,
-            GreenInicio: 70,
-            GreenFin: 100,
+            RedInicio: 70,
+            RedFin: 100,
             RangoPronosticado: 20,
             seleccionTipoPronostico: '0',
             seleccionProducto: '0',
@@ -82,8 +82,8 @@
                         yellowFrom: Pronostico.YellowInicio, yellowTo: Pronostico.YellowFin,
                         greenFrom: Pronostico.GreenInicio, greenTo: Pronostico.GreenFin,
                         //minorTicks: 20,
-                        max: Pronostico.GreenFin,
-                        min: Pronostico.RedInicio,
+                        max: Pronostico.RedFin,
+                        min: Pronostico.GreenInicio,
                         //majorTicks: ['100', '1']
                     };
                     var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
@@ -160,12 +160,12 @@
             OcultarConfiguracionIntervalo: function () {
                 
                 var jsonData = {
-                    RedInicio: this.RedInicio,
-                    RedFin: this.RedFin,
-                    YellowInicio: this.YellowInicio,
-                    YellowFin: this.YellowFin,
                     GreenInicio: this.GreenInicio,
                     GreenFin: this.GreenFin,
+                    YellowInicio: this.YellowInicio,
+                    YellowFin: this.YellowFin,
+                    RedInicio: this.RedInicio,
+                    RedFin: this.RedFin,
                     idCategoria: this.idCategoria,
                 };
                 axios.post("/Pronostico/GuardarCategoriaRango/", jsonData).then(function (response) {
@@ -235,12 +235,12 @@
 
                     $.each(response.data, function (k, v) {
                         Pronostico.idCategoria = v.idCategoria;
-                        Pronostico.RedInicio = v.RedInicio;
-                        Pronostico.RedFin = v.RedFin;
-                        Pronostico.YellowInicio = v.YellowInicio;
-                        Pronostico.YellowFin = v.YellowFin;
                         Pronostico.GreenInicio = v.GreenInicio;
                         Pronostico.GreenFin = v.GreenFin;
+                        Pronostico.YellowInicio = v.YellowInicio;
+                        Pronostico.YellowFin = v.YellowFin;
+                        Pronostico.RedInicio = v.RedInicio;
+                        Pronostico.RedFin = v.RedFin;
                     });
                 }.bind(this)).catch(function (error) {
                 });
@@ -249,17 +249,17 @@
             Salir: function () {
                 window.location.href = "/Home";
             },
-            CambioFinRojo: function (v) {
+            CambioFinVerde: function (v) {
+                Pronostico.GreenFin = v;
+            },
+            CambioInicioAmarrillo: function (v) {
                 Pronostico.YellowInicio = v;
             },
-            CambioInicioAmarrillo: function () {
-                Pronostico.YellowInicio = Pronostico.RedFin;
-            },
             CambioFinAmarillo: function (v) {
-                Pronostico.GreenInicio = v;
-            },
-            CambioInicioVerde: function (v) {
                 Pronostico.YellowFin = v;
+            },
+            CambioInicioRojo: function (v) {
+                Pronostico.RedInicio = v;
             }
 
         },
