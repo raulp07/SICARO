@@ -19,6 +19,7 @@ $(document).ready(function () {
             segundos: 60,
             minutos: 30,
             horas: 0,
+            ProductoMateria: true,
         },
         methods: {
             ListaTipoPronostico: function () {
@@ -72,10 +73,10 @@ $(document).ready(function () {
                 }.bind(this)).catch(function (error) {
                 });
             },
-            EmpezarEvaluacion: function () {
+            ListarMateriaPrima: function () {
 
                 axios.post("/Predicciones/ListaMateriaPrima/", "").then(function (response) {
-                    if (response.dataListaProducto > 0) {
+                    if (response.data.ListaMATERIA_PRIMA > 0) {
                         alert(response.data);
                     }
                     this.Lista_Materia_Prima = response.data.ListaMATERIA_PRIMA;
@@ -98,7 +99,7 @@ $(document).ready(function () {
 
                         $('#cuadro1').addClass('hide');
                         $('#cuadro2').addClass('hide');
-
+                        this.ProductoMateria = false;
                         break;
 
                     case "2":
@@ -109,7 +110,7 @@ $(document).ready(function () {
 
                         $('#cuadro1').addClass('hide');
                         $('#cuadro2').addClass('hide');
-
+                        this.ProductoMateria = false;
                         break;
                     case "3":
                         $('.divProveedor').hide();
@@ -119,7 +120,7 @@ $(document).ready(function () {
 
                         $('#cuadro1').addClass('hide');
                         $('#cuadro2').addClass('hide');
-
+                        this.ProductoMateria = true;
                         break;
                     case "4":
                         $('.divProveedor').show();
@@ -129,18 +130,28 @@ $(document).ready(function () {
 
                         $('#cuadro1').addClass('hide');
                         $('#cuadro2').addClass('hide');
+                        this.ProductoMateria = false;
 
                         break;
                 }
 
 
             },
-            ConsultarProveedor: function () {
+            ConsultarProductoProveedor: function () {
 
                 var iIdproducto = $('#slProducto').val();
                 var jsonData = { iIdproducto: iIdproducto };
                 axios.post("/Producto/ListarProductoProveedor/", jsonData).then(function (response) {
                     this.Lista_Proveedor = response.data;
+                }.bind(this)).catch(function (error) {
+                });
+            },
+            ConsultarMateriaPrimaProveedor: function () {
+
+                var iIdMateriaPrima = $('#slMateriaPrima').val();
+                var jsonData = { iIdMateriaPrima: iIdMateriaPrima };
+                axios.post("/Predicciones/ListaMateriaPrimaProveedor/", jsonData).then(function (response) {
+                    this.Lista_Proveedor = response.data.ListaMATERIA_PRIMAProveedor;
                 }.bind(this)).catch(function (error) {
                 });
             },
@@ -153,7 +164,7 @@ $(document).ready(function () {
                     case "1":
                         param = {
                             tipoPronostico: _ddlPronostico,
-                            idProducto: $('#slProducto').val(),
+                            idProducto: this.ProductoMateria ? $('#slProducto').val() : $('#slMateriaPrima').val(),
                             idProveedor: $('#slProveedor').val(),
                             idUnidadMedida: $('#slUnidadMedida').val(),
                             idIntervaloProduccion: $('#slIntervaloUtilizadoProduccion').val(),
@@ -170,7 +181,7 @@ $(document).ready(function () {
                     case "2":
                         param = {
                             tipoPronostico: _ddlPronostico,
-                            idProducto: $('#slProducto').val(),
+                            idProducto: this.ProductoMateria ? $('#slProducto').val() : $('#slMateriaPrima').val(),
                             idProveedor: $('#slProveedor').val(),
                             idUnidadMedida: $('#slUnidadMedida').val(),
                             idIntervaloProduccion: '0',
@@ -186,7 +197,7 @@ $(document).ready(function () {
                     case "3":
                         param = {
                             tipoPronostico: _ddlPronostico,
-                            idProducto: $('#slProducto').val(),
+                            idProducto: this.ProductoMateria ? $('#slProducto').val() : $('#slMateriaPrima').val(),
                             idProveedor: '0',
                             idIntervaloProduccion: '0',
                             idActividad: $('#slActividad').val(),
@@ -201,7 +212,7 @@ $(document).ready(function () {
                     case "4":
                         param = {
                             tipoPronostico: _ddlPronostico,
-                            idProducto: $('#slProducto').val(),
+                            idProducto: this.ProductoMateria ? $('#slProducto').val() : $('#slMateriaPrima').val(),
                             idProveedor: $('#slProveedor').val(),
                             idUnidadMedida: $('#slUnidadMedida').val(),
                             idIntervaloProduccion: '0',
@@ -217,17 +228,15 @@ $(document).ready(function () {
                     default:
 
                 }
-
-                //var param = {
-                //    Producto: $('#slProducto').val(),
-                //    Proveedor: $('#slProveedor').val(),
-                //    UnidadMedida: $('#slUnidadMedida').val(),
-                //};
-
-                var MP = $('#slProducto').val();
+                
+                var MP = this.ProductoMateria ? $('#slProducto').val() : $('#slMateriaPrima').val();
                 if (MP == 0) {
                     return;
                 }
+                this.GenerarGraficosPredicciones(param);
+            },
+
+            GenerarGraficosPredicciones: function (param) {
                 axios.post("/Predicciones/GuardarPronosticos/", param).then(function (response) {
 
                     var Resultado = response.data.resultado;
@@ -534,7 +543,7 @@ $(document).ready(function () {
                                 ];
                                 Columna1cuadro4 = 'Merma';
                                 Columna2cuadro4 = 'Días';
-                                
+
 
                                 break;
                             default:
@@ -706,6 +715,7 @@ $(document).ready(function () {
         computed: {},
         created: function () {
             this.ListarProducto();
+            this.ListarMateriaPrima();
             this.ListaTipoPronostico();
             this.ListaUnidadMedida();
             this.ListaIntervaloVecesProduccion();

@@ -25,7 +25,6 @@
             seleccionIntervalo: '0',
             seleccionActividad: '0',
             ProductoMateria: true,
-            EnviarCorreo: true,
         },
         methods: {
             ListarProducto: function () {
@@ -136,14 +135,14 @@
                         //$('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
-                        this.ProductoMateria = true;
+                        this.ProductoMateria = false;
                         break;
                     case 3:
                         $('.divProveedor').hide();
                         //$('.divUnidadMedida').hide();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').show();
-                        this.ProductoMateria = false;
+                        this.ProductoMateria = true;
                         break;
                     case 4:
                         $('.divProveedor').show();
@@ -153,13 +152,6 @@
                         this.ProductoMateria = false;
                         break;
                 }
-
-                $('#ddlPronostico').prop('disabled', true);
-                $('#slProducto').prop('disabled', true);
-                $('#slMateriaPrima').prop('disabled', true);
-                $('#slProveedor').prop('disabled', true);
-                $('#slIntervaloUtilizadoProduccion').prop('disabled', true);
-                $('#btnActualizarIntervalos').addClass('hide');
 
             },
             ConsultarProveedor: function () {
@@ -249,67 +241,15 @@
             },
             GuardarControlProduccion: function () {
                 this.GenerarGrafico();
+                this.ListaControlPoduccion();
 
-                var date = new Date();
-                var dia = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-                var mes = date.getMonth() < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
-                var anio = date.getFullYear();
-                var fecha = dia + "/" + mes + "/" + anio;
-                var hora = date.getHours() + ':' + date.getMinutes();
-
-                var Correo = "";
-
-                var Color = '';
-                if (Pronostico.RedInicio <= Pronostico.RangoPronosticado && Pronostico.RangoPronosticado < Pronostico.RedFin) {
-                    Color = 'Rojo';
-                } else if (Pronostico.YellowInicio <= Pronostico.RangoPronosticado && Pronostico.RangoPronosticado < Pronostico.YellowFin) {
-                    Color = 'Amarillo';
-                } else if (Pronostico.GreenInicio <= Pronostico.RangoPronosticado && Pronostico.RangoPronosticado < Pronostico.GreenFin) {
-                    Color = 'Verde';
-                }
-
-                var producto_materiaprima = ''
-                var CuartoTexto = '';
-                if (this.ProductoMateria) {
-                    producto_materiaprima = 'Producto: ' + $('#slProducto option:selected').text() + '<br />';
-                } else {
-                    producto_materiaprima = 'Materia Prima: ' + $('#slMateriaPrima option:selected').text() + '<br />';
-                }
-
-                switch (this.seleccionTipoPronostico) {
-                    case 1: CuartoTexto = 'Intervalo de veces utilizado en producción: ' + $('#slIntervaloUtilizadoProduccion option:selected').text(); break;
-                    case 2: CuartoTexto = ''; break;
-                    case 3: CuartoTexto = 'Actividad de producción: ' + $('#slActividad option:selected').text(); break;
-                    case 4: CuartoTexto = ''; break;
-                }
-
-                correo = 'Estimado Presidente de Calidad, <br /><br />' +
-                         'Usted esta recibiendo este correo debido a que la alarma del indicador de pronosticos del sistema ICARO detecto el ' + fecha + ' a las ' + hora + ' : <br /><br />' +
-                         'Que el indicador marco el color ' + Color + '; en la predicción de valor ' + Pronostico.RangoPronosticado + '<br /><br />' +
-                         'Detalle de la Alarma: <br /><br />' +
-                         'Tipo de pronostico: ' + $('#ddlPronostico option:selected').text() + '<br />' +
-                         producto_materiaprima +
-                         'Proveedor: ' + $('#slProveedor option:selected').text() + '<br />' +
-                         CuartoTexto + '<br /><br /><br />' +
-                         'Por favor no responda a este correo; si usted tiene dudas contactar con el correo : sys.icaro@gmail.com <br />' +
-                         'Saludos';
-
-
-                var param = {
-                    CorreoContenido: this.EnviarCorreo ? correo : '',
-                }
-
-                axios.post("/Pronostico/GuardarControlProduccion/", param).then(function (response) {
-                    if (response.data.resultado >= 0) {
-                        
-                        if (this.EnviarCorreo) {
-                            Mensaje('El correo fue enviado con exito al Presidente de Calidad', 0);
-                        }
-                        this.EnviarCorreo = false;
-                        this.ListaControlPoduccion();
-                    }
-                }.bind(this)).catch(function (error) {
-                });
+                //axios.post("/Pronostico/GuardarControlProduccion/", "").then(function (response) {
+                //    if (response.data.resultado >= 0) {
+                //        Mensaje('Registro Completo',0);
+                //        this.ListaControlPoduccion();
+                //    }
+                //}.bind(this)).catch(function (error) {
+                //});
             },
             ListarPronostico: function () {
                 axios.post("/Pronostico/GuardarControlProduccion/", param).then(function (response) {
@@ -362,7 +302,6 @@
         created: function () {
             this.seleccionTipoPronostico = parseInt($('#Tipopronostico').val());
             this.seleccionProducto = parseInt($('#Producto').val());
-            this.seleccionMateriaPrima = parseInt($('#Producto').val());
             this.seleccionProveedor = parseInt($('#Proveedor').val());
             this.seleccionIntervalo = parseInt($('#Intervalo').val());
             this.seleccionActividad = parseInt($('#Actividad').val());
@@ -372,11 +311,7 @@
 
             this.ListarProducto();
             this.ListarMateriaPrima();
-            if (this.ProductoMateria) {
-                this.ConsultarProveedor();
-            } else {
-                this.ConsultarMateriaPrimaProveedor();
-            }
+            this.ConsultarProveedor();
             this.ListaTipoPronostico();
             this.ListaActividad();
             this.ListaIntervaloVecesProduccion();

@@ -72,7 +72,7 @@ namespace SICARO.WEB.Controllers
 
 
         [HttpPost]
-        public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion, List<PREGUNTA_EL> _Preguntas, List<CAPACITACION_PERSONAL_EL> _CapacitacionPersonal ,List<ExpositorExterno_EL> _ExpositorExterno)
+        public JsonResult RegistrarCapacitacion(GESTION_CAPACITACION_EL GestionCapacitacion, List<PREGUNTA_EL> _Preguntas, List<CAPACITACION_PERSONAL_EL> _CapacitacionPersonal, List<ExpositorExterno_EL> _ExpositorExterno)
         {
             var xmlPreguntas = Utilitario.Serialize(_Preguntas).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
             var xmlCapacitacionPersonal = Utilitario.Serialize(_CapacitacionPersonal).Replace("<?xml version=\"1.0\" encoding=\"utf-16\"?>", "").Replace("<? xml version = \"1.0\" encoding = \"UTF-8\" ?>", "");
@@ -85,12 +85,12 @@ namespace SICARO.WEB.Controllers
             Respuesta respuesta = JsonConvert.DeserializeObject<Respuesta>(Utilitario.Accion.Conect_WEBAPI("GESTION_CAPACITACION", "POST", postdata));
 
             var CorreoOperarios = JsonConvert.DeserializeObject<string>(Utilitario.Accion.Conect_WEBAPI("CAPACITACION_PERSONAL/GETOPERADORCORREO", "GET", "", GestionCapacitacion.iIdCapacitacion.ToString()));
-            var res = Utilitario.Accion.EnvioCorreo(CorreoOperarios, "Capacitación " + GestionCapacitacion.dFechaRealizacionCapacitacion.ToString().Substring(0,10), "Se realizara una capacitación el día "+ GestionCapacitacion.dFechaRealizacionCapacitacion.ToString() +", que iniciara a las " + GestionCapacitacion.tHoraInicio.ToString() +" hasta "+ GestionCapacitacion.tHoraFin.ToString());
+            var res = Utilitario.Accion.EnvioCorreo(CorreoOperarios, "Capacitación " + GestionCapacitacion.dFechaRealizacionCapacitacion.ToString().Substring(0, 10), "Estimado Colaborador: <br /><br />Se comunica que usted ha sido invitado a participar de una capacitación el día " +  GestionCapacitacion.dFechaRealizacionCapacitacion.ToString().Substring(0,10) + ", que iniciara a las " + GestionCapacitacion.tHoraInicio.ToString() + " hasta " + GestionCapacitacion.tHoraFin.ToString() + " <br /><br />Esperando su asistencia.<br /><br />Saludos");
 
             return Json(new { respuesta = respuesta, JsonRequestBehavior.AllowGet });
         }
 
-        
+
 
         [HttpPost]
         public JsonResult ListarGestionCapacitacion(string value)

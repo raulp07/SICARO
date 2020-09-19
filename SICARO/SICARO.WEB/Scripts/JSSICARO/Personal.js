@@ -221,7 +221,7 @@
                 }
 
                 axios.post(url, Datos).then(response => {
-                    if (response.data.Data.codigo >= 1) {
+                    if (response.data.codigo >= 1) {
                         MensajeModal(strMsj, 0);
                         this.ListarPersonal();
                         this.iIdPersonal = 0;

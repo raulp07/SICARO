@@ -237,7 +237,10 @@ namespace SICARO.WEB.Controllers
 
                 foreach (string item in listaCorreos)
                 {
-                    correo.To.Add(item); 
+                    if (item != "")
+                    {
+                        correo.To.Add(item);
+                    }                    
                 }
 
                 correo.Subject = titulo;

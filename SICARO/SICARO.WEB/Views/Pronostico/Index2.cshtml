@@ -6,7 +6,7 @@
 @if (@usuario != null)
 {
 
-<script src="~/Scripts/JsPronostico/Pronostico.js"></script>
+<script src="~/Scripts/JsPronostico/Pronostico2.js"></script>
 
 <div id="app">
     <br /><br />
@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div v-if="ProductoMateria" class="row">
         <div class="col-sm-6 col-sm-offset-3">
             <div class="col-sm-5">
                 <label class="">Producto:</label>
@@ -36,6 +36,19 @@
                 <select class="form-control" id="slProducto" v-on:change="ConsultarProveedor()" v-model="seleccionProducto">
                     <option value="0">Seleccione</option>
                     <option v-for="lista in Lista_Producto" v-bind:value="lista.iIdproducto" :selected="lista.iIdproducto == seleccionProducto">{{lista.vNombreProducto}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div v-else class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <div class="col-sm-5">
+                <label class="">Materia Prima:</label>
+            </div>
+            <div class="col-sm-5 form-group ">
+                <select class="form-control" id="slMateriaPrima" v-on:change="ConsultarMateriaPrimaProveedor()" v-model="seleccionMateriaPrima">
+                    <option value="0">Seleccione</option>
+                    <option v-for="lista in Lista_Materia_Prima" v-bind:value="lista.iIdMateriaPrima" selected="lista.iIdMateriaPrima == seleccionMateriaPrima">{{lista.vNombreMateriaPrima}}</option>
                 </select>
             </div>
         </div>
@@ -85,7 +98,7 @@
             <input type="button" class="btn" value="MOSTRAR INDICADOR" v-on:click="GuardarControlProduccion" />
         </div>
         <div class="col-sm-4  text-center">
-            <input type="button" class="btn" value="ACTUALIZAR INTERVALOS" v-on:click="MostrarConfiguracionIntervalo" />
+            <input id="btnActualizarIntervalos" type="button" class="btn" value="ACTUALIZAR INTERVALOS" v-on:click="MostrarConfiguracionIntervalo" />
         </div>
         <div class="col-sm-4  text-center">
             <input type="button" class="btn" value="SALIR" v-on:click="Salir" />
@@ -113,7 +126,7 @@
                 <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedInicio"/>
             </div>
             <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedFin"/>
+                <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedFin" v-on:Change="CambioFinRojo(RedFin)"/>
             </div>
             <div class="col-sm-3 text-center">
                 <label class="radio-inline"><input type="radio" name="optradioRojo" checked>Si</label>
@@ -126,10 +139,10 @@
                 <label>Amarillo</label>
             </div>
             <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowInicio"/>
+                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowInicio" v-on:Change="CambioInicioAmarrillo(YellowInicio)"  />
             </div>
             <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowFin"/>
+                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowFin" v-on:Change="CambioFinAmarillo(YellowFin)"  />
             </div>
             <div class="col-sm-3 text-center">
                 <label class="radio-inline"><input type="radio" name="optradioAmarillo" checked>Si</label>
@@ -142,7 +155,7 @@
                 <label>Verde</label>
             </div>
             <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenInicio"/>
+                <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenInicio" v-on:Change="CambioInicioVerde(GreenInicio)"/>
             </div>
             <div class="col-sm-3">
                 <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenFin"/>
@@ -163,17 +176,17 @@
             <div id="chart_div" class="text-center"></div>
         </div>
         <div class="col-sm-6" style="height:300px; overflow: scroll;">
-            <table class="table tab-content">
+            <table class="table tab-content table-hover">
                 <thead>
                     <tr>
-                        <td>Fecha</td>
-                        <td>Indicador</td>
-                        <td>Predicción</td>
-                        <td></td>
+                        <th>Fecha</th>
+                        <th>Indicador</th>
+                        <th>Predicción</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="lista in Lista_Control_Produccion">
+                    <tr v-for="lista in Lista_Control_Produccion" v-bind:class="lista.idControlProduccion" class="resultado">
                         <td>{{lista.fechaProduccion}}</td>
                         <td>{{lista.Color}}</td>
                         <td>{{lista.predicion}}</td>
@@ -186,12 +199,12 @@
     </div>
 
 </div>
-<input type="hidden" id="Tipopronostico" value="@ViewBag.Tipopronostico" />
-<input type="hidden" id="Producto" value="@ViewBag.Producto"/>
-<input type="hidden" id="Proveedor" value="@ViewBag.Proveedor" />
-<input type="hidden" id="Intervalo" value="@ViewBag.Intervalo" />
-<input type="hidden" id="Actividad" value="@ViewBag.Actividad" />
-<input type="hidden" id="Prediccion" value="@ViewBag.Prediccion" />
+<input type="hidden" id="Tipopronostico" value="0" />
+<input type="hidden" id="Producto" value="0"/>
+<input type="hidden" id="Proveedor" value="0" />
+<input type="hidden" id="Intervalo" value="0" />
+<input type="hidden" id="Actividad" value="0" />
+<input type="hidden" id="Prediccion" value="0" />
 }
 else
 {

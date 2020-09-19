@@ -29,14 +29,23 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-5">
+                    <div v-if="ProductoMateria" class="col-sm-5">
                         <label class="">Producto:</label>
                     </div>
-                    <div class="col-sm-5 form-group ">
+                    <div  v-else class="col-sm-5">
+                        <label class="">Materia Prima:</label>
+                    </div>
+                    <div v-if="ProductoMateria" class="col-sm-5 form-group ">
 
-                        <select class="form-control" id="slProducto" v-on:change="ConsultarProveedor()">
+                        <select class="form-control" id="slProducto" v-on:change="ConsultarProductoProveedor()">
                             <option value="0">Seleccione</option>
                             <option v-for="lista in Lista_Producto" v-bind:value="lista.iIdproducto">{{lista.vNombreProducto}}</option>
+                        </select>
+                    </div>
+                    <div  v-else class="col-sm-5 form-group ">
+                        <select class="form-control" id="slMateriaPrima" v-on:change="ConsultarMateriaPrimaProveedor()">
+                            <option value="0">Seleccione</option>
+                            <option v-for="lista in Lista_Materia_Prima" v-bind:value="lista.iIdMateriaPrima">{{lista.vNombreMateriaPrima}}</option>
                         </select>
                     </div>
                 </div>

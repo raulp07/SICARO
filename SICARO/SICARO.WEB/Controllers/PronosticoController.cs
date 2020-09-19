@@ -32,7 +32,7 @@ namespace SICARO.WEB.Controllers
         }
 
         [ActionName("Index")]
-        public ActionResult Index(int tipopronostico,int producto,int proveedor, int intervalo, int actividad,int Prediccion)
+        public ActionResult Index(int tipopronostico,int producto, int proveedor, int intervalo, int actividad,int Prediccion)
         {
             ViewBag.Tipopronostico = tipopronostico;
             ViewBag.Producto = producto;
@@ -108,12 +108,20 @@ namespace SICARO.WEB.Controllers
         }
 
         [HttpPost]
-        public JsonResult GuardarControlProduccion()
+        public JsonResult GuardarControlProduccion(string CorreoContenido)
         {
             try
             {
-                //EnviarCorreo();
+                
                 int resultado = js.Deserialize<int>(Utilitario.Accion.Conect_WEBAPI("CONTROLPRODUCCION/ActualizarColor", "GET"));
+
+                if (CorreoContenido != "")
+                {
+                    var res = Utilitario.Accion.EnvioCorreo("presidente.calidad.wislan@gmail.com",
+                    "Indicadores Predicciones ",
+                    CorreoContenido);
+                }
+                
                 return Json(new { resultado = resultado }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

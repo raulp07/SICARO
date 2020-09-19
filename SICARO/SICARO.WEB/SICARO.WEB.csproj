@@ -346,6 +346,7 @@
     <Content Include="Scripts\JsGestionCapacitacion\GestionCapacitacion.js" />
     <Content Include="Scripts\JsPredicciones\Predicciones.js" />
     <Content Include="Scripts\JsPronostico\Pronostico.js" />
+    <Content Include="Scripts\JsPronostico\Pronostico2.js" />
     <Content Include="Scripts\JSSICARO\MateriaPrima.js" />
     <Content Include="Scripts\JSSICARO\Menu.js" />
     <Content Include="Scripts\JSSICARO\Personal.js" />
