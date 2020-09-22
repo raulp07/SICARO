@@ -285,6 +285,7 @@
     <Compile Include="Persistencia\UBIGEO_DA.cs" />
     <Compile Include="Persistencia\USUARIO_DA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilitarios.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
