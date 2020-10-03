@@ -123,7 +123,7 @@
                         $('.GestionarIndicador').attr('disabled', true);
                         break;
                     case 1:
-                        $('.divProveedor').show();
+                        $('.divproveedor').show();
                         //$('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').show();
                         $('.divActividad').hide();
@@ -131,21 +131,21 @@
                         break;
 
                     case 2:
-                        $('.divProveedor').show();
+                        $('.divproveedor').show();
                         //$('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
                         this.ProductoMateria = false;
                         break;
                     case 3:
-                        $('.divProveedor').hide();
+                        $('.divproveedor').hide();
                         //$('.divUnidadMedida').hide();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').show();
                         this.ProductoMateria = true;
                         break;
                     case 4:
-                        $('.divProveedor').show();
+                        $('.divproveedor').show();
                         //$('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();

@@ -345,6 +345,7 @@
         forceParse: 0
 
     });
+    $('#dfechaIni > .form-control').prop('disabled', true);
 
     $('#dfechaFin').datetimepicker({
         language: 'es',
@@ -357,7 +358,7 @@
         forceParse: 0
 
     });
-
+    $('#dfechaFin > .form-control').prop('disabled', true);
 });
 
 var htmltemporal = '';

@@ -124,7 +124,7 @@
                         $('.GestionarIndicador').attr('disabled', true);
                         break;
                     case 1:
-                        $('.divProveedor').show();
+                        $('.divproveedor').show();
                         //$('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').show();
                         $('.divActividad').hide();
@@ -132,21 +132,21 @@
                         break;
 
                     case 2:
-                        $('.divProveedor').show();
+                        $('.divproveedor').show();
                         //$('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
                         this.ProductoMateria = true;
                         break;
                     case 3:
-                        $('.divProveedor').hide();
+                        $('.divproveedor').hide();
                         //$('.divUnidadMedida').hide();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').show();
                         this.ProductoMateria = false;
                         break;
                     case 4:
-                        $('.divProveedor').show();
+                        $('.divproveedor').show();
                         //$('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
@@ -158,6 +158,7 @@
                 $('#slProducto').prop('disabled', true);
                 $('#slMateriaPrima').prop('disabled', true);
                 $('#slProveedor').prop('disabled', true);
+                $('#slActividad').prop('disabled', true);
                 $('#slIntervaloUtilizadoProduccion').prop('disabled', true);
                 $('#btnActualizarIntervalos').addClass('hide');
 

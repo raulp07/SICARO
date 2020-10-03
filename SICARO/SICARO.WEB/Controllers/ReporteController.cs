@@ -23,6 +23,7 @@ namespace SICARO.WEB.Controllers
         static string Extencion = ".PDF";
         static string ArchivoReporte = NombreReporte + Extencion;
         static string RutaPDF = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"App_Data\Documentos\PDF\");
+        static string FileName = "ReporteInsepccionSanitaria";
         JavaScriptSerializer js = new JavaScriptSerializer();
         // GET: Reporte
         public ActionResult Index()
@@ -54,7 +55,7 @@ namespace SICARO.WEB.Controllers
         public ActionResult ImprimirPDF()
         {
             var actionResult = new ActionAsPdf("PDF")
-            { FileName = "test.pdf" };
+            { FileName = FileName + Extencion };
             var misDatos = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, RutaPDF + ArchivoReporte);
             var byteArray = actionResult.BuildPdf(ControllerContext);
             try
