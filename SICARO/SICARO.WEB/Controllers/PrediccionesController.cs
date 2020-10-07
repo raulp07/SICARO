@@ -80,7 +80,7 @@ namespace SICARO.WEB.Controllers
                 switch (P.tipoPronostico)
                 {
                     case 1:
-                        data = P.idProducto + "&value2=" + P.idProveedor + "&value3=" + P.idUnidadMedida + "&value4=" + P.idIntervaloProduccion;
+                        data = P.idProducto + "&value2=" + P.idProveedor + "&value3=" + P.idUnidadMedida + "&value4=" + P.idIntervaloProduccion + "&value5=" + P.idPeso;
                         consulta = "producto=" + P.idProducto + "&proveedor=" + P.idProveedor + "&unidadmedida=" + P.idUnidadMedida + "&peso=" + P.idPeso + "&vecesutilizadoprod=" + P.idIntervaloProduccion;
                         Llamada = "duracioninsumo";
                         ListaPrediccionGrafica = js.Deserialize<List<pronostico_duracion_insumo_EL>>(Utilitario.Accion.Conect_WEBAPI("PREDICCION/pronostico_duracion_insumo", "GET", "", data));

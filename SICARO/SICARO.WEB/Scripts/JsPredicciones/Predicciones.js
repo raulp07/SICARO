@@ -168,7 +168,7 @@ $(document).ready(function () {
                             idProveedor: $('#slProveedor').val(),
                             idUnidadMedida: $('#slUnidadMedida').val(),
                             idIntervaloProduccion: $('#slIntervaloUtilizadoProduccion').val(),
-                            Peso: $('#unidadpeso').val(),
+                            idPeso: $('#unidadpeso').val(),
                             idActividad: '0',
 
                             PRECISION: $('#PorcentajePrecision').val(),
