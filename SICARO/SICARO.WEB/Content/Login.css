@@ -20,12 +20,38 @@ footer {
 
 
 /* Made with love by Mutiullah Samim*/
-body{
+/*body{
     background: url(http://mymaplist.com/img/parallax/back.png);
 	background-color: #444;
     background: url(http://mymaplist.com/img/parallax/pinlayer2.png),url(http://mymaplist.com/img/parallax/pinlayer1.png),url(http://mymaplist.com/img/parallax/back.png);    
-}
+}*/
 
 .vertical-offset-100{
     padding-top:100px;
+}
+
+
+.WaitLayer {
+   display: none;
+   position: fixed;
+   z-index: 1000;
+   top: 0;
+   left: 0;
+   height: 100%;
+   width: 100%;
+   background: rgba( 0, 0, 0, .0 ) url('../fonts/Carga/WaitLoaderPart.gif') 50% 50% no-repeat;
+   background-color: black;
+   opacity: 0.3;
+}
+
+/* When the body has the loading class, we turn
+  the scrollbar off with overflow:hidden */
+body.loading .WaitLayer {
+   overflow: hidden;
+}
+
+/* Anytime the body has the loading class, our
+  modal element will be visible */
+body.loading .WaitLayer {
+   display: block;
 }

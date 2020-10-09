@@ -177,6 +177,12 @@ $(document).ready(function () {
 
                         };
                         $('#txttipoprediccion').text('Días');
+
+                        if (parseInt($('#unidadpeso').val()) < 1 || parseInt($('#unidadpeso').val()) >200) {
+                            Mensaje('El valor de la unidad no puede ser 0 o mayor a 200', 2);
+                            return;
+                        }
+
                         break;
                     case "2":
                         param = {
@@ -193,6 +199,12 @@ $(document).ready(function () {
                             predicion: $('#NroPrediccion').text(),
                         };
                         $('#txttipoprediccion').text('Días');
+
+                        if (parseInt($('#unidadpeso').val()) < 1 || parseInt($('#unidadpeso').val()) > 200) {
+                            Mensaje('El valor de la unidad no puede ser 0 o mayor a 200', 2);
+                            return;
+                        }
+
                         break;
                     case "3":
                         param = {
@@ -208,6 +220,13 @@ $(document).ready(function () {
                             predicion: $('#NroPrediccion').text(),
                         };
                         $('#txttipoprediccion').text('Minutos');
+
+
+                        if (parseInt($('#cantidadproducida').val()) < 1 || parseInt($('#cantidadproducida').val()) > 200) {
+                            Mensaje('El valor de la unidad no puede ser 0 o mayor a 200', 2);
+                            return;
+                        }
+
                         break;
                     case "4":
                         param = {
@@ -224,6 +243,12 @@ $(document).ready(function () {
                             predicion: $('#NroPrediccion').text(),
                         };
                         $('#txttipoprediccion').text('Minutos');
+
+                        if (parseInt($('#unidadpeso').val()) < 1 || parseInt($('#unidadpeso').val()) > 200) {
+                            Mensaje('El valor de la unidad no puede ser 0 o mayor a 200', 2);
+                            return;
+                        }
+
                         break;
                     default:
 
@@ -237,6 +262,8 @@ $(document).ready(function () {
             },
 
             GenerarGraficosPredicciones: function (param) {
+
+                $("body").addClass("loading");
                 axios.post("/Predicciones/GuardarPronosticos/", param).then(function (response) {
 
                     var Resultado = response.data.resultado;
@@ -701,7 +728,7 @@ $(document).ready(function () {
                         default:
                     }
 
-
+                    $("body").removeClass("loading");
                 }.bind(this)).catch(function (error) {
                 });
             },
@@ -726,3 +753,7 @@ $(document).ready(function () {
         }
     });
 });
+
+
+
+

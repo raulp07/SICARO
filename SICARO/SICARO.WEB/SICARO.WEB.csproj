@@ -289,7 +289,10 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="Content\Login.css" />
+    <Content Include="Content\Loading.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\Carga\WaitLoaderGreen.gif" />
+    <Content Include="fonts\Carga\WaitLoaderPart.gif" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\Logos\digesa1.jpg" />
     <Content Include="fonts\Logos\digesa2.jpg" />
@@ -347,6 +350,7 @@
     <Content Include="Scripts\JsPredicciones\Predicciones.js" />
     <Content Include="Scripts\JsPronostico\Pronostico.js" />
     <Content Include="Scripts\JsPronostico\Pronostico2.js" />
+    <Content Include="Scripts\JSSICARO\Layout.js" />
     <Content Include="Scripts\JSSICARO\MateriaPrima.js" />
     <Content Include="Scripts\JSSICARO\Menu.js" />
     <Content Include="Scripts\JSSICARO\Personal.js" />

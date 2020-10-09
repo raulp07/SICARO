@@ -190,8 +190,8 @@
                 //}
 
                 //Descomentar al subir al servidor
-                //fechainicial = fechainicial.substr(3, 2) + "/" + fechainicial.substr(0, 2) + "/" + fechainicial.substr(6, 10);                
-                //fechafinal = fechafinal.substr(3, 2) + "/" + fechafinal.substr(0, 2) + "/" + fechafinal.substr(6, 10);
+                fechainicial = fechainicial.substr(3, 2) + "/" + fechainicial.substr(0, 2) + "/" + fechainicial.substr(6, 10);                
+                fechafinal = fechafinal.substr(3, 2) + "/" + fechafinal.substr(0, 2) + "/" + fechafinal.substr(6, 10);
 
                 var R = {
                     fechainicial: fechainicial,

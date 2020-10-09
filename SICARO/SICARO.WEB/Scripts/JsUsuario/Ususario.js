@@ -6,7 +6,8 @@ new Vue({
     },
     methods: {
         ValidarUsusario: function () {
-
+            
+            $("body").addClass("loading");
             var _Ususario = $('#Usuario').val();
             var _Password = $('#Password').val();
             if (_Ususario == '') {
@@ -31,6 +32,7 @@ new Vue({
                     Mensaje('Bienvenido', 0);
                     //alert("Bienvenido al sistema");
                     setTimeout(function () {
+                        $("body").removeClass("loading");
                         window.location.href = '/home/index/';
                     }, 1100);
                     
