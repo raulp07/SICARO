@@ -123,7 +123,7 @@ $(document).ready(function () {
                         this.ProductoMateria = true;
                         break;
                     case "4":
-                        $('.divProveedor').show();
+                        $('.divProveedor').hide();
                         $('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
@@ -161,6 +161,8 @@ $(document).ready(function () {
 
                 var _ddlPronostico = $('#ddlPronostico').val();
                 switch (_ddlPronostico) {
+                    case "0":
+                        Mensaje('Debe seleccionar un pronostico', 2);return;
                     case "1":
                         param = {
                             tipoPronostico: _ddlPronostico,
@@ -178,6 +180,16 @@ $(document).ready(function () {
                         };
                         $('#txttipoprediccion').text('Días');
 
+                        if (parseInt($('#slMateriaPrima').val()) < 1 || parseInt($('#slProducto').val()) < 1 ||
+                            parseInt($('#slProveedor').val()) < 1 || parseInt($('#slUnidadMedida').val()) < 1 ||
+                            parseInt($('#slIntervaloUtilizadoProduccion').val()) < 1 ) {
+                            Mensaje('Debe rellenar todos los campos para poder generar pronostico', 2);
+                            return;
+                        }
+                        if ($('#unidadpeso').val() == "") {
+                            Mensaje('Debe ingresar un valor que no sea vacio en Cantidad/Peso', 2);
+                            return;
+                        }
                         if (parseInt($('#unidadpeso').val()) < 1 || parseInt($('#unidadpeso').val()) >200) {
                             Mensaje('El valor de la unidad no puede ser 0 o mayor a 200', 2);
                             return;
@@ -200,6 +212,15 @@ $(document).ready(function () {
                         };
                         $('#txttipoprediccion').text('Días');
 
+                        if (parseInt($('#slMateriaPrima').val()) < 1 || parseInt($('#slProducto').val()) < 1 ||
+                            parseInt($('#slProveedor').val()) < 1 || parseInt($('#slUnidadMedida').val()) < 1 ) {
+                            Mensaje('Debe rellenar todos los campos para poder generar pronostico', 2);
+                            return;
+                        } 
+                        if ($('#unidadpeso').val() == "") {
+                            Mensaje('Debe ingresar un valor que no sea vacio en Cantidad/Peso', 2);
+                            return;
+                        }
                         if (parseInt($('#unidadpeso').val()) < 1 || parseInt($('#unidadpeso').val()) > 200) {
                             Mensaje('El valor de la unidad no puede ser 0 o mayor a 200', 2);
                             return;
@@ -221,7 +242,15 @@ $(document).ready(function () {
                         };
                         $('#txttipoprediccion').text('Minutos');
 
-
+                        if (parseInt($('#slMateriaPrima').val()) < 1 || parseInt($('#slProducto').val()) < 1 ||
+                            parseInt($('#slActividad').val()) < 1) {
+                            Mensaje('Debe rellenar todos los campos para poder generar pronostico', 2);
+                            return;
+                        }
+                        if ($('#cantidadproducida').val() == "") {
+                            Mensaje('Debe ingresar un valor que no sea vacio en la cantidad producida', 2);
+                            return;
+                        }
                         if (parseInt($('#cantidadproducida').val()) < 1 || parseInt($('#cantidadproducida').val()) > 200) {
                             Mensaje('El valor de la unidad no puede ser 0 o mayor a 200', 2);
                             return;
@@ -232,7 +261,6 @@ $(document).ready(function () {
                         param = {
                             tipoPronostico: _ddlPronostico,
                             idProducto: this.ProductoMateria ? $('#slProducto').val() : $('#slMateriaPrima').val(),
-                            idProveedor: $('#slProveedor').val(),
                             idUnidadMedida: $('#slUnidadMedida').val(),
                             idIntervaloProduccion: '0',
                             idPeso: $('#unidadpeso').val(),
@@ -242,8 +270,25 @@ $(document).ready(function () {
                             ErrorMedioCuadratico: $('#ErrorMedioCuadratico').val(),
                             predicion: $('#NroPrediccion').text(),
                         };
-                        $('#txttipoprediccion').text('Minutos');
+                        if ($('#slUnidadMedida').val() == 1) {
+                            $('#txttipoprediccion').text('Unidad(es)');
+                        } if ($('#slUnidadMedida').val() == 2) {
+                            $('#txttipoprediccion').text('Litro(s)');
+                        } if ($('#slUnidadMedida').val() == 3) {
+                            $('#txttipoprediccion').text('Kg(s)');
+                        }
 
+
+
+                        if (parseInt($('#slMateriaPrima').val()) < 1 || parseInt($('#slProducto').val()) < 1 ||
+                            parseInt($('#slUnidadMedida').val()) < 1) {
+                            Mensaje('Debe rellenar todos los campos para poder generar pronostico', 2);
+                            return;
+                        }
+                        if ($('#unidadpeso').val() == "") {
+                            Mensaje('Debe ingresar un valor que no sea vacio en Cantidad/Peso', 2);
+                            return;
+                        }
                         if (parseInt($('#unidadpeso').val()) < 1 || parseInt($('#unidadpeso').val()) > 200) {
                             Mensaje('El valor de la unidad no puede ser 0 o mayor a 200', 2);
                             return;
@@ -391,14 +436,14 @@ $(document).ready(function () {
                         case "4":
                             options1 = {
                                 title: 'Comparacion Producto vs. Tiempo',
-                                hAxis: { title: 'Producto', minValue: 0, maxValue: 26 },
-                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
+                                hAxis: { title: 'Producto', minValue: 0, maxValue: 50 },
+                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 50 },
                                 legend: 'none'
                             };
                             options2 = {
                                 title: 'Comparacion Proveedor vs. Tiempo',
-                                hAxis: { title: 'Proveedor', minValue: 0, maxValue: 26 },
-                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 26 },
+                                hAxis: { title: 'Proveedor', minValue: 0, maxValue: 50 },
+                                vAxis: { title: 'Tiempo', minValue: 0, maxValue: 50 },
                                 legend: 'none'
                             };
                             options3 = {
@@ -408,9 +453,9 @@ $(document).ready(function () {
                                 legend: 'none'
                             };
                             options4 = {
-                                title: 'Comparacion Merma vs. Dias',
-                                hAxis: { title: 'Merma', minValue: 0, maxValue: 50 },
-                                vAxis: { title: 'Dias', minValue: 0, maxValue: 50 },
+                                title: 'Comparacion Peso vs Merma',
+                                vAxis: { title: 'Merma', minValue: 0, maxValue: 10 },
+                                hAxis: { title: 'Peso', minValue: 0, maxValue: 10 },
                                 legend: 'none'
                             };
 
@@ -449,7 +494,7 @@ $(document).ready(function () {
                                 v.tiempo
                                 ];
                                 Columna1cuadro2 = 'Proveedor';
-                                Columna2cuadro2 = 'Tiempo';
+                                Columna2cuadro2 = 'Tiempo x Proveedor';
 
                                 //Columnascuadro3 = [
                                 //v.unidadmedida,
@@ -463,7 +508,7 @@ $(document).ready(function () {
                                 v.tiempo
                                 ];
                                 Columna1cuadro4 = 'Peso';
-                                Columna2cuadro4 = 'Tiempo';
+                                Columna2cuadro4 = 'Peso x Tiempo';
 
                                 break;
                             case "2":
@@ -486,7 +531,7 @@ $(document).ready(function () {
                                 v.tiempo
                                 ];
                                 Columna1cuadro2 = 'Proveedor';
-                                Columna2cuadro2 = 'Tiempo';
+                                Columna2cuadro2 = 'Proveedor x Tiempo';
 
                                 //Columnascuadro3 = [
                                 //v.unidadmedida,
@@ -500,7 +545,7 @@ $(document).ready(function () {
                                 v.tiempo
                                 ];
                                 Columna1cuadro4 = 'Peso';
-                                Columna2cuadro4 = 'Tiempo';
+                                Columna2cuadro4 = 'Peso x Tiempo';
 
 
                                 break;
@@ -531,7 +576,7 @@ $(document).ready(function () {
                                 v.tiempo
                                 ];
                                 Columna1cuadro4 = 'Cantidad';
-                                Columna2cuadro4 = 'Tiempo';
+                                Columna2cuadro4 = 'Cantidad x Tiempo';
 
 
                                 break;
@@ -569,7 +614,7 @@ $(document).ready(function () {
                                     v.peso,
                                 ];
                                 Columna1cuadro4 = 'Merma';
-                                Columna2cuadro4 = 'Días';
+                                Columna2cuadro4 = 'Merma x Peso';
 
 
                                 break;

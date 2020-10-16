@@ -31,9 +31,9 @@ namespace WEBAPI_SICARO.Controllers
 
         [HttpGet]
         [Route("pronostico_merma_insumo")]
-        public IEnumerable<pronostico_merma_insumo_EL> pronostico_merma_insumo(int value, int value2, int value3)
+        public IEnumerable<pronostico_merma_insumo_EL> pronostico_merma_insumo(int value, int value2)
         {
-            return Prediccion_DA.Accion.GetAllpronostico_merma_insumo(value, value2, value3);
+            return Prediccion_DA.Accion.GetAllpronostico_merma_insumo(value, value2);
         }
     }
 }

@@ -117,7 +117,7 @@ namespace WEBAPI_SICARO.Persistencia
             }
         }
 
-        public List<pronostico_merma_insumo_EL> GetAllpronostico_merma_insumo(int Producto, int Proveedor,int unidadmedida)
+        public List<pronostico_merma_insumo_EL> GetAllpronostico_merma_insumo(int Producto,int unidadmedida)
         {
             using (SqlConnection con = new SqlConnection(ConexionUtil.Cadena))
             {
@@ -127,7 +127,6 @@ namespace WEBAPI_SICARO.Persistencia
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.Add("@opcion", SqlDbType.Int).Value = 4;
                     com.Parameters.Add("@Producto", SqlDbType.Int).Value = Producto;
-                    com.Parameters.Add("@Proveedor", SqlDbType.Int).Value = Proveedor;
                     com.Parameters.Add("@unidadmedida", SqlDbType.Int).Value = unidadmedida;
                     List<pronostico_merma_insumo_EL> list = new List<pronostico_merma_insumo_EL>();
                     using (IDataReader dataReader = com.ExecuteReader())
@@ -136,7 +135,6 @@ namespace WEBAPI_SICARO.Persistencia
                         {
                             pronostico_merma_insumo_EL obj = new pronostico_merma_insumo_EL();
                             if (dataReader["producto"] != DBNull.Value) { obj.producto = (int)dataReader["producto"]; }
-                            if (dataReader["proveedor"] != DBNull.Value) { obj.proveedor = (int)dataReader["proveedor"]; }
                             if (dataReader["unidadmedida"] != DBNull.Value) { obj.unidadmedida = (int)dataReader["unidadmedida"]; }
                             if (dataReader["peso"] != DBNull.Value) { obj.peso = (int)dataReader["peso"]; }
                             if (dataReader["merma"] != DBNull.Value) { obj.merma = (int)dataReader["merma"]; }

@@ -172,7 +172,7 @@ $(document).ready(function () {
         var tipos = ['alert-success', 'alert-danger', 'alert-warning'];
         var html = //'<div class="row">' +
                    '<div id="MensajeAlerta" class="MensajeAlerta alert ' + tipos[tipo] + ' alert-dismissible show" role="alert" style="top: 1%;left: 15%;width: 70%;z-index: 9999;position: absolute; /*!important;*/">' +
-                   '<strong>Mensaje!</strong>  ' +
+                   '<strong>MENSAJE:</strong>  ' +
                    mensaje +
                    '<button type="button" class="close" onclick="CerrarMensaje() aria-label="Close">' +
                    '<span aria-hidden="true">×</span>' +
