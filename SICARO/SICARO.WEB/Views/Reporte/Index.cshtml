@@ -82,8 +82,10 @@
                 <input type="button" value="Generar" class="btn btn-success " v-on:click="BuscarProcedimiento()" />
             </div>
             <div class="col-sm-3 text-center">
-                <input type="button" value="Descargar PDF" v-on:Click="GenerarPDF()" class="btn btn-primary" />
-                <button id="ImprimirGuardarPDF" class="hidden"  onclick="location.href='@Url.Action("ImprimirPDF", "Reporte")'" />
+                @* Descomentar al subir al servidor *@
+                <input type="button" value="Descargar PDF" onclick="printData()" class="btn btn-primary" />
+                @*<input type="button" value="Descargar PDF" v-on:Click="GenerarPDF()" class="btn btn-primary " />
+                <button id="ImprimirGuardarPDF" class="hidden"  onclick="location.href='@Url.Action("ImprimirPDF", "Reporte")'" />*@
             </div>
             <div class="col-sm-3 text-center">
                 <input type="button" value="Enviar" v-on:click="EnviarDocumento()" class="btn btn-warning" />

@@ -282,6 +282,7 @@
 
                     html += '</tbody></table>';
                     htmltemporal = html;
+
                     axios.post('/Reporte/GuardarEstructuraReporte', { datos: html }).then(response => {
 
                     }).catch(error => {
@@ -298,6 +299,8 @@
                 $('#ModalEnviarCorreo').modal('show');
             },
             EnviarCorreo: function () {
+
+                
                 axios.post('/Reporte/EnviarCorreo', { Detinatario: $('#txtDestinatario').val(), Asunto: $('#txtAsunto').val() }).then(response => {
                     if (response.data == 'Mensaje Enviado') {
                         MensajeModal('Mensaje Enviado', 0);
@@ -365,7 +368,7 @@ var htmltemporal = '';
 
 function printData() {
 
-    var doc = new jsPDF();
+    //var doc = new jsPDF();
 
     //doc.fromHTML($('#RegionReporte').html(), 15, 15, {
     //    'width': 170,
