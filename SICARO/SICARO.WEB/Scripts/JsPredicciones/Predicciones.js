@@ -256,6 +256,8 @@ $(document).ready(function () {
                             return;
                         }
 
+                        document.getElementById("especial").innerHTML = "<div class='col-md-4'></div><div class='col-md-4'><div id='cuadro1' style='width: 450px; height: 350px;'></div></div><div class='col-md-4'></div>";
+
                         break;
                     case "4":
                         param = {
@@ -265,6 +267,7 @@ $(document).ready(function () {
                             idIntervaloProduccion: '0',
                             idPeso: $('#unidadpeso').val(),
                             idActividad: '0',
+                            idProveedor: '0',
 
                             PRECISION: $('#PorcentajePrecision').val(),
                             ErrorMedioCuadratico: $('#ErrorMedioCuadratico').val(),
@@ -293,6 +296,8 @@ $(document).ready(function () {
                             Mensaje('El valor de la unidad no puede ser 0 o mayor a 200', 2);
                             return;
                         }
+
+                        document.getElementById("especial").innerHTML = "<div class='col-md-4'></div><div class='col-md-4'><div id='cuadro1' style='width: 450px; height: 350px;'></div></div><div class='col-md-4'></div>";
 
                         break;
                     default:
@@ -609,6 +614,7 @@ $(document).ready(function () {
                                 //Columna1cuadro3 = 'Unidad M.';
                                 //Columna2cuadro3 = 'Merma';
 
+
                                 Columnascuadro4 = [
                                     v.merma,
                                     v.peso,
@@ -778,7 +784,9 @@ $(document).ready(function () {
                 });
             },
             AbrirGestionPronostico: function () {
+
                 window.location.href = "/Pronostico?" + "tipopronostico=" + this.Lista_Recopilada.tipoPronostico + "&producto= " + this.Lista_Recopilada.idProducto + "&proveedor=" + this.Lista_Recopilada.idProveedor + "&intervalo=" + this.Lista_Recopilada.idIntervaloProduccion + "&actividad=" + this.Lista_Recopilada.idActividad + "&Prediccion=" + $('#NroPrediccion').text();
+                
             },
             Salir: function () {
                 window.location.href = "/Home";

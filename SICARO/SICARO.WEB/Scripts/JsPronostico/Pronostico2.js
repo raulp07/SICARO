@@ -240,6 +240,40 @@
                 });
             },
             GuardarControlProduccion: function () {
+
+                var _ddlPronostico = $('#ddlPronostico').val();
+                switch (_ddlPronostico) {
+                    case "0":
+                        Mensaje('Debe seleccionar un pronostico', 2);return;
+                    case "1":
+                        if (parseInt($('#slMateriaPrima').val()) < 1 || parseInt($('#slProveedor').val()) < 1 ||
+                           parseInt($('#slIntervaloUtilizadoProduccion').val()) < 1) {
+                            Mensaje('Debe seleccionar una opción en todas las listas desplegables para gestionar el indicador', 2);
+                            return;
+                        }
+                        break;
+                    case "2":
+                        if (parseInt($('#slMateriaPrima').val()) < 1 || parseInt($('#slProveedor').val()) < 1) {
+                            Mensaje('Debe seleccionar una opción en todas las listas desplegables para gestionar el indicador', 2);
+                            return;
+                        }
+                        break;
+                    case "3":
+                        if (parseInt($('#slProducto').val()) < 1 || parseInt($('#slActividad').val()) < 1) {
+                            Mensaje('Debe seleccionar una opción en todas las listas desplegables para gestionar el indicador', 2);
+                            return;
+                        }
+                        break;
+                    case "4":
+                        if (parseInt($('#slMateriaPrima').val()) < 1 || parseInt($('#slProveedor').val()) < 1) {
+                            Mensaje('Debe seleccionar una opción en todas las listas desplegables para gestionar el indicador', 2);
+                            return;
+                        }
+                        break;
+
+                }
+
+
                 this.GenerarGrafico();
                 this.ListaControlPoduccion();
 

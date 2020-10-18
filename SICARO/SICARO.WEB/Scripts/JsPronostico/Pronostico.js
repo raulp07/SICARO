@@ -249,6 +249,8 @@
                 });
             },
             GuardarControlProduccion: function () {
+
+
                 this.GenerarGrafico();
 
                 var date = new Date();
