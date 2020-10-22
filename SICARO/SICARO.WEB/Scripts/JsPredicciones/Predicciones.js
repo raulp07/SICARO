@@ -784,7 +784,6 @@ $(document).ready(function () {
                 });
             },
             AbrirGestionPronostico: function () {
-
                 window.location.href = "/Pronostico?" + "tipopronostico=" + this.Lista_Recopilada.tipoPronostico + "&producto= " + this.Lista_Recopilada.idProducto + "&proveedor=" + this.Lista_Recopilada.idProveedor + "&intervalo=" + this.Lista_Recopilada.idIntervaloProduccion + "&actividad=" + this.Lista_Recopilada.idActividad + "&Prediccion=" + $('#NroPrediccion').text();
                 
             },

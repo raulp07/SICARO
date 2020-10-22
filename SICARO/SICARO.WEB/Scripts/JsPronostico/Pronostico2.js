@@ -11,6 +11,17 @@
             dActividad: [],
             dIntervaloVecesProduccion: [],
             idCategoria: 0,
+            //20/10/2020
+            //Raul Paucar 
+            //Configuracion de colores para la grafica
+            //--------------Inicio-------------------//
+            ConfiguracionGreenInicio: 0,
+            ConfiguracionGreenFin: 35,
+            ConfiguracionYellowInicio: 35,
+            ConfiguracionYellowFin: 70,
+            ConfiguracionRedInicio: 70,
+            ConfiguracionRedFin: 100,
+            //--------------Fin-------------------//
             GreenInicio: 0,
             GreenFin: 35,
             YellowInicio: 35,
@@ -88,16 +99,36 @@
                     ['Label', 'Value'],
                     ['Rango', Pronostico.RangoPronosticado]
                     ]);
-                    var options = {
-                        width: 250, height: 250,
-                        redFrom: Pronostico.RedInicio, redTo: Pronostico.RedFin,
-                        yellowFrom: Pronostico.YellowInicio, yellowTo: Pronostico.YellowFin,
-                        greenFrom: Pronostico.GreenInicio, greenTo: Pronostico.GreenFin,
-                        //minorTicks: 20,
-                        max: Pronostico.GreenFin,
-                        min: Pronostico.RedInicio,
-                        //majorTicks: ['100', '1']
-                    };
+                    var options = {};
+
+                    //20/10/2020
+                    //Raul Paucar 
+                    //Configuracion de colores para la grafica
+                    //--------------Inicio-------------------//
+                    if (Pronostico.seleccionTipoPronostico == 1) {
+                        options = {
+                            width: 250, height: 250,
+                            redFrom: Pronostico.RedInicio, redTo: Pronostico.RedFin,
+                            yellowFrom: Pronostico.YellowInicio, yellowTo: Pronostico.YellowFin,
+                            greenFrom: Pronostico.GreenInicio, greenTo: Pronostico.GreenFin,
+                            //minorTicks: 20,
+                            max: Pronostico.GreenFin,
+                            min: Pronostico.RedInicio,
+                            //majorTicks: ['100', '1']
+                        };
+                    } else {
+                        options = {
+                            width: 250, height: 250,
+                            greenFrom: Pronostico.GreenInicio, greenTo: Pronostico.GreenFin,
+                            yellowFrom: Pronostico.YellowInicio, yellowTo: Pronostico.YellowFin,
+                            redFrom: Pronostico.RedInicio, redTo: Pronostico.RedFin,                        
+                            //minorTicks: 20,
+                            max: Pronostico.RedFin,
+                            min: Pronostico.GreenInicio,
+                            //majorTicks: ['100', '1']
+                        };
+                    }
+                    //--------------FIN-------------------//
                     var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
                     chart.draw(data, options);
 
@@ -128,6 +159,16 @@
                         $('.divIntervaloProduccion').show();
                         $('.divActividad').hide();
                         this.ProductoMateria = false;
+
+                        //20/10/2020
+                        //Raul Paucar 
+                        //Configuracion de colores para la grafica
+                        Pronostico.RedInicio = Pronostico.ConfiguracionRedInicio;
+                        Pronostico.RedFin = Pronostico.ConfiguracionRedFin;
+                        Pronostico.YellowInicio = Pronostico.ConfiguracionYellowInicio;
+                        Pronostico.YellowFin = Pronostico.ConfiguracionYellowFin;                        
+                        Pronostico.GreenInicio = Pronostico.ConfiguracionGreenInicio;
+                        Pronostico.GreenFin = Pronostico.ConfiguracionGreenFin;
                         break;
 
                     case 2:
@@ -136,6 +177,17 @@
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
                         this.ProductoMateria = false;
+
+                        //20/10/2020
+                        //Raul Paucar 
+                        //Configuracion de colores para la grafica
+                        Pronostico.GreenInicio = Pronostico.ConfiguracionRedInicio;
+                        Pronostico.GreenFin = Pronostico.ConfiguracionRedFin;
+                        Pronostico.YellowInicio = Pronostico.ConfiguracionYellowInicio;
+                        Pronostico.YellowFin = Pronostico.ConfiguracionYellowFin;
+                        Pronostico.RedInicio = Pronostico.ConfiguracionGreenInicio;
+                        Pronostico.RedFin = Pronostico.ConfiguracionGreenFin;
+
                         break;
                     case 3:
                         $('.divproveedor').hide();
@@ -143,6 +195,17 @@
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').show();
                         this.ProductoMateria = true;
+
+                        //20/10/2020
+                        //Raul Paucar 
+                        //Configuracion de colores para la grafica
+                        Pronostico.GreenInicio = Pronostico.ConfiguracionRedInicio;
+                        Pronostico.GreenFin = Pronostico.ConfiguracionRedFin;
+                        Pronostico.YellowInicio = Pronostico.ConfiguracionYellowInicio;
+                        Pronostico.YellowFin = Pronostico.ConfiguracionYellowFin;
+                        Pronostico.RedInicio = Pronostico.ConfiguracionGreenInicio;
+                        Pronostico.RedFin = Pronostico.ConfiguracionGreenFin;
+
                         break;
                     case 4:
                         $('.divproveedor').show();
@@ -150,9 +213,20 @@
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
                         this.ProductoMateria = false;
+
+                        //20/10/2020
+                        //Raul Paucar 
+                        //Configuracion de colores para la grafica
+                        Pronostico.GreenInicio = Pronostico.ConfiguracionRedInicio;
+                        Pronostico.GreenFin = Pronostico.ConfiguracionRedFin;
+                        Pronostico.YellowInicio = Pronostico.ConfiguracionYellowInicio;
+                        Pronostico.YellowFin = Pronostico.ConfiguracionYellowFin;
+                        Pronostico.RedInicio = Pronostico.ConfiguracionGreenInicio;
+                        Pronostico.RedFin = Pronostico.ConfiguracionGreenFin;
+
                         break;
                 }
-
+                
             },
             ConsultarProveedor: function () {
 
@@ -298,13 +372,17 @@
                 axios.post("/Categoria/ListaCategoriaProducto/", param).then(function (response) {
 
                     $.each(response.data, function (k, v) {
+                        //20/10/2020
+                        //Raul Paucar 
+                        //Configuracion de colores para la grafica
                         Pronostico.idCategoria = v.idCategoria;
-                        Pronostico.GreenInicio = v.GreenInicio;
-                        Pronostico.GreenFin = v.GreenFin;
-                        Pronostico.YellowInicio = v.YellowInicio;
-                        Pronostico.YellowFin = v.YellowFin;
-                        Pronostico.RedInicio = v.RedInicio;
-                        Pronostico.RedFin = v.RedFin;
+                        Pronostico.ConfiguracionGreenInicio = v.GreenInicio;
+                        Pronostico.ConfiguracionGreenFin = v.GreenFin;
+                        Pronostico.ConfiguracionYellowInicio = v.YellowInicio;
+                        Pronostico.ConfiguracionYellowFin = v.YellowFin;
+                        Pronostico.ConfiguracionRedInicio = v.RedInicio;
+                        Pronostico.ConfiguracionRedFin = v.RedFin;
+                        
                     });
                 }.bind(this)).catch(function (error) {
                 });
