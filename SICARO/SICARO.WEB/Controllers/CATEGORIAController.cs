@@ -21,7 +21,7 @@ namespace SICARO.WEB.Controllers
         {
             try
             {
-                var Lis = JsonConvert.DeserializeObject<List<CATEGORIA_EL>>(Utilitario.Accion.Conect_WEBAPI("CATEGORIA", "GET", "", ca.iIdproducto.ToString()));
+                var Lis = JsonConvert.DeserializeObject<List<CATEGORIA_EL>>(Utilitario.Accion.Conect_WEBAPI("CATEGORIA", "GET", "", "1"));// ca.iIdproducto.ToString()));
                 return Json(Lis, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

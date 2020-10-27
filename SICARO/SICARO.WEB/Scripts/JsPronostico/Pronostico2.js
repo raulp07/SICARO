@@ -258,17 +258,55 @@
                 $('#ConfiguracionIntervalos').attr('style', 'display:block');
             },
             OcultarConfiguracionIntervalo: function () {
+                var jsonData = {};
+                //26/10/2020
+                //Raul Paucar 
+                //Configuracion de colores para la grafica
+                if (this.seleccionTipoPronostico == 1) {
+                    jsonData = {
+                        GreenInicio: this.GreenInicio,
+                        GreenFin: this.GreenFin,
+                        YellowInicio: this.YellowInicio,
+                        YellowFin: this.YellowFin,
+                        RedInicio: this.RedInicio,
+                        RedFin: this.RedFin,
+                        idCategoria: this.idCategoria,                       
+                    };
+                } else {
+                    jsonData = {
+                        RedInicio: this.GreenInicio,
+                        RedFin: this.GreenFin,
+                        YellowInicio: this.YellowInicio,
+                        YellowFin: this.YellowFin,
+                        GreenInicio: this.RedInicio,
+                        GreenFin: this.RedFin,                        
+                        idCategoria: this.idCategoria,
+                    };
+                }
 
-                var jsonData = {
-                    GreenInicio: this.GreenInicio,
-                    GreenFin: this.GreenFin,
-                    YellowInicio: this.YellowInicio,
-                    YellowFin: this.YellowFin,
-                    RedInicio: this.RedInicio,
-                    RedFin: this.RedFin,
-                    idCategoria: this.idCategoria,
-                };
+                
                 axios.post("/Pronostico/GuardarCategoriaRango/", jsonData).then(function (response) {
+                    Pronostico.idCategoria = this.idCategoria;
+                    //26/10/2020
+                    //Raul Paucar 
+                    //Configuracion de colores para la grafica
+                    if (this.seleccionTipoPronostico == 1) {
+                        Pronostico.ConfiguracionGreenInicio = this.GreenInicio;
+                        Pronostico.ConfiguracionGreenFin = this.GreenFin;
+                        Pronostico.ConfiguracionYellowInicio = this.YellowInicio;
+                        Pronostico.ConfiguracionYellowFin = this.YellowFin;
+                        Pronostico.ConfiguracionRedInicio = this.RedInicio;
+                        Pronostico.ConfiguracionRedFin = this.RedFin;
+                    } else {
+                        Pronostico.ConfiguracionRedInicio = this.GreenInicio;
+                        Pronostico.ConfiguracionRedFin = this.GreenFin;                        
+                        Pronostico.ConfiguracionYellowInicio = this.YellowInicio;
+                        Pronostico.ConfiguracionYellowFin = this.YellowFin;
+                        Pronostico.ConfiguracionGreenInicio = this.RedInicio;
+                        Pronostico.ConfiguracionGreenFin = this.RedFin;
+                    }
+                    
+
                     $('#ConfiguracionIntervalos').attr('style', 'display:none');
                 }.bind(this)).catch(function (error) {
                 });
