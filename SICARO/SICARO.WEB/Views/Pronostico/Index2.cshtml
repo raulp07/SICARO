@@ -118,53 +118,110 @@
             </div>
         </div>
         <br />
-        <div class="row">
-            <div class="col-sm-3">
-                <label>Rojo</label>
+        @*21/10/2020
+        Raul Paucar
+        Configuracion de colores para la grafica
+            Inicio
+            *@
+        <div v-if="seleccionTipoPronostico == 1">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Rojo</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedInicio" />
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedFin" @*v-on:Change="CambioFinRojo(RedFin)"*@ />
+                </div>
+                <div class="col-sm-3 text-center">
+                    <label class="radio-inline"><input type="radio" name="optradioRojo" checked>Si</label>
+                    <label class="radio-inline"><input type="radio" name="optradioRojo">No</label>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedInicio"/>
+            <br />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Amarillo</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowInicio" @*v-on:Change="CambioInicioAmarrillo(YellowInicio)"*@ />
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowFin" @*v-on:Change="CambioFinAmarillo(YellowFin)"*@ />
+                </div>
+                <div class="col-sm-3 text-center">
+                    <label class="radio-inline"><input type="radio" name="optradioAmarillo" checked>Si</label>
+                    <label class="radio-inline"><input type="radio" name="optradioAmarillo">No</label>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedFin" v-on:Change="CambioFinRojo(RedFin)"/>
-            </div>
-            <div class="col-sm-3 text-center">
-                <label class="radio-inline"><input type="radio" name="optradioRojo" checked>Si</label>
-                <label class="radio-inline"><input type="radio" name="optradioRojo">No</label>
+            <br />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Verde</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenInicio" @*v-on:Change="CambioInicioVerde(GreenInicio)"*@ />
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenFin" />
+                </div>
+                <div class="col-sm-3 text-center">
+                    <label class="radio-inline"><input type="radio" name="optradioVerde" checked>Si</label>
+                    <label class="radio-inline"><input type="radio" name="optradioVerde">No</label>
+                </div>
             </div>
         </div>
-        <br />
-        <div class="row">
-            <div class="col-sm-3">
-                <label>Amarillo</label>
+        <div v-else>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Verde</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenInicio" @*v-on:Change="CambioInicioVerde(GreenInicio)"*@ />
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenFin" />
+                </div>
+                <div class="col-sm-3 text-center">
+                    <label class="radio-inline"><input type="radio" name="optradioVerde" checked>Si</label>
+                    <label class="radio-inline"><input type="radio" name="optradioVerde">No</label>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowInicio" v-on:Change="CambioInicioAmarrillo(YellowInicio)"  />
+            <br />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Amarillo</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowInicio" @*v-on:Change="CambioInicioAmarrillo(YellowInicio)"*@ />
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowFin" @*v-on:Change="CambioFinAmarillo(YellowFin)"*@ />
+                </div>
+                <div class="col-sm-3 text-center">
+                    <label class="radio-inline"><input type="radio" name="optradioAmarillo" checked>Si</label>
+                    <label class="radio-inline"><input type="radio" name="optradioAmarillo">No</label>
+                </div>
             </div>
-            <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniAmarillo" class="form-control" v-Model="YellowFin" v-on:Change="CambioFinAmarillo(YellowFin)"  />
-            </div>
-            <div class="col-sm-3 text-center">
-                <label class="radio-inline"><input type="radio" name="optradioAmarillo" checked>Si</label>
-                <label class="radio-inline"><input type="radio" name="optradioAmarillo">No</label>
+            <br />
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Rojo</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedInicio" />
+                </div>
+                <div class="col-sm-3">
+                    <input type="text" id="txtintervaloriniRojo" class="form-control" v-Model="RedFin" @*v-on:Change="CambioFinRojo(RedFin)"*@ />
+                </div>
+                <div class="col-sm-3 text-center">
+                    <label class="radio-inline"><input type="radio" name="optradioRojo" checked>Si</label>
+                    <label class="radio-inline"><input type="radio" name="optradioRojo">No</label>
+                </div>
             </div>
         </div>
-        <br />
-        <div class="row">
-            <div class="col-sm-3">
-                <label>Verde</label>
-            </div>
-            <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenInicio" v-on:Change="CambioInicioVerde(GreenInicio)"/>
-            </div>
-            <div class="col-sm-3">
-                <input type="text" id="txtintervaloriniVerde" class="form-control" v-Model="GreenFin"/>
-            </div>
-            <div class="col-sm-3 text-center">
-                <label class="radio-inline"><input type="radio" name="optradioVerde" checked>Si</label>
-                <label class="radio-inline"><input type="radio" name="optradioVerde">No</label>
-            </div>
-        </div>
+        @* Fin *@
         <br />
         <div class="row text-center">
             <input type="button" value="Guardar" class="btn" v-on:click="OcultarConfiguracionIntervalo"/>
