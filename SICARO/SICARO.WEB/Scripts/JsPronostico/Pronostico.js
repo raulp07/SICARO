@@ -104,6 +104,30 @@
 
                 }
             },
+            GenerarGrafico2: function () {
+
+                google.charts.load('current', { 'packages': ['gauge'] });
+                google.charts.setOnLoadCallback(drawChart);
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable([
+                    ['Label', 'Value'],
+                    ['Rango', Pronostico.RangoPronosticado]
+                    ]);
+                    var options = {
+                        width: 250, height: 250,
+                        greenFrom: Pronostico.GreenInicio, greenTo: Pronostico.GreenFin,
+                        yellowFrom: Pronostico.YellowInicio, yellowTo: Pronostico.YellowFin,
+                        redFrom: Pronostico.RedInicio, redTo: Pronostico.RedFin,
+
+                        max: Pronostico.RedFin,
+                        min: Pronostico.GreenInicio,
+
+                    };
+                    var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+                    chart.draw(data, options);
+
+                }
+            },
             EmpezarEvaluacion: function () {
 
                 var jsonData = { iIdMateriaPrima: 0 };
@@ -250,9 +274,14 @@
             },
             GuardarControlProduccion: function () {
 
+                var opcion = $('#ddlPronostico').val();
 
-                this.GenerarGrafico();
-
+                if (opcion == 1) {
+                    this.GenerarGrafico();
+                } else {
+                    this.GenerarGrafico2();
+                }
+                
                 var date = new Date();
                 var dia = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
                 var mes = date.getMonth() < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;

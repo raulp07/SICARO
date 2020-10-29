@@ -429,7 +429,7 @@
     <Folder Include="App_Data\Documentos\PDF\" />
     <Folder Include="BACKUP\" />
     <Folder Include="Documentos\PDF\" />
-    <Folder Include="Views\CATEGORIA\" />
+    <Folder Include="Views\Home\CATEGORIA\" />
     <Folder Include="Views\Producto\" />
   </ItemGroup>
   <ItemGroup>
