@@ -208,7 +208,7 @@
 
                         break;
                     case 4:
-                        $('.divproveedor').show();
+                        $('.divproveedor').hide();
                         //$('.divUnidadMedida').show();
                         $('.divIntervaloProduccion').hide();
                         $('.divActividad').hide();
@@ -377,7 +377,7 @@
                         }
                         break;
                     case "4":
-                        if (parseInt($('#slMateriaPrima').val()) < 1 || parseInt($('#slProveedor').val()) < 1) {
+                        if (parseInt($('#slMateriaPrima').val()) < 1) {
                             Mensaje('Debe seleccionar una opción en todas las listas desplegables para gestionar el indicador', 2);
                             return;
                         }
